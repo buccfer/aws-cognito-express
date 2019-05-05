@@ -1,0 +1,33 @@
+{
+  "name": "aws-cognito-jwt-validator",
+  "version": "0.0.0",
+  "description": "AWS Cognito JWT validation for Node.js",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/buccfer/aws-cognito-jwt-validator.git"
+  },
+  "keywords": [
+    "aws",
+    "cognito",
+    "jwt",
+    "validation",
+    "node"
+  ],
+  "author": "Fernando Buccella",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/buccfer/aws-cognito-jwt-validator/issues"
+  },
+  "homepage": "https://github.com/buccfer/aws-cognito-jwt-validator#readme",
+  "engines": {
+    "node": ">=8.x",
+    "npm": ">=5.x"
+  },
+  "dependencies": {
+    "jsonwebtoken": "^8.5.1"
+  }
+}
