@@ -1,10 +1,11 @@
 'use strict'
 
-const { expect } = require('./index')
-const mult = require('../src')
+const { expect, chance } = require('./index')
+const AWSCognitoJWTValidator = require('../src')
 
 describe('Validator', () => {
   it('Should pass', () => {
-    expect(mult(2, 2)).to.equal(4)
+    const validator = new AWSCognitoJWTValidator({ userPoolId: chance.hash() })
+    expect(validator).to.be.an.instanceof(AWSCognitoJWTValidator).that.has.property('userPoolId')
   })
 })
