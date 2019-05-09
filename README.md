@@ -7,4 +7,27 @@
 ![Dev Dependencies](https://img.shields.io/david/dev/buccfer/aws-cognito-jwt-validator.svg)
 [![License](https://badgen.net/badge/license/MIT/blue)](https://badgen.net/badge/license/MIT/blue)
 
-AWS Cognito JWT validation for Node.js
+This library is a promise-based Node.js validator for a AWS Cognito User Pool JSON web token (JWT).
+
+It is a helper library that implements the [AWS Guideline for JWT validation](https://docs.aws.amazon.com/cognito/latest/developerguide/amazon-cognito-user-pools-using-tokens-verifying-a-jwt.html).
+
+## Prerequisites
+- Node.js >= 8
+- NPM >= 5
+
+## Use case
+If you need to manually process tokens for server-side API processing in a Node.js application.
+
+## Table of contents
+- [Installation](#installation)
+- [Documentation](#documentation)
+- [Releases](https://github.com/buccfer/aws-cognito-jwt-validator/wiki/Changelog)
+
+## Installation
+
+```bash
+$ npm install --save aws-cognito-jwt-validator
+```
+
+## Documentation
+TODO.
