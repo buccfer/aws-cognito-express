@@ -11,8 +11,8 @@ class BaseError extends Error {
 
 class ConfigurationError extends BaseError {
   constructor(err) {
-    const errDescription = err.details.map(error => error.message).join('\n')
-    super(`Invalid configuration: \n${errDescription}\n`)
+    const errDescription = err.details.map(error => error.message).join(', ')
+    super(`Invalid configuration: ${errDescription}`)
   }
 }
 
