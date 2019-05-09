@@ -2,11 +2,8 @@
 
 const debug = require('debug')('AWSCognitoJWTValidator')
 const Joi = require('@hapi/joi')
+const { DEFAULT_AWS_REGION, DEFAULT_TOKEN_EXPIRATION_IN_SECONDS, TOKEN_USE } = require('./constants')
 const { ConfigurationError } = require('./errors')
-
-const DEFAULT_AWS_REGION = 'us-east-1'
-const DEFAULT_TOKEN_EXPIRATION_IN_SECONDS = 3600
-const TOKEN_USE = { ID: 'id', ACCESS: 'access' }
 
 const configSchema = Joi.object().required().keys({
   region: Joi.string().default(DEFAULT_AWS_REGION),
