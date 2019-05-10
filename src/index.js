@@ -30,6 +30,17 @@ class AWSCognitoJWTValidator {
     if (error) throw new ConfigurationError(error)
     Object.assign(this, value)
   }
+
+  /**
+   * @description Validate JSON web token.
+   *
+   * @param {String} token - The JSON web token to validate.
+   *
+   * @returns {Promise<Object>} A promise that resolves to an object holding the token claims.
+   * Otherwise, it will be rejected with the appropriate error.
+   * */
+  async validate(token) {
+  }
 }
 
 module.exports = AWSCognitoJWTValidator
