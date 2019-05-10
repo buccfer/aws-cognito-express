@@ -40,6 +40,7 @@ class AWSCognitoJWTValidator {
    * Otherwise, it will be rejected with the appropriate error.
    * */
   async validate(token) {
+    // TODO: get pem.
   }
 }
 
