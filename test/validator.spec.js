@@ -102,4 +102,20 @@ describe('Validator', () => {
       expect(_.pick(validator, ['region', 'userPoolId', 'tokenUse', 'tokenExpirationInSeconds'])).to.deep.equal(config)
     })
   })
+
+  describe('Getter iss', () => {
+    it('Should return the correct issuer for the configured User Pool', () => {
+      const region = 'us-east-2'
+      const userPoolId = chance.word()
+
+      const validator = new AWSCognitoJWTValidator({
+        region,
+        userPoolId,
+        tokenUse: chance.pickone(_.values(TOKEN_USE)),
+        tokenExpirationInSeconds: 3600
+      })
+
+      expect(validator.iss).to.equal(`https://cognito-idp.${region}.amazonaws.com/${userPoolId}`)
+    })
+  })
 })

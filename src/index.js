@@ -32,6 +32,15 @@ class AWSCognitoJWTValidator {
   }
 
   /**
+   * Get the issuer for the configured User Pool.
+   *
+   * @returns {String} The expected value of the JWT iss claim.
+   * */
+  get iss() {
+    return `https://cognito-idp.${this.region}.amazonaws.com/${this.userPoolId}`
+  }
+
+  /**
    * @description Validate JSON web token.
    *
    * @param {String} token - The JSON web token to validate.
