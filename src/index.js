@@ -32,7 +32,7 @@ class AWSCognitoJWTValidator {
   }
 
   /**
-   * Get the issuer for the configured User Pool.
+   * @description Get the issuer for the configured User Pool.
    *
    * @returns {String} The expected value of the JWT iss claim.
    * */
@@ -41,7 +41,7 @@ class AWSCognitoJWTValidator {
   }
 
   /**
-   * Get the JWKs url for the configured User Pool.
+   * @description Get the JWKs url for the configured User Pool.
    *
    * @returns {String} The URL where the User Pool JWKs are located.
    * */
