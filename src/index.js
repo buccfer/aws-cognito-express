@@ -50,6 +50,18 @@ class AWSCognitoJWTValidator {
   }
 
   /**
+   * @description Get User Pool JWKs.
+   *
+   * @returns {Promise<undefined>} A promise that will be resolved if
+   * the User Pool JWKs were successfully downloaded and stored by this
+   * instance. Otherwise, the promise will be rejected with the appropriate
+   * error.
+   * */
+  async getJWKs() {
+
+  }
+
+  /**
    * @description Validate JSON web token.
    *
    * @param {String} token - The JSON web token to validate.
