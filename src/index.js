@@ -30,7 +30,7 @@ class AWSCognitoJWTValidator {
     debug('Instantiating validator with config: %O', config)
     const { error, value } = Joi.validate(config, configSchema)
     if (error) throw new ConfigurationError(error)
-    Object.assign(this, value)
+    _.assign(this, value)
   }
 
   /**
