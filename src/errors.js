@@ -49,6 +49,7 @@ class JWKsNotFoundError extends BaseError {
 }
 
 module.exports = {
+  BaseError,
   ConfigurationError,
   JWKsNotFoundError
 }
