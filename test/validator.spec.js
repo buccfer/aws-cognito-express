@@ -122,4 +122,10 @@ describe('Validator', () => {
       )
     })
   })
+
+  describe('Method getJWKs', () => {
+    it('Should resolve and not make a http request to get the JWKs if they are already set in the instance')
+    it('Should reject with a JWKsNotFoundError if the http request failed')
+    it('Should resolve and set the JWKs in the instance')
+  })
 })
