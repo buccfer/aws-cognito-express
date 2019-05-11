@@ -67,7 +67,7 @@ class AWSCognitoJWTValidator {
     try {
       debug(`Getting JWKs from ${this.jwksUrl}`)
       const response = await request.get(this.jwksUrl)
-      debug('JWKs response: %O', response)
+      debug('JWKs response: %O', response.body)
       this.jwks = _.get(response, 'body.keys', [])
       debug('Updated instance JWKs to: %O', this.jwks)
     } catch (err) {
