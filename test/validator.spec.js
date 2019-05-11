@@ -103,19 +103,23 @@ describe('Validator', () => {
     })
   })
 
-  describe('Getter iss', () => {
+  describe('Getters', () => {
+    let config
+
+    beforeEach(() => {
+      config = generateConfig()
+    })
+
     it('Should return the correct issuer for the configured User Pool', () => {
-      const region = 'us-east-2'
-      const userPoolId = chance.word()
+      const validator = new AWSCognitoJWTValidator(config)
+      expect(validator.iss).to.equal(`https://cognito-idp.${config.region}.amazonaws.com/${config.userPoolId}`)
+    })
 
-      const validator = new AWSCognitoJWTValidator({
-        region,
-        userPoolId,
-        tokenUse: chance.pickone(_.values(TOKEN_USE)),
-        tokenExpirationInSeconds: 3600
-      })
-
-      expect(validator.iss).to.equal(`https://cognito-idp.${region}.amazonaws.com/${userPoolId}`)
+    it('Should return the correct JWKs url for the configured User Pool', () => {
+      const validator = new AWSCognitoJWTValidator(config)
+      expect(validator.jwksUrl).to.equal(
+        `https://cognito-idp.${config.region}.amazonaws.com/${config.userPoolId}/.well-known/jwks.json`
+      )
     })
   })
 })

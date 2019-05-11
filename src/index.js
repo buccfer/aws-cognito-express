@@ -41,6 +41,15 @@ class AWSCognitoJWTValidator {
   }
 
   /**
+   * Get the JWKs url for the configured User Pool.
+   *
+   * @returns {String} The URL where the User Pool JWKs are located.
+   * */
+  get jwksUrl() {
+    return `${this.iss}/.well-known/jwks.json`
+  }
+
+  /**
    * @description Validate JSON web token.
    *
    * @param {String} token - The JSON web token to validate.
