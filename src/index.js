@@ -2,8 +2,10 @@
 
 const debug = require('debug')('AWSCognitoJWTValidator')
 const Joi = require('@hapi/joi')
+const axios = require('axios')
+const _ = require('lodash')
 const { DEFAULT_AWS_REGION, DEFAULT_TOKEN_EXPIRATION_IN_SECONDS, TOKEN_USE } = require('./constants')
-const { ConfigurationError } = require('./errors')
+const { ConfigurationError, JWKsNotFoundError } = require('./errors')
 
 const configSchema = Joi.object().required().keys({
   region: Joi.string().default(DEFAULT_AWS_REGION),
@@ -52,13 +54,26 @@ class AWSCognitoJWTValidator {
   /**
    * @description Get User Pool JWKs.
    *
-   * @returns {Promise<undefined>} A promise that will be resolved if
-   * the User Pool JWKs were successfully downloaded and stored by this
-   * instance. Otherwise, the promise will be rejected with the appropriate
-   * error.
+   * @returns {Promise<undefined>} A promise that will be resolved if the User Pool JWKs were
+   * successfully downloaded and stored. Otherwise, the promise will be rejected with the
+   * appropriate error.
    * */
   async getJWKs() {
+    if (this.jwks) {
+      debug('JWKs already set in the instance. Skipping http request..')
+      return
+    }
 
+    try {
+      debug(`Getting JWKs from ${this.jwksUrl}`)
+      const response = await axios.get(this.jwksUrl)
+      debug('JWKs response: %O', response)
+      this.jwks = _.get(response, 'data.keys', [])
+      debug('Updated instance JWKs to: %O', this.jwks)
+    } catch (err) {
+      debug('Error while getting JWKs: %O', err)
+      throw new JWKsNotFoundError(err)
+    }
   }
 
   /**
@@ -69,9 +84,9 @@ class AWSCognitoJWTValidator {
    * @returns {Promise<Object>} A promise that resolves to an object holding the token claims.
    * Otherwise, it will be rejected with the appropriate error.
    * */
-  async validate(token) {
-    // TODO: get pem.
-  }
+  // async validate(token) {
+  //   // TODO: get pem.
+  // }
 }
 
 module.exports = AWSCognitoJWTValidator
