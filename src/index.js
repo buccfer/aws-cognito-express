@@ -2,7 +2,7 @@
 
 const debug = require('debug')('AWSCognitoJWTValidator')
 const Joi = require('@hapi/joi')
-const axios = require('axios')
+const request = require('superagent')
 const _ = require('lodash')
 const { DEFAULT_AWS_REGION, DEFAULT_TOKEN_EXPIRATION_IN_SECONDS, TOKEN_USE } = require('./constants')
 const { ConfigurationError, JWKsNotFoundError } = require('./errors')
@@ -66,9 +66,9 @@ class AWSCognitoJWTValidator {
 
     try {
       debug(`Getting JWKs from ${this.jwksUrl}`)
-      const response = await axios.get(this.jwksUrl)
+      const response = await request.get(this.jwksUrl)
       debug('JWKs response: %O', response)
-      this.jwks = _.get(response, 'data.keys', [])
+      this.jwks = _.get(response, 'body.keys', [])
       debug('Updated instance JWKs to: %O', this.jwks)
     } catch (err) {
       debug('Error while getting JWKs: %O', err)

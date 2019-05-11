@@ -35,20 +35,14 @@ class JWKsNotFoundError extends BaseError {
   /**
    * @description Instantiates a JWKsNotFoundError.
    *
-   * @param {Error} err - An instance of an Axios HTTP Error.
+   * @param {Error} err - An instance of a Superagent HTTP Error.
    *
    * @returns {JWKsNotFoundError} An instance of a JWKsNotFoundError.
    * */
   constructor(err) {
-    let errMsg
-
-    if (err.response) {
-      errMsg = `Response error: The server responded with status code ${err.response.status}.`
-    } else if (err.request) {
-      errMsg = 'Response error: No response from server.'
-    } else {
-      errMsg = `Request error: ${err.message}.`
-    }
+    const errMsg = err.status
+      ? `Response error: The server responded with status code ${err.status}.`
+      : `Request error: ${err.message}.`
 
     super(errMsg)
   }
