@@ -11,7 +11,8 @@ const configSchema = Joi.object().required().keys({
   region: Joi.string().default(DEFAULT_AWS_REGION),
   userPoolId: Joi.string().required(),
   tokenUse: Joi.string().valid(Object.values(TOKEN_USE)).default(TOKEN_USE.ACCESS),
-  tokenExpirationInSeconds: Joi.number().integer().positive().default(DEFAULT_TOKEN_EXPIRATION_IN_SECONDS)
+  tokenExpirationInSeconds: Joi.number().integer().positive().default(DEFAULT_TOKEN_EXPIRATION_IN_SECONDS),
+  jwks: Joi.array().items(Joi.object()).min(1).optional()
 })
 
 class AWSCognitoJWTValidator {
@@ -23,6 +24,7 @@ class AWSCognitoJWTValidator {
    * @param {String} config.userPoolId - The Cognito User Pool ID.
    * @param {String} [config.tokenUse = 'access'] - The token use: 'id' | 'access'.
    * @param {Number} [config.tokenExpirationInSeconds = 3600] - The token expiration time in seconds.
+   * @param {Array<Object>} [config.jwks] - The optional JWKs to use for testing.
    *
    * @returns {AWSCognitoJWTValidator} A validator instance.
    * */
