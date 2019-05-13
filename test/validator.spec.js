@@ -1,7 +1,7 @@
 'use strict'
 
 const _ = require('lodash')
-const { expect, chance } = require('./index')
+const { expect, chance, nock } = require('./index')
 const AWSCognitoJWTValidator = require('../src')
 const { DEFAULT_AWS_REGION, DEFAULT_TOKEN_EXPIRATION_IN_SECONDS, TOKEN_USE } = require('../src/constants')
 const { ConfigurationError } = require('../src/errors')
@@ -151,6 +151,19 @@ describe('Validator', () => {
   })
 
   describe('Method getJWKs', () => {
+    before(() => {
+      if (!nock.isActive()) nock.activate()
+    })
+
+    beforeEach(() => {
+      nock.cleanAll()
+    })
+
+    after(() => {
+      nock.cleanAll()
+      nock.restore()
+    })
+
     it('Should resolve and not make a http request to get the JWKs if they are already set in the instance')
     it('Should reject with a JWKsNotFoundError if the http request failed')
     it('Should resolve and set the JWKs in the instance')
