@@ -2,16 +2,10 @@
 
 const _ = require('lodash')
 const { expect, chance, nock } = require('./index')
+const { generateConfig } = require('./util')
 const AWSCognitoJWTValidator = require('../src')
 const { DEFAULT_AWS_REGION, DEFAULT_TOKEN_EXPIRATION_IN_SECONDS, TOKEN_USE } = require('../src/constants')
 const { ConfigurationError } = require('../src/errors')
-
-const generateConfig = () => ({
-  region: chance.pickone(['us-east-2', 'eu-central-1', 'ap-southeast-1', 'us-west-2', 'sa-east-1']),
-  userPoolId: chance.hash(),
-  tokenUse: chance.pickone(Object.values(TOKEN_USE)),
-  tokenExpirationInSeconds: chance.integer({ min: 1, max: 5000 })
-})
 
 describe('Validator', () => {
   describe('Constructor', () => {
