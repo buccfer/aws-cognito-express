@@ -19,6 +19,24 @@ function readRSAKey(keyFileName) {
   return fs.readFileSync(keyPath, 'ascii')
 }
 
+const rsaKeyPairs = [
+  {
+    id: 'key_1',
+    public: readRSAKey('key_1.pub'),
+    private: readRSAKey('key_1')
+  },
+  {
+    id: 'key_2',
+    public: readRSAKey('key_2.pub'),
+    private: readRSAKey('key_2')
+  }
+]
+
+const jwks = rsaKeyPairs.map(rsaKeyPair => _.assign(
+  { kid: rsaKeyPair.id, alg: 'RS256', use: 'sig' },
+  pem2jwk(rsaKeyPair.public)
+))
+
 /**
  * @description Generates random configuration for a validator.
  *
@@ -35,9 +53,7 @@ function generateConfig(opts = {}) {
     tokenExpirationInSeconds: chance.integer({ min: 1, max: 5000 })
   }
 
-  if (opts.withJwks) {
-    config.jwks = []
-  }
+  if (opts.withJwks) config.jwks = jwks
 
   return config
 }
