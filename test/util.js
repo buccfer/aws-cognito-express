@@ -59,5 +59,6 @@ function generateConfig(opts = {}) {
 }
 
 module.exports = {
-  generateConfig
+  generateConfig,
+  jwks
 }
