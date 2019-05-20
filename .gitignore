@@ -63,3 +63,6 @@ typings/
 # IDE files
 .idea/
 .vscode/
+
+# Locks
+package-lock.json
