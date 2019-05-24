@@ -195,5 +195,16 @@ describe('Validator', () => {
       expect(validator.jwks).to.deep.equal(jwks)
       expect(scope.isDone()).to.be.true
     })
+
+    it('Should resolve and set the JWKs to an empty array if the response has no "keys"', async () => {
+      const config = generateConfig()
+      const validator = new AWSCognitoJWTValidator(config)
+      const scope = nock(validator.jwksUrl).get('').reply(200, { [chance.word()]: chance.word() })
+
+      await validator.getJWKs()
+
+      expect(validator.jwks).to.deep.equal([])
+      expect(scope.isDone()).to.be.true
+    })
   })
 })
