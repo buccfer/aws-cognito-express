@@ -85,8 +85,6 @@ class AWSCognitoJWTValidator {
    * @returns {undefined} Pems will be set in the instance if there are valid JWKs.
    * */
   generatePems() {
-    // TODO: add tests to check getJWKs returning no "keys" or no array "keys".
-
     if (!Array.isArray(this.jwks)) {
       debug('No JWKs set in the instance. Skipping pem generation..')
       return
