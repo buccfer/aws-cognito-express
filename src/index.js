@@ -4,6 +4,7 @@ const debug = require('debug')('AWSCognitoJWTValidator')
 const Joi = require('@hapi/joi')
 const request = require('superagent')
 const _ = require('lodash')
+const jwkToPem = require('jwk-to-pem')
 const { DEFAULT_AWS_REGION, DEFAULT_TOKEN_EXPIRATION_IN_SECONDS, TOKEN_USE } = require('./constants')
 const { ConfigurationError, JWKsNotFoundError } = require('./errors')
 
@@ -76,6 +77,23 @@ class AWSCognitoJWTValidator {
       debug('Error while getting JWKs: %O', err)
       throw new JWKsNotFoundError(err)
     }
+  }
+
+  /**
+   * @description Generate pems from the JWKs.
+   *
+   * @returns {undefined} Pems will be set in the instance if there are valid JWKs.
+   * */
+  generatePems() {
+    // TODO: add tests to check getJWKs returning no "keys" or no array "keys".
+
+    if (!Array.isArray(this.jwks)) {
+      debug('No JWKs set in the instance. Skipping pem generation..')
+      return
+    }
+
+    debug('Generating pems from JWKs..')
+    this.pems = this.jwks.map(jwk => jwkToPem(jwk, { private: false }))
   }
 
   /**
