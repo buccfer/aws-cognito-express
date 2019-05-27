@@ -12,8 +12,7 @@ const configSchema = Joi.object().required().keys({
   region: Joi.string().default(DEFAULT_AWS_REGION),
   userPoolId: Joi.string().required(),
   tokenUse: Joi.string().valid(Object.values(TOKEN_USE)).default(TOKEN_USE.ACCESS),
-  tokenExpirationInSeconds: Joi.number().integer().positive().default(DEFAULT_TOKEN_EXPIRATION_IN_SECONDS),
-  jwks: Joi.array().items(Joi.object()).min(1).optional()
+  tokenExpirationInSeconds: Joi.number().integer().positive().default(DEFAULT_TOKEN_EXPIRATION_IN_SECONDS)
 })
 
 class AWSCognitoJWTValidator {

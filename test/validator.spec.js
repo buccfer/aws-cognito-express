@@ -90,24 +90,6 @@ describe('Validator', () => {
       expect(validator).to.have.property('tokenExpirationInSeconds', DEFAULT_TOKEN_EXPIRATION_IN_SECONDS)
     })
 
-    it('Should throw ConfigurationError if jwks is not an array', () => {
-      config.jwks = chance.word()
-      expect(() => new AWSCognitoJWTValidator(config)).to.throw(ConfigurationError, /"jwks" must be an array/)
-    })
-
-    it('Should throw ConfigurationError if jwks is an empty array', () => {
-      config.jwks = []
-      expect(() => new AWSCognitoJWTValidator(config)).to.throw(
-        ConfigurationError,
-        /"jwks" must contain at least 1 item/
-      )
-    })
-
-    it('Should throw ConfigurationError if jwks is not an array of objects', () => {
-      config.jwks = [chance.word(), chance.natural()]
-      expect(() => new AWSCognitoJWTValidator(config)).to.throw(ConfigurationError, /must be an object/)
-    })
-
     it('Should throw ConfigurationError if providing an unknown config', () => {
       const propName = chance.word()
       config[propName] = chance.sentence()
