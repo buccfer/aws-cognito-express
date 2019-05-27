@@ -80,18 +80,32 @@ class AWSCognitoJWTValidator {
   }
 
   /**
-   * @description Generate pems from the JWKs.
+   * @description Generate pems from JWKs.
    *
    * @returns {undefined} Pems will be set in the instance if there are valid JWKs.
    * */
   generatePems() {
+    this.pems = {}
+
     if (!Array.isArray(this.jwks)) {
-      debug('No JWKs set in the instance. Skipping pem generation..')
+      debug('No valid JWKs set in the instance. Skipping pem generation..')
       return
     }
 
-    debug('Generating pems from JWKs..')
-    this.pems = this.jwks.map(jwk => jwkToPem(jwk, { private: false }))
+    try {
+      debug('Generating pems from JWKs..')
+      this.pems = this.jwks.reduce(
+        (acc, jwk) => {
+          acc[jwk.kid] = jwkToPem(jwk, { private: false })
+          return acc
+        },
+        {}
+      )
+      debug('Updated instance pems to: %O', this.pems)
+    } catch (err) {
+      debug('Error while generating pems: %O', err)
+      throw new JWKInvalidError(err)
+    }
   }
 
   /**
