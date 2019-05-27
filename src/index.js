@@ -24,7 +24,6 @@ class AWSCognitoJWTValidator {
    * @param {String} config.userPoolId - The Cognito User Pool ID.
    * @param {String} [config.tokenUse = 'access'] - The token use: 'id' | 'access'.
    * @param {Number} [config.tokenExpirationInSeconds = 3600] - The token expiration time in seconds.
-   * @param {Array<Object>} [config.jwks] - The optional JWKs to use for testing.
    *
    * @returns {AWSCognitoJWTValidator} A validator instance.
    * */
