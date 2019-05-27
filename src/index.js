@@ -3,10 +3,10 @@
 const debug = require('debug')('AWSCognitoJWTValidator')
 const Joi = require('@hapi/joi')
 const request = require('superagent')
-const _ = require('lodash')
+const once = require('lodash.once')
 const jwkToPem = require('jwk-to-pem')
 const { DEFAULT_AWS_REGION, DEFAULT_TOKEN_EXPIRATION_IN_SECONDS, TOKEN_USE } = require('./constants')
-const { ConfigurationError, JWKsNotFoundError } = require('./errors')
+const { ConfigurationError, InitializationError } = require('./errors')
 
 const configSchema = Joi.object().required().keys({
   region: Joi.string().default(DEFAULT_AWS_REGION),
@@ -31,7 +31,8 @@ class AWSCognitoJWTValidator {
     debug('Instantiating validator with config: %O', config)
     const { error, value } = Joi.validate(config, configSchema)
     if (error) throw new ConfigurationError(error)
-    _.assign(this, value)
+    Object.assign(this, value)
+    this.init = once(this.initialize)
   }
 
   /**
@@ -53,56 +54,32 @@ class AWSCognitoJWTValidator {
   }
 
   /**
-   * @description Get User Pool JWKs.
+   * @description Initializes a validator by getting the User Pool JWKs and converting them to pems.
    *
-   * @returns {Promise<undefined>} A promise that will be resolved if the User Pool JWKs were
-   * successfully downloaded and stored. Otherwise, the promise will be rejected with the
-   * appropriate error.
+   * @returns {Promise<undefined>} A promise that will be resolved if the validator could be
+   * initialized successfully. Otherwise, it will be rejected with the appropriate error.
    * */
-  async getJWKs() {
-    if (this.jwks) {
-      debug('JWKs already set in the instance. Skipping http request..')
+  async initialize() {
+    if (this.pems) {
+      debug('Validator was already initialized. Skipping initialization..')
       return
     }
 
     try {
       debug(`Getting JWKs from ${this.jwksUrl}`)
-      const response = await request.get(this.jwksUrl)
-      debug('JWKs response: %O', response.body)
-      this.jwks = _.get(response, 'body.keys', [])
-      debug('Updated instance JWKs to: %O', this.jwks)
-    } catch (err) {
-      debug('Error while getting JWKs: %O', err)
-      throw new JWKsNotFoundError(err)
-    }
-  }
-
-  /**
-   * @description Generate pems from JWKs.
-   *
-   * @returns {undefined} Pems will be set in the instance if there are valid JWKs.
-   * */
-  generatePems() {
-    this.pems = {}
-
-    if (!Array.isArray(this.jwks)) {
-      debug('No valid JWKs set in the instance. Skipping pem generation..')
-      return
-    }
-
-    try {
-      debug('Generating pems from JWKs..')
-      this.pems = this.jwks.reduce(
+      const { body: { keys: jwks } } = await request.get(this.jwksUrl)
+      debug('Generating pems from JWKs: %O', jwks)
+      this.pems = jwks.reduce(
         (acc, jwk) => {
           acc[jwk.kid] = jwkToPem(jwk, { private: false })
           return acc
         },
         {}
       )
-      debug('Updated instance pems to: %O', this.pems)
+      debug('Validator initialized with pems: %O', this.pems)
     } catch (err) {
-      debug('Error while generating pems: %O', err)
-      throw new JWKInvalidError(err)
+      debug('Error while initializing validator: %O', err)
+      throw new InitializationError(err)
     }
   }
 

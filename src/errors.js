@@ -31,25 +31,21 @@ class ConfigurationError extends BaseError {
   }
 }
 
-class JWKsNotFoundError extends BaseError {
+class InitializationError extends BaseError {
   /**
-   * @description Instantiates a JWKsNotFoundError.
+   * @description Instantiates an InitializationError.
    *
-   * @param {Error} err - An instance of a Superagent HTTP Error.
+   * @param {Error} err - An instance of an Error.
    *
-   * @returns {JWKsNotFoundError} An instance of a JWKsNotFoundError.
+   * @returns {InitializationError} An instance of an InitializationError.
    * */
   constructor(err) {
-    const errMsg = err.status
-      ? `Response error: The server responded with status code ${err.status}.`
-      : `Request error: ${err.message}.`
-
-    super(errMsg)
+    super(`Initialization failed: ${err.message}`)
   }
 }
 
 module.exports = {
   BaseError,
   ConfigurationError,
-  JWKsNotFoundError
+  InitializationError
 }
