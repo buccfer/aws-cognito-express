@@ -102,9 +102,17 @@ class AWSCognitoJWTValidator {
 
     if (!decodedToken) {
       debug('JWT is invalid')
-      throw new InvalidJWTError()
+      throw new InvalidJWTError('JWT is invalid')
     }
 
+    const { kid } = decodedToken.header
+    debug(`Getting pem for kid ${kid}`)
+    const pem = this.pems[kid]
+
+    if (!pem) {
+      debug(`No pem found for kid ${kid}`)
+      throw new InvalidJWTError('No pem found to verify JWT signature')
+    }
   }
 }
 
