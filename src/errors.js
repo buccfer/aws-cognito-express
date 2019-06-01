@@ -44,8 +44,20 @@ class InitializationError extends BaseError {
   }
 }
 
+class InvalidJWTError extends BaseError {
+  /**
+   * @description Instantiates an InvalidJWTError.
+   *
+   * @returns {InvalidJWTError} An instance of an InvalidJWTError.
+   * */
+  constructor() {
+    super('JWT is invalid')
+  }
+}
+
 module.exports = {
   BaseError,
   ConfigurationError,
-  InitializationError
+  InitializationError,
+  InvalidJWTError
 }

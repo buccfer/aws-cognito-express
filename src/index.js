@@ -5,8 +5,9 @@ const Joi = require('@hapi/joi')
 const request = require('superagent')
 const once = require('lodash.once')
 const jwkToPem = require('jwk-to-pem')
+const jwt = require('jsonwebtoken')
 const { DEFAULT_AWS_REGION, DEFAULT_TOKEN_EXPIRATION_IN_SECONDS, TOKEN_USE } = require('./constants')
-const { ConfigurationError, InitializationError } = require('./errors')
+const { ConfigurationError, InitializationError, InvalidJWTError } = require('./errors')
 
 const configSchema = Joi.object().required().keys({
   region: Joi.string().default(DEFAULT_AWS_REGION),
@@ -86,16 +87,25 @@ class AWSCognitoJWTValidator {
   }
 
   /**
-   * @description Validate JSON web token.
+   * @description Validates a JSON web token.
    *
    * @param {String} token - The JSON web token to validate.
    *
    * @returns {Promise<Object>} A promise that resolves to an object holding the token claims.
    * Otherwise, it will be rejected with the appropriate error.
    * */
-  // async validate(token) {
-  //   // TODO: get pem.
-  // }
+  async validate(token) {
+    await this.init()
+
+    debug('Decoding JWT to get the "kid" header')
+    const decodedToken = jwt.decode(token, { complete: true })
+
+    if (!decodedToken) {
+      debug('JWT is invalid')
+      throw new InvalidJWTError()
+    }
+
+  }
 }
 
 module.exports = AWSCognitoJWTValidator
