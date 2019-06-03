@@ -10,13 +10,15 @@ const verify = require('./verify')
 const { DEFAULT_AWS_REGION, DEFAULT_TOKEN_EXPIRATION_IN_SECONDS, TOKEN_USE } = require('./constants')
 const { ConfigurationError, InitializationError, InvalidJWTError } = require('./errors')
 
+/* eslint-disable newline-per-chained-call */
 const configSchema = Joi.object().required().keys({
   region: Joi.string().default(DEFAULT_AWS_REGION),
   userPoolId: Joi.string().required(),
-  tokenUse: Joi.string().valid(Object.values(TOKEN_USE)).default(TOKEN_USE.ACCESS),
+  tokenUse: Joi.array().min(1).unique().items(Joi.string().valid(Object.values(TOKEN_USE))).default([TOKEN_USE.ACCESS]),
   tokenExpirationInSeconds: Joi.number().integer().positive().default(DEFAULT_TOKEN_EXPIRATION_IN_SECONDS),
   pems: Joi.object().min(1).optional()
 })
+/* eslint-enable newline-per-chained-call */
 
 class AWSCognitoJWTValidator {
   /**
@@ -25,7 +27,7 @@ class AWSCognitoJWTValidator {
    * @param {Object} config - The validator configuration.
    * @param {String} [config.region = 'us-east-1'] - The AWS Region where the Cognito User Pool was created.
    * @param {String} config.userPoolId - The Cognito User Pool ID.
-   * @param {String} [config.tokenUse = 'access'] - The token use: 'id' | 'access'.
+   * @param {Array<String>} [config.tokenUse = ['access']] - The accepted token use/s: 'id' | 'access'.
    * @param {Number} [config.tokenExpirationInSeconds = 3600] - The token expiration time in seconds.
    * @param {Object} [config.pems = undefined] - The custom pems to be used to verify the token signature.
    *
