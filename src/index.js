@@ -118,9 +118,7 @@ class AWSCognitoJWTValidator {
     }
 
     debug('Verifying JWT signature..')
-    return verify(token, pem, { audience: [], issuer: this.iss })
-
-    // TODO: check the token_use claim.
+    return verify(token, pem, { audience: [], issuer: this.iss, tokenUse: this.tokenUse })
   }
 }
 
