@@ -6,6 +6,7 @@ const request = require('superagent')
 const once = require('lodash.once')
 const jwkToPem = require('jwk-to-pem')
 const jwt = require('jsonwebtoken')
+const verify = require('./verify')
 const { DEFAULT_AWS_REGION, DEFAULT_TOKEN_EXPIRATION_IN_SECONDS, TOKEN_USE } = require('./constants')
 const { ConfigurationError, InitializationError, InvalidJWTError } = require('./errors')
 
@@ -91,7 +92,7 @@ class AWSCognitoJWTValidator {
    *
    * @param {String} token - The JSON web token to validate.
    *
-   * @returns {Promise<Object>} A promise that resolves to an object holding the token claims.
+   * @returns {Promise<Object>} A promise that resolves to the JWT payload.
    * Otherwise, it will be rejected with the appropriate error.
    * */
   async validate(token) {
@@ -113,6 +114,11 @@ class AWSCognitoJWTValidator {
       debug(`No pem found for kid ${kid}`)
       throw new InvalidJWTError('No pem found to verify JWT signature')
     }
+
+    debug('Verifying JWT signature..')
+    return verify(token, pem, { audience: [], issuer: this.iss })
+
+    // TODO: check the token_use claim.
   }
 }
 
