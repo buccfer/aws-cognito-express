@@ -119,6 +119,11 @@ class AWSCognitoJWTValidator {
 
     debug('Verifying JWT signature..')
     return verify(token, pem, { audience: [], issuer: this.iss, tokenUse: this.tokenUse })
+
+    // TODO: add "audience" to the constructor config.
+    // TODO: check jsonwebtoken's "maxAge" option.
+    // TODO: check how to refresh jwks if Cognito keys are rotated.
+    // TODO: fix tests.
   }
 }
 
