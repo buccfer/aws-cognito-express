@@ -16,6 +16,7 @@ const configSchema = Joi.object().required().keys({
   userPoolId: Joi.string().required(),
   tokenUse: Joi.array().min(1).unique().items(Joi.string().valid(Object.values(TOKEN_USE))).default([TOKEN_USE.ACCESS]),
   tokenExpirationInSeconds: Joi.number().integer().positive().default(DEFAULT_TOKEN_EXPIRATION_IN_SECONDS),
+  audience: Joi.array().min(1).unique().items(Joi.string()).required(),
   pems: Joi.object().min(1).optional()
 })
 /* eslint-enable newline-per-chained-call */
@@ -29,6 +30,7 @@ class AWSCognitoJWTValidator {
    * @param {String} config.userPoolId - The Cognito User Pool ID.
    * @param {Array<String>} [config.tokenUse = ['access']] - The accepted token use/s: 'id' | 'access'.
    * @param {Number} [config.tokenExpirationInSeconds = 3600] - The token expiration time in seconds.
+   * @param {Array<String>} config.audience - A set of app client IDs that have access to the Cognito User Pool.
    * @param {Object} [config.pems = undefined] - The custom pems to be used to verify the token signature.
    *
    * @returns {AWSCognitoJWTValidator} A validator instance.
@@ -118,9 +120,8 @@ class AWSCognitoJWTValidator {
     }
 
     debug('Verifying JWT signature..')
-    return verify(token, pem, { audience: [], issuer: this.iss, tokenUse: this.tokenUse })
+    return verify(token, pem, { audience: this.audience, issuer: this.iss, tokenUse: this.tokenUse })
 
-    // TODO: add "audience" to the constructor config.
     // TODO: check jsonwebtoken's "maxAge" option.
     // TODO: check how to refresh jwks if Cognito keys are rotated.
     // TODO: fix tests.
