@@ -7,7 +7,7 @@ const once = require('lodash.once')
 const jwkToPem = require('jwk-to-pem')
 const jwt = require('jsonwebtoken')
 const verify = require('./verify')
-const { DEFAULT_AWS_REGION, DEFAULT_TOKEN_EXPIRATION_IN_SECONDS, TOKEN_USE } = require('./constants')
+const { DEFAULT_AWS_REGION, TOKEN_USE } = require('./constants')
 const { ConfigurationError, InitializationError, InvalidJWTError } = require('./errors')
 
 /* eslint-disable newline-per-chained-call */
@@ -15,7 +15,6 @@ const configSchema = Joi.object().required().keys({
   region: Joi.string().default(DEFAULT_AWS_REGION),
   userPoolId: Joi.string().required(),
   tokenUse: Joi.array().min(1).unique().items(Joi.string().valid(Object.values(TOKEN_USE))).default([TOKEN_USE.ACCESS]),
-  tokenExpirationInSeconds: Joi.number().integer().positive().default(DEFAULT_TOKEN_EXPIRATION_IN_SECONDS),
   audience: Joi.array().min(1).unique().items(Joi.string()).required(),
   pems: Joi.object().min(1).optional()
 })
@@ -29,7 +28,6 @@ class AWSCognitoJWTValidator {
    * @param {String} [config.region = 'us-east-1'] - The AWS Region where the Cognito User Pool was created.
    * @param {String} config.userPoolId - The Cognito User Pool ID.
    * @param {Array<String>} [config.tokenUse = ['access']] - The accepted token use/s: 'id' | 'access'.
-   * @param {Number} [config.tokenExpirationInSeconds = 3600] - The token expiration time in seconds.
    * @param {Array<String>} config.audience - A set of app client IDs that have access to the Cognito User Pool.
    * @param {Object} [config.pems = undefined] - The custom pems to be used to verify the token signature.
    *
@@ -122,8 +120,7 @@ class AWSCognitoJWTValidator {
     debug('Verifying JWT signature..')
     return verify(token, pem, { audience: this.audience, issuer: this.iss, tokenUse: this.tokenUse })
 
-    // TODO: check jsonwebtoken's "maxAge" option.
-    // TODO: check how to refresh jwks if Cognito keys are rotated.
+    // TODO: check how to refresh jwks if Cognito keys are rotated. (throttle)
     // TODO: fix tests.
   }
 }
