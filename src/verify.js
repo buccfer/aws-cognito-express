@@ -4,6 +4,8 @@ const jwt = require('jsonwebtoken')
 const { InvalidJWTError } = require('./errors')
 
 /**
+ * @private
+ *
  * @description Verifies the JWT signature. If valid, it returns the decoded payload.
  *
  * @param {String} token - The JSON web token.
