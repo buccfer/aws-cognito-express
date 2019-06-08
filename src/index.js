@@ -27,10 +27,10 @@ class AWSCognitoJWTValidator {
    * @description Instantiates a validator.
    *
    * @param {Object} config - The validator configuration.
-   * @param {String} [config.region = 'us-east-1'] - The AWS Region where the Cognito User Pool was created.
-   * @param {String} config.userPoolId - The Cognito User Pool ID.
-   * @param {Array<String>} [config.tokenUse = ['access']] - The accepted token use/s: 'id' | 'access'.
-   * @param {Array<String>} config.audience - A set of app client IDs that have access to the Cognito User Pool.
+   * @param {string} [config.region = 'us-east-1'] - The AWS Region where the Cognito User Pool was created.
+   * @param {string} config.userPoolId - The Cognito User Pool ID.
+   * @param {string[]} [config.tokenUse = ['access']] - The accepted token use/s: 'id' | 'access'.
+   * @param {string[]} config.audience - A set of app client IDs that have access to the Cognito User Pool.
    * @param {Object} [config.pems = undefined] - The custom pems to be used to verify the token signature.
    *
    * @returns {AWSCognitoJWTValidator} A validator instance.
@@ -48,7 +48,7 @@ class AWSCognitoJWTValidator {
    *
    * @description Get the issuer for the configured User Pool.
    *
-   * @returns {String} The expected value of the JWT iss claim.
+   * @returns {string} The expected value of the JWT iss claim.
    * */
   get iss() {
     return `https://cognito-idp.${this.region}.amazonaws.com/${this.userPoolId}`
@@ -59,7 +59,7 @@ class AWSCognitoJWTValidator {
    *
    * @description Get the JWKs url for the configured User Pool.
    *
-   * @returns {String} The URL where the User Pool JWKs are located.
+   * @returns {string} The URL where the User Pool JWKs are located.
    * */
   get jwksUrl() {
     return `${this.iss}/.well-known/jwks.json`
@@ -100,7 +100,7 @@ class AWSCognitoJWTValidator {
   /**
    * @description Validates a JSON web token.
    *
-   * @param {String} token - The JSON web token to validate.
+   * @param {string} token - The JSON web token to validate.
    *
    * @returns {Promise<Object>} A promise that resolves to the JWT payload.
    * Otherwise, it will be rejected with the appropriate error.

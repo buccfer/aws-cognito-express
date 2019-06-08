@@ -7,7 +7,7 @@ class BaseError extends Error {
    *
    * @description Instantiates a BaseError.
    *
-   * @param {String} message - The error message.
+   * @param {string} message - The error message.
    *
    * @returns {BaseError} An instance of a BaseError.
    * */
