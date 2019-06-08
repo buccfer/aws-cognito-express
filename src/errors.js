@@ -2,6 +2,9 @@
 
 class BaseError extends Error {
   /**
+   * @private
+   * @constructor
+   *
    * @description Instantiates a BaseError.
    *
    * @param {String} message - The error message.
@@ -19,6 +22,9 @@ class BaseError extends Error {
 
 class ConfigurationError extends BaseError {
   /**
+   * @private
+   * @constructor
+   *
    * @description Instantiates a ConfigurationError.
    *
    * @param {Error} err - An instance of a Joi ValidationError.
@@ -33,6 +39,9 @@ class ConfigurationError extends BaseError {
 
 class InitializationError extends BaseError {
   /**
+   * @private
+   * @constructor
+   *
    * @description Instantiates an InitializationError.
    *
    * @param {Error} err - An instance of an Error.

@@ -22,6 +22,8 @@ const configSchema = Joi.object().required().keys({
 
 class AWSCognitoJWTValidator {
   /**
+   * @constructor
+   *
    * @description Instantiates a validator.
    *
    * @param {Object} config - The validator configuration.
