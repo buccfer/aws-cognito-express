@@ -53,11 +53,28 @@ class InitializationError extends BaseError {
   }
 }
 
+class RefreshError extends BaseError {
+  /**
+   * @private
+   * @constructor
+   *
+   * @description Instantiates a RefreshError.
+   *
+   * @param {InitializationError} err - An instance of an InitializationError.
+   *
+   * @returns {RefreshError} An instance of a RefreshError.
+   * */
+  constructor(err) {
+    super(err.message.replace('Initialization failed:', 'Refresh failed:'))
+  }
+}
+
 class InvalidJWTError extends BaseError {}
 
 module.exports = {
   BaseError,
   ConfigurationError,
   InitializationError,
+  RefreshError,
   InvalidJWTError
 }

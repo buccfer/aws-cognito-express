@@ -8,7 +8,9 @@ const jwkToPem = require('jwk-to-pem')
 const jwt = require('jsonwebtoken')
 const verify = require('./verify')
 const { DEFAULT_AWS_REGION, TOKEN_USE } = require('./constants')
-const { ConfigurationError, InitializationError, InvalidJWTError } = require('./errors')
+const {
+  ConfigurationError, InitializationError, RefreshError, InvalidJWTError
+} = require('./errors')
 
 /* eslint-disable newline-per-chained-call */
 const configSchema = Joi.object().required().keys({
@@ -16,7 +18,7 @@ const configSchema = Joi.object().required().keys({
   userPoolId: Joi.string().required(),
   tokenUse: Joi.array().min(1).unique().items(Joi.string().valid(Object.values(TOKEN_USE))).default([TOKEN_USE.ACCESS]),
   audience: Joi.array().min(1).unique().items(Joi.string()).required(),
-  pems: Joi.object().min(1).optional()
+  pems: Joi.object().min(1).default(null)
 })
 /* eslint-enable newline-per-chained-call */
 
@@ -31,7 +33,7 @@ class AWSCognitoJWTValidator {
    * @param {string} config.userPoolId - The Cognito User Pool ID.
    * @param {string[]} [config.tokenUse = ['access']] - The accepted token use/s: 'id' | 'access'.
    * @param {string[]} config.audience - A set of app client IDs that have access to the Cognito User Pool.
-   * @param {Object} [config.pems = undefined] - The custom pems to be used to verify the token signature.
+   * @param {Object} [config.pems = null] - The custom pems to be used to verify the token signature.
    *
    * @returns {AWSCognitoJWTValidator} A validator instance.
    * */
@@ -75,7 +77,7 @@ class AWSCognitoJWTValidator {
    * */
   async initialize() {
     if (this.pems) {
-      debug('Validator was already initialized. Skipping initialization..')
+      debug('Validator pems already set. Skipping http request to JWKs endpoint..')
       return
     }
 
@@ -90,10 +92,29 @@ class AWSCognitoJWTValidator {
         },
         {}
       )
-      debug('Validator initialized with pems: %O', this.pems)
+      debug('Validator pems set to: %O', this.pems)
     } catch (err) {
-      debug('Error while initializing validator: %O', err)
+      debug('Error while setting validator pems: %O', err)
       throw new InitializationError(err)
+    }
+  }
+
+  /**
+   * @private
+   *
+   * @description Refreshes a validator pems in case JWKs were rotated.
+   *
+   * @returns {Promise<undefined>} A promise that will be resolved if the validator pems could be
+   * refreshed successfully. Otherwise, it will be rejected with the appropriate error.
+   * */
+  async refresh() {
+    debug('Refreshing validator pems..')
+    this.pems = null
+
+    try {
+      await this.initialize()
+    } catch (err) {
+      throw new RefreshError(err)
     }
   }
 
@@ -118,7 +139,7 @@ class AWSCognitoJWTValidator {
 
     const { kid } = decodedToken.header
     debug(`Getting pem for kid ${kid}`)
-    const pem = this.pems[kid]
+    const pem = this.pems[kid] // TODO: esto se puede romper si es null pems
 
     if (!pem) {
       debug(`No pem found for kid ${kid}`)
