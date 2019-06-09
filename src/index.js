@@ -29,6 +29,19 @@ class AWSCognitoJWTValidator {
    * @param {Object} [config.pems = null] - The custom pems to be used to verify the token signature.
    *
    * @returns {AWSCognitoJWTValidator} A validator instance.
+   *
+   * @example
+   *
+   * 'use strict';
+   *
+   * const AWSCognitoJWTValidator = require('aws-cognito-jwt-validator');
+   *
+   * const validator = new AWSCognitoJWTValidator({
+   *   region: 'us-east-2',
+   *   userPoolId: 'us-east-2_6IfDT7ZUq',
+   *   tokenUse: ['id', 'access'],
+   *   audience: ['55plsi2cl0o267lfusmgaf67pf']
+   * });
    * */
   constructor(config) {
     debug('Instantiating validator with config: %O', config)
