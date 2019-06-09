@@ -130,8 +130,21 @@ class AWSCognitoJWTValidator {
    *
    * @param {string} token - The JSON web token to validate.
    *
-   * @returns {Promise<Object>} A promise that resolves to the JWT payload.
+   * @returns {Promise<Object>} A promise that resolves to the JWT payload if the token is valid.
    * Otherwise, it will be rejected with the appropriate error.
+   *
+   * @example
+   *
+   * 'use strict';
+   *
+   * const AWSCognitoJWTValidator = require('aws-cognito-jwt-validator');
+   *
+   * const validator = new AWSCognitoJWTValidator({ ... });
+   * const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...';
+   *
+   * validator.validate(token)
+   *  .then(jwtPayload => console.log(jwtPayload))
+   *  .catch(err => console.error(err));
    * */
   async validate(token) {
     await this.init()
