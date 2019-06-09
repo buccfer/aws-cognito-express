@@ -3,6 +3,7 @@
 const debug = require('debug')('AWSCognitoJWTValidator')
 const Joi = require('@hapi/joi')
 const request = require('superagent')
+const get = require('lodash.get')
 const once = require('lodash.once')
 const jwkToPem = require('jwk-to-pem')
 const jwt = require('jsonwebtoken')
@@ -139,7 +140,7 @@ class AWSCognitoJWTValidator {
 
     const { kid } = decodedToken.header
     debug(`Getting pem for kid ${kid}`)
-    const pem = this.pems[kid] // TODO: esto se puede romper si es null pems
+    const pem = get(this.pems, kid)
 
     if (!pem) {
       debug(`No pem found for kid ${kid}`)
