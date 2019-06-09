@@ -19,7 +19,7 @@ class AWSCognitoJWTValidator {
   /**
    * @constructor
    *
-   * @description Instantiates a validator.
+   * @description Instantiates a JWT validator.
    *
    * @param {Object} config - The validator configuration.
    * @param {string} [config.region = 'us-east-1'] - The AWS Region where the Cognito User Pool was created.
