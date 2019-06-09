@@ -5,10 +5,11 @@ const Joi = require('@hapi/joi')
 const request = require('superagent')
 const get = require('lodash.get')
 const once = require('lodash.once')
+const throttle = require('lodash.throttle')
 const jwkToPem = require('jwk-to-pem')
 const jwt = require('jsonwebtoken')
 const verify = require('./verify')
-const { DEFAULT_AWS_REGION, TOKEN_USE } = require('./constants')
+const { DEFAULT_AWS_REGION, TOKEN_USE, REFRESH_WAIT_MS } = require('./constants')
 const {
   ConfigurationError, InitializationError, RefreshError, InvalidJWTError
 } = require('./errors')
@@ -44,6 +45,7 @@ class AWSCognitoJWTValidator {
     if (error) throw new ConfigurationError(error)
     Object.assign(this, value)
     this.init = once(this.initialize)
+    this.refreshPems = throttle(this.refresh, REFRESH_WAIT_MS, { leading: true, trailing: false })
   }
 
   /**
