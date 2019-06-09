@@ -9,20 +9,11 @@ const throttle = require('lodash.throttle')
 const jwkToPem = require('jwk-to-pem')
 const jwt = require('jsonwebtoken')
 const verify = require('./verify')
-const { DEFAULT_AWS_REGION, TOKEN_USE, REFRESH_WAIT_MS } = require('./constants')
+const configSchema = require('./config.schema')
+const { REFRESH_WAIT_MS } = require('./constants')
 const {
   ConfigurationError, InitializationError, RefreshError, InvalidJWTError
 } = require('./errors')
-
-/* eslint-disable newline-per-chained-call */
-const configSchema = Joi.object().required().keys({
-  region: Joi.string().default(DEFAULT_AWS_REGION),
-  userPoolId: Joi.string().required(),
-  tokenUse: Joi.array().min(1).unique().items(Joi.string().valid(Object.values(TOKEN_USE))).default([TOKEN_USE.ACCESS]),
-  audience: Joi.array().min(1).unique().items(Joi.string()).required(),
-  pems: Joi.object().min(1).default(null)
-})
-/* eslint-enable newline-per-chained-call */
 
 class AWSCognitoJWTValidator {
   /**
@@ -33,7 +24,7 @@ class AWSCognitoJWTValidator {
    * @param {Object} config - The validator configuration.
    * @param {string} [config.region = 'us-east-1'] - The AWS Region where the Cognito User Pool was created.
    * @param {string} config.userPoolId - The Cognito User Pool ID.
-   * @param {string[]} [config.tokenUse = ['access']] - The accepted token use/s: 'id' | 'access'.
+   * @param {string[]} [config.tokenUse = ['access']] - The accepted token uses.
    * @param {string[]} config.audience - A set of app client IDs that have access to the Cognito User Pool.
    * @param {Object} [config.pems = null] - The custom pems to be used to verify the token signature.
    *
