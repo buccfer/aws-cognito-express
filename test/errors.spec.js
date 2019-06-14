@@ -1,6 +1,5 @@
 'use strict'
 
-const _ = require('lodash')
 const { expect, chance } = require('./index')
 const { BaseError, ConfigurationError, JWKsNotFoundError } = require('../src/errors')
 
@@ -19,11 +18,9 @@ describe('Errors', () => {
     })
 
     it('Should have the correct properties', () => {
-      expect(_.pick(error, ['message', 'name', 'isAWSCognitoJWTValidator'])).to.deep.equal({
-        message: errMsg,
-        name: 'BaseError',
-        isAWSCognitoJWTValidator: true
-      })
+      expect(error.message).to.equal(errMsg)
+      expect(error.name).to.equal('BaseError')
+      expect(error.isAWSCognitoJWTValidator).to.be.true
     })
   })
 
