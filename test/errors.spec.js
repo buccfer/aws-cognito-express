@@ -38,11 +38,10 @@ describe('Errors', () => {
     })
 
     it('Should have the correct properties', () => {
-      expect(_.pick(error, ['message', 'name', 'isAWSCognitoJWTValidator'])).to.deep.equal({
-        message: `Invalid configuration: ${_.join(_.map(joiErr.details, 'message'), ', ')}`,
-        name: 'ConfigurationError',
-        isAWSCognitoJWTValidator: true
-      })
+      const errDescription = joiErr.details.map(err => err.message).join(', ')
+      expect(error.message).to.equal(`Invalid configuration: ${errDescription}`)
+      expect(error.name).to.equal('ConfigurationError')
+      expect(error.isAWSCognitoJWTValidator).to.be.true
     })
   })
 
