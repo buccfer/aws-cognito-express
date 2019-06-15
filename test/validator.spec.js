@@ -125,14 +125,22 @@ describe('Validator', () => {
       config[propName] = chance.sentence()
       expect(() => new AWSCognitoJWTValidator(config)).to.throw(
         ConfigurationError,
-        new RegExp(`"${_.escapeRegExp(propName)}" is not allowed`)
+        new RegExp(`"${propName}" is not allowed`)
       )
     })
 
     it('Should instantiate the validator', () => {
+      config = generateConfig({ withPems: true })
       const validator = new AWSCognitoJWTValidator(config)
       expect(validator).to.be.an.instanceof(AWSCognitoJWTValidator)
-      expect(_.pick(validator, ['region', 'userPoolId', 'tokenUse', 'tokenExpirationInSeconds'])).to.deep.equal(config)
+      expect(validator).to.have.all.keys('region', 'userPoolId', 'tokenUse', 'audience', 'pems', 'init', 'refreshPems')
+      expect(validator.region).to.equal(config.region)
+      expect(validator.userPoolId).to.equal(config.userPoolId)
+      expect(validator.tokenUse).to.deep.equal(config.tokenUse)
+      expect(validator.audience).to.deep.equal(config.audience)
+      expect(validator.pems).to.deep.equal(config.pems)
+      expect(validator.init).to.be.a('function')
+      expect(validator.refreshPems).to.be.a('function')
     })
   })
 
