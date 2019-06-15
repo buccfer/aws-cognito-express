@@ -1,6 +1,5 @@
 'use strict'
 
-const _ = require('lodash')
 const fs = require('fs')
 const path = require('path')
 const { pem2jwk } = require('pem-jwk')
@@ -8,11 +7,13 @@ const { chance } = require('./index')
 const { TOKEN_USE } = require('../src/constants')
 
 /**
+ * @private
+ *
  * @description Reads the given RSA key.
  *
- * @param {String} keyFileName - The key file name. Ex: 'key_1.pub'.
+ * @param {string} keyFileName - The key file name. Ex: 'key_1.pub'.
  *
- * @returns {String} - The content of the key file.
+ * @returns {string} - The content of the key file.
  * */
 function readRSAKey(keyFileName) {
   const keyPath = path.join(__dirname, 'rsa_keys', keyFileName)
@@ -32,30 +33,26 @@ const rsaKeyPairs = [
   }
 ]
 
-const jwks = rsaKeyPairs.map(rsaKeyPair => _.assign(
+const jwks = rsaKeyPairs.map(rsaKeyPair => Object.assign(
   { kid: rsaKeyPair.id, alg: 'RS256', use: 'sig' },
   pem2jwk(rsaKeyPair.public)
 ))
 
 /**
- * @description Generates random configuration for a validator.
+ * @private
  *
- * @param {Object} opts - Options for config generator.
- * @param {Boolean} opts.withJwks - Whether the config should include custom jwks.
+ * @description Generates random configuration for a validator.
  *
  * @returns {Object} A configuration object to be used when instantiating a validator.
  * */
-function generateConfig(opts = {}) {
-  const config = {
+function generateConfig() {
+  // TODO: add option to add pems ..
+  return {
     region: chance.pickone(['us-east-2', 'eu-central-1', 'ap-southeast-1', 'us-west-2', 'sa-east-1']),
     userPoolId: chance.hash(),
-    tokenUse: chance.pickone(_.values(TOKEN_USE)),
-    tokenExpirationInSeconds: chance.integer({ min: 1, max: 5000 })
+    tokenUse: chance.pickset(Object.values(TOKEN_USE), chance.integer({ min: 1, max: 2 })),
+    audience: chance.n(chance.hash, chance.integer({ min: 1, max: 3 }))
   }
-
-  if (opts.withJwks) config.jwks = jwks
-
-  return config
 }
 
 module.exports = {
