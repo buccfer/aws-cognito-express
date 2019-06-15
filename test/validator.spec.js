@@ -43,21 +43,37 @@ describe('Validator', () => {
       expect(() => new AWSCognitoJWTValidator(config)).to.throw(ConfigurationError, /"userPoolId" must be a string/)
     })
 
-    it('Should throw ConfigurationError if tokenUse is not a string', () => {
+    it('Should throw ConfigurationError if tokenUse is not an array', () => {
       config.tokenUse = chance.natural()
-      expect(() => new AWSCognitoJWTValidator(config)).to.throw(ConfigurationError, /"tokenUse" must be a string/)
+      expect(() => new AWSCognitoJWTValidator(config)).to.throw(ConfigurationError, /"tokenUse" must be an array/)
     })
 
-    it('Should throw ConfigurationError if tokenUse is invalid', () => {
-      config.tokenUse = chance.word()
-      expect(() => new AWSCognitoJWTValidator(config)).to.throw(ConfigurationError, /"tokenUse" must be one of/)
+    it('Should throw ConfigurationError if tokenUse is an empty array', () => {
+      config.tokenUse = []
+      expect(() => new AWSCognitoJWTValidator(config)).to.throw(
+        ConfigurationError,
+        /"tokenUse" must contain at least 1 item/
+      )
     })
 
-    it(`Should have a default tokenUse with value "${TOKEN_USE.ACCESS}"`, () => {
+    it('Should throw ConfigurationError if tokenUse has repeated items', () => {
+      config.tokenUse = [TOKEN_USE.ACCESS, TOKEN_USE.ID, TOKEN_USE.ACCESS]
+      expect(() => new AWSCognitoJWTValidator(config)).to.throw(ConfigurationError, /contains a duplicate value/)
+    })
+
+    it('Should throw ConfigurationError if tokenUse has invalid items', () => {
+      config.tokenUse = [TOKEN_USE.ACCESS, chance.word()]
+      expect(() => new AWSCognitoJWTValidator(config)).to.throw(ConfigurationError, /must be one of \[id, access]$/)
+    })
+
+    it(`Should have a default tokenUse with value ${[TOKEN_USE.ACCESS]}`, () => {
       Reflect.deleteProperty(config, 'tokenUse')
       const validator = new AWSCognitoJWTValidator(config)
-      expect(validator).to.have.property('tokenUse', TOKEN_USE.ACCESS)
+      expect(validator).to.have.property('tokenUse').that.is.deep.equal([TOKEN_USE.ACCESS])
     })
+
+    //   audience: Joi.array().min(1).unique().items(Joi.string()).required(),
+    //   pems: Joi.object().min(1).default(null)
 
     it('Should throw ConfigurationError if tokenExpirationInSeconds is not a number', () => {
       config.tokenExpirationInSeconds = chance.word()
