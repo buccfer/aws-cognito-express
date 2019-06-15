@@ -163,4 +163,13 @@ describe('Validator', () => {
       )
     })
   })
+
+  describe('Init', () => {
+    it('Should resolve if pems are already set')
+    it('Should reject with InitializationError if request to the JWKs endpoint returns a non 2xx code')
+    it('Should reject with InitializationError if some JWK is invalid')
+    it('Should set the instance pems correctly')
+    it('Should return the same result if calling more than once and the promise is rejected')
+    it('Should return the same result if calling more than once and the promise is resolved')
+  })
 })
