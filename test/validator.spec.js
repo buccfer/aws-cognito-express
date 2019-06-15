@@ -1,11 +1,10 @@
 'use strict'
 
-const _ = require('lodash')
-const { expect, chance, nock } = require('./index')
-const { generateConfig, jwks } = require('./util')
+const { expect, chance } = require('./index')
+const { generateConfig } = require('./util')
 const AWSCognitoJWTValidator = require('../src')
 const { DEFAULT_AWS_REGION, DEFAULT_TOKEN_EXPIRATION_IN_SECONDS, TOKEN_USE } = require('../src/constants')
-const { ConfigurationError, JWKsNotFoundError } = require('../src/errors')
+const { ConfigurationError } = require('../src/errors')
 
 describe('Validator', () => {
   describe('Constructor', () => {
@@ -123,70 +122,6 @@ describe('Validator', () => {
       expect(validator.jwksUrl).to.equal(
         `https://cognito-idp.${config.region}.amazonaws.com/${config.userPoolId}/.well-known/jwks.json`
       )
-    })
-  })
-
-  describe('Method getJWKs', () => {
-    before(() => {
-      if (!nock.isActive()) nock.activate()
-    })
-
-    beforeEach(() => {
-      nock.cleanAll()
-    })
-
-    after(() => {
-      nock.cleanAll()
-      nock.restore()
-    })
-
-    // eslint-disable-next-line max-len
-    it('Should resolve and not make a http request to get the JWKs if they are already set in the instance', async () => {
-      const config = generateConfig({ withJwks: true })
-      const validator = new AWSCognitoJWTValidator(config)
-      const scope = nock(validator.jwksUrl).get('').reply(200, { keys: jwks })
-
-      await validator.getJWKs()
-
-      expect(validator.jwks).to.deep.equal(jwks)
-      expect(scope.isDone()).to.be.false
-    })
-
-    it('Should reject with a JWKsNotFoundError if the http request failed', async () => {
-      const statusCode = chance.pickone([403, 404, 500])
-      const config = generateConfig()
-      const validator = new AWSCognitoJWTValidator(config)
-      const scope = nock(validator.jwksUrl).get('').reply(statusCode)
-
-      await expect(validator.getJWKs()).to.eventually.be.rejectedWith(
-        JWKsNotFoundError,
-        `Response error: The server responded with status code ${statusCode}.`
-      )
-
-      expect(validator.jwks).to.be.undefined
-      expect(scope.isDone()).to.be.true
-    })
-
-    it('Should resolve and set the JWKs in the instance', async () => {
-      const config = generateConfig()
-      const validator = new AWSCognitoJWTValidator(config)
-      const scope = nock(validator.jwksUrl).get('').reply(200, { keys: jwks })
-
-      await validator.getJWKs()
-
-      expect(validator.jwks).to.deep.equal(jwks)
-      expect(scope.isDone()).to.be.true
-    })
-
-    it('Should resolve and set the JWKs to an empty array if the response has no "keys"', async () => {
-      const config = generateConfig()
-      const validator = new AWSCognitoJWTValidator(config)
-      const scope = nock(validator.jwksUrl).get('').reply(200, { [chance.word()]: chance.word() })
-
-      await validator.getJWKs()
-
-      expect(validator.jwks).to.deep.equal([])
-      expect(scope.isDone()).to.be.true
     })
   })
 })
