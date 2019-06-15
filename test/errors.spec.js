@@ -2,7 +2,7 @@
 
 const { expect, chance } = require('./index')
 const {
-  BaseError, ConfigurationError, InitializationError, RefreshError
+  BaseError, ConfigurationError, InitializationError, RefreshError, InvalidJWTError
 } = require('../src/errors')
 
 describe('Errors', () => {
@@ -83,6 +83,26 @@ describe('Errors', () => {
     it('Should have the correct properties', () => {
       expect(error.message).to.equal(initializationError.message.replace('Initialization failed:', 'Refresh failed:'))
       expect(error.name).to.equal('RefreshError')
+      expect(error.isAWSCognitoJWTValidator).to.be.true
+    })
+  })
+
+  describe('InvalidJWTError', () => {
+    let errorMsg
+    let error
+
+    beforeEach(() => {
+      errorMsg = chance.sentence()
+      error = new InvalidJWTError(errorMsg)
+    })
+
+    it('Should be an instance of BaseError', () => {
+      expect(error).to.be.an.instanceOf(BaseError)
+    })
+
+    it('Should have the correct properties', () => {
+      expect(error.message).to.equal(errorMsg)
+      expect(error.name).to.equal('InvalidJWTError')
       expect(error.isAWSCognitoJWTValidator).to.be.true
     })
   })
