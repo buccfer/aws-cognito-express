@@ -21,6 +21,8 @@ class AWSCognitoJWTValidator {
    *
    * @description Instantiates a JWT validator.
    *
+   * @throws {ConfigurationError} The provided configuration is invalid.
+   *
    * @param {Object} config - The validator configuration.
    * @param {string} [config.region = 'us-east-1'] - The AWS Region where the Cognito User Pool was created.
    * @param {string} config.userPoolId - The Cognito User Pool ID.
