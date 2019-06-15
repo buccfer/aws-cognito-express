@@ -72,7 +72,35 @@ describe('Validator', () => {
       expect(validator).to.have.property('tokenUse').that.is.deep.equal([TOKEN_USE.ACCESS])
     })
 
-    //   audience: Joi.array().min(1).unique().items(Joi.string()).required(),
+    it('Should throw ConfigurationError if audience is not an array', () => {
+      config.audience = chance.natural()
+      expect(() => new AWSCognitoJWTValidator(config)).to.throw(ConfigurationError, /"audience" must be an array/)
+    })
+
+    it('Should throw ConfigurationError if audience is an empty array', () => {
+      config.audience = []
+      expect(() => new AWSCognitoJWTValidator(config)).to.throw(
+        ConfigurationError,
+        /"audience" must contain at least 1 item/
+      )
+    })
+
+    it('Should throw ConfigurationError if audience has repeated items', () => {
+      const appId = chance.hash()
+      config.audience = [appId, chance.hash(), appId]
+      expect(() => new AWSCognitoJWTValidator(config)).to.throw(ConfigurationError, /contains a duplicate value/)
+    })
+
+    it('Should throw ConfigurationError if audience has invalid items', () => {
+      config.audience = [chance.hash(), chance.natural()]
+      expect(() => new AWSCognitoJWTValidator(config)).to.throw(ConfigurationError, /must be a string/)
+    })
+
+    it('Should throw ConfigurationError if no audience is passed', () => {
+      Reflect.deleteProperty(config, 'audience')
+      expect(() => new AWSCognitoJWTValidator(config)).to.throw(ConfigurationError, /"audience" is required/)
+    })
+
     //   pems: Joi.object().min(1).default(null)
 
     it('Should throw ConfigurationError if providing an unknown config', () => {
