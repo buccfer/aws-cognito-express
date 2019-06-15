@@ -3,7 +3,7 @@
 const { expect, chance } = require('./index')
 const { generateConfig } = require('./util')
 const AWSCognitoJWTValidator = require('../src')
-const { DEFAULT_AWS_REGION, DEFAULT_TOKEN_EXPIRATION_IN_SECONDS, TOKEN_USE } = require('../src/constants')
+const { DEFAULT_AWS_REGION, TOKEN_USE } = require('../src/constants')
 const { ConfigurationError } = require('../src/errors')
 
 describe('Validator', () => {
@@ -74,36 +74,6 @@ describe('Validator', () => {
 
     //   audience: Joi.array().min(1).unique().items(Joi.string()).required(),
     //   pems: Joi.object().min(1).default(null)
-
-    it('Should throw ConfigurationError if tokenExpirationInSeconds is not a number', () => {
-      config.tokenExpirationInSeconds = chance.word()
-      expect(() => new AWSCognitoJWTValidator(config)).to.throw(
-        ConfigurationError,
-        /"tokenExpirationInSeconds" must be a number/
-      )
-    })
-
-    it('Should throw ConfigurationError if tokenExpirationInSeconds is not an integer', () => {
-      config.tokenExpirationInSeconds = chance.floating({ min: 0, max: 100 })
-      expect(() => new AWSCognitoJWTValidator(config)).to.throw(
-        ConfigurationError,
-        /"tokenExpirationInSeconds" must be an integer/
-      )
-    })
-
-    it('Should throw ConfigurationError if tokenExpirationInSeconds is not a positive integer', () => {
-      config.tokenExpirationInSeconds = chance.integer({ min: -100, max: -1 })
-      expect(() => new AWSCognitoJWTValidator(config)).to.throw(
-        ConfigurationError,
-        /"tokenExpirationInSeconds" must be a positive number/
-      )
-    })
-
-    it(`Should have a default tokenExpirationInSeconds with value ${DEFAULT_TOKEN_EXPIRATION_IN_SECONDS}`, () => {
-      Reflect.deleteProperty(config, 'tokenExpirationInSeconds')
-      const validator = new AWSCognitoJWTValidator(config)
-      expect(validator).to.have.property('tokenExpirationInSeconds', DEFAULT_TOKEN_EXPIRATION_IN_SECONDS)
-    })
 
     it('Should throw ConfigurationError if providing an unknown config', () => {
       const propName = chance.word()
