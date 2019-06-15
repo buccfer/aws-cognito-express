@@ -3,7 +3,7 @@
 const {
   expect, chance, nock, httpStatus
 } = require('./index')
-const { generateConfig, jwks } = require('./util')
+const { generateConfig, jwks, pems } = require('./util')
 const AWSCognitoJWTValidator = require('../src')
 const { DEFAULT_AWS_REGION, TOKEN_USE } = require('../src/constants')
 const { ConfigurationError, InitializationError } = require('../src/errors')
@@ -218,7 +218,15 @@ describe('Validator', () => {
       expect(validator.pems).to.be.null
     })
 
-    it('Should set the instance pems correctly')
+    it('Should set the instance pems correctly', async () => {
+      const validator = new AWSCognitoJWTValidator(config)
+      expect(validator.pems).to.be.null
+      const scope = nock(validator.jwksUrl).get('').reply(httpStatus.OK, { keys: jwks })
+      await expect(validator.init()).to.eventually.be.undefined
+      expect(scope.isDone()).to.be.true
+      expect(validator.pems).to.deep.equal(pems)
+    })
+
     it('Should return the same result if calling more than once and the promise is rejected')
     it('Should return the same result if calling more than once and the promise is resolved')
   })

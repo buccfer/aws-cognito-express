@@ -38,6 +38,14 @@ const jwks = rsaKeyPairs.map(rsaKeyPair => Object.assign(
   pem2jwk(rsaKeyPair.public)
 ))
 
+const pems = rsaKeyPairs.reduce(
+  (acc, rsaKeyPair) => {
+    acc[rsaKeyPair.id] = rsaKeyPair.public
+    return acc
+  },
+  {}
+)
+
 /**
  * @private
  *
@@ -56,20 +64,13 @@ function generateConfig(opts = {}) {
     audience: chance.n(chance.hash, chance.integer({ min: 1, max: 3 }))
   }
 
-  if (opts.withPems) {
-    config.pems = rsaKeyPairs.reduce(
-      (acc, rsaKeyPair) => {
-        acc[rsaKeyPair.id] = rsaKeyPair.public
-        return acc
-      },
-      {}
-    )
-  }
+  if (opts.withPems) config.pems = pems
 
   return config
 }
 
 module.exports = {
   generateConfig,
-  jwks
+  jwks,
+  pems
 }
