@@ -204,7 +204,20 @@ describe('Validator', () => {
       expect(validator.pems).to.be.null
     })
 
-    it('Should reject with InitializationError if some JWK is invalid')
+    it('Should reject with InitializationError if some JWK is invalid', async () => {
+      const validator = new AWSCognitoJWTValidator(config)
+      expect(validator.pems).to.be.null
+      const scope = nock(validator.jwksUrl).get('').reply(httpStatus.OK, {
+        keys: jwks.concat([{ value: chance.natural() }])
+      })
+      await expect(validator.init()).to.eventually.be.rejectedWith(
+        InitializationError,
+        'Initialization failed: Expected "jwk.kty" to be a String'
+      )
+      expect(scope.isDone()).to.be.true
+      expect(validator.pems).to.be.null
+    })
+
     it('Should set the instance pems correctly')
     it('Should return the same result if calling more than once and the promise is rejected')
     it('Should return the same result if calling more than once and the promise is resolved')
