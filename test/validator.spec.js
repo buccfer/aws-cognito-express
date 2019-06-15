@@ -6,7 +6,7 @@ const {
 const { generateConfig, jwks } = require('./util')
 const AWSCognitoJWTValidator = require('../src')
 const { DEFAULT_AWS_REGION, TOKEN_USE } = require('../src/constants')
-const { ConfigurationError } = require('../src/errors')
+const { ConfigurationError, InitializationError } = require('../src/errors')
 
 describe('Validator', () => {
   describe('Constructor', () => {
@@ -192,7 +192,18 @@ describe('Validator', () => {
       expect(scope.isDone()).to.be.false
     })
 
-    it('Should reject with InitializationError if request to the JWKs endpoint returns a non 2xx code')
+    it('Should reject with InitializationError if request to the JWKs endpoint returns a non 2xx code', async () => {
+      const validator = new AWSCognitoJWTValidator(config)
+      expect(validator.pems).to.be.null
+      const scope = nock(validator.jwksUrl).get('').reply(httpStatus.NOT_FOUND)
+      await expect(validator.init()).to.eventually.be.rejectedWith(
+        InitializationError,
+        `Initialization failed: ${httpStatus[httpStatus.NOT_FOUND]}`
+      )
+      expect(scope.isDone()).to.be.true
+      expect(validator.pems).to.be.null
+    })
+
     it('Should reject with InitializationError if some JWK is invalid')
     it('Should set the instance pems correctly')
     it('Should return the same result if calling more than once and the promise is rejected')
