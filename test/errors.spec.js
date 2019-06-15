@@ -1,7 +1,9 @@
 'use strict'
 
 const { expect, chance } = require('./index')
-const { BaseError, ConfigurationError, InitializationError } = require('../src/errors')
+const {
+  BaseError, ConfigurationError, InitializationError, RefreshError
+} = require('../src/errors')
 
 describe('Errors', () => {
   describe('BaseError', () => {
@@ -61,6 +63,26 @@ describe('Errors', () => {
     it('Should have the correct properties', () => {
       expect(error.message).to.equal(`Initialization failed: ${err.message}`)
       expect(error.name).to.equal('InitializationError')
+      expect(error.isAWSCognitoJWTValidator).to.be.true
+    })
+  })
+
+  describe('RefreshError', () => {
+    let initializationError
+    let error
+
+    beforeEach(() => {
+      initializationError = new InitializationError(new Error(chance.sentence()))
+      error = new RefreshError(initializationError)
+    })
+
+    it('Should be an instance of BaseError', () => {
+      expect(error).to.be.an.instanceOf(BaseError)
+    })
+
+    it('Should have the correct properties', () => {
+      expect(error.message).to.equal(initializationError.message.replace('Initialization failed:', 'Refresh failed:'))
+      expect(error.name).to.equal('RefreshError')
       expect(error.isAWSCognitoJWTValidator).to.be.true
     })
   })
