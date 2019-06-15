@@ -1,7 +1,9 @@
 'use strict'
 
-const { expect, chance } = require('./index')
-const { generateConfig } = require('./util')
+const {
+  expect, chance, nock, httpStatus
+} = require('./index')
+const { generateConfig, jwks } = require('./util')
 const AWSCognitoJWTValidator = require('../src')
 const { DEFAULT_AWS_REGION, TOKEN_USE } = require('../src/constants')
 const { ConfigurationError } = require('../src/errors')
@@ -165,7 +167,31 @@ describe('Validator', () => {
   })
 
   describe('Init', () => {
-    it('Should resolve if pems are already set')
+    let config
+
+    before(() => {
+      if (!nock.isActive()) nock.activate()
+    })
+
+    beforeEach(() => {
+      nock.cleanAll()
+      config = generateConfig()
+    })
+
+    after(() => {
+      nock.cleanAll()
+      nock.restore()
+    })
+
+    it('Should resolve if pems are already set', async () => {
+      config = generateConfig({ withPems: true })
+      const validator = new AWSCognitoJWTValidator(config)
+      expect(validator.pems).to.deep.equal(config.pems)
+      const scope = nock(validator.jwksUrl).get('').reply(httpStatus.OK, { keys: jwks })
+      await expect(validator.init()).to.eventually.be.undefined
+      expect(scope.isDone()).to.be.false
+    })
+
     it('Should reject with InitializationError if request to the JWKs endpoint returns a non 2xx code')
     it('Should reject with InitializationError if some JWK is invalid')
     it('Should set the instance pems correctly')
