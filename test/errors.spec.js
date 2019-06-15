@@ -1,7 +1,7 @@
 'use strict'
 
 const { expect, chance } = require('./index')
-const { BaseError, ConfigurationError, JWKsNotFoundError } = require('../src/errors')
+const { BaseError, ConfigurationError, InitializationError } = require('../src/errors')
 
 describe('Errors', () => {
   describe('BaseError', () => {
@@ -45,36 +45,23 @@ describe('Errors', () => {
     })
   })
 
-  describe('JWKsNotFoundError', () => {
-    let superagentErr
+  describe('InitializationError', () => {
+    let err
     let error
 
     beforeEach(() => {
-      superagentErr = { status: chance.pickone([400, 404, 500, 503]), message: chance.sentence() }
-      error = new JWKsNotFoundError(superagentErr)
+      err = { message: chance.sentence() }
+      error = new InitializationError(err)
     })
 
     it('Should be an instance of BaseError', () => {
       expect(error).to.be.an.instanceOf(BaseError)
     })
 
-    it('Should have the correct properties if it is an error response', () => {
-      expect(_.pick(error, ['message', 'name', 'isAWSCognitoJWTValidator'])).to.deep.equal({
-        message: `Response error: The server responded with status code ${superagentErr.status}.`,
-        name: 'JWKsNotFoundError',
-        isAWSCognitoJWTValidator: true
-      })
-    })
-
-    it('Should have the correct properties if it is a request error', () => {
-      Reflect.deleteProperty(superagentErr, 'status')
-      error = new JWKsNotFoundError(superagentErr)
-
-      expect(_.pick(error, ['message', 'name', 'isAWSCognitoJWTValidator'])).to.deep.equal({
-        message: `Request error: ${superagentErr.message}.`,
-        name: 'JWKsNotFoundError',
-        isAWSCognitoJWTValidator: true
-      })
+    it('Should have the correct properties', () => {
+      expect(error.message).to.equal(`Initialization failed: ${err.message}`)
+      expect(error.name).to.equal('InitializationError')
+      expect(error.isAWSCognitoJWTValidator).to.be.true
     })
   })
 })
