@@ -101,7 +101,24 @@ describe('Validator', () => {
       expect(() => new AWSCognitoJWTValidator(config)).to.throw(ConfigurationError, /"audience" is required/)
     })
 
-    //   pems: Joi.object().min(1).default(null)
+    it('Should throw ConfigurationError if pems is not an object', () => {
+      config.pems = chance.natural()
+      expect(() => new AWSCognitoJWTValidator(config)).to.throw(ConfigurationError, /"pems" must be an object/)
+    })
+
+    it('Should throw ConfigurationError if pems is an empty object', () => {
+      config.pems = {}
+      expect(() => new AWSCognitoJWTValidator(config)).to.throw(
+        ConfigurationError,
+        /"pems" must have at least 1 children/
+      )
+    })
+
+    it('Should have a default pems with value null', () => {
+      expect(config).not.to.have.property('pems')
+      const validator = new AWSCognitoJWTValidator(config)
+      expect(validator).to.have.property('pems').that.is.null
+    })
 
     it('Should throw ConfigurationError if providing an unknown config', () => {
       const propName = chance.word()
