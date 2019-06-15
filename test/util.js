@@ -43,16 +43,30 @@ const jwks = rsaKeyPairs.map(rsaKeyPair => Object.assign(
  *
  * @description Generates random configuration for a validator.
  *
+ * @param {Object} opts - Options for config generator.
+ * @param {boolean} opts.withPems - Whether config should include custom pems or not.
+ *
  * @returns {Object} A configuration object to be used when instantiating a validator.
  * */
-function generateConfig() {
-  // TODO: add option to add pems ..
-  return {
+function generateConfig(opts = {}) {
+  const config = {
     region: chance.pickone(['us-east-2', 'eu-central-1', 'ap-southeast-1', 'us-west-2', 'sa-east-1']),
     userPoolId: chance.hash(),
     tokenUse: chance.pickset(Object.values(TOKEN_USE), chance.integer({ min: 1, max: 2 })),
     audience: chance.n(chance.hash, chance.integer({ min: 1, max: 3 }))
   }
+
+  if (opts.withPems) {
+    config.pems = rsaKeyPairs.reduce(
+      (acc, rsaKeyPair) => {
+        acc[rsaKeyPair.id] = rsaKeyPair.public
+        return acc
+      },
+      {}
+    )
+  }
+
+  return config
 }
 
 module.exports = {
