@@ -5,7 +5,7 @@ const {
 } = require('./index')
 const { generateConfig, jwks, pems } = require('./util')
 const AWSCognitoJWTValidator = require('../src')
-const { DEFAULT_AWS_REGION, TOKEN_USE } = require('../src/constants')
+const { DEFAULT_AWS_REGION, TOKEN_USE, REFRESH_WAIT_MS } = require('../src/constants')
 const { ConfigurationError, InitializationError } = require('../src/errors')
 
 describe('Validator', () => {
@@ -269,5 +269,11 @@ describe('Validator', () => {
       expect(secondScope.isDone()).to.be.false
       expect(validator.pems).to.deep.equal({ [jwk1.kid]: pems[jwk1.kid] })
     })
+  })
+
+  describe('Refresh Pems', () => {
+    it('Should refresh the pems successfully')
+    it('Should reject with RefreshError if refreshing the pems fails')
+    it(`Should not refresh more than once every ${REFRESH_WAIT_MS} milliseconds`)
   })
 })
