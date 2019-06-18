@@ -272,7 +272,40 @@ describe('Validator', () => {
   })
 
   describe('Refresh Pems', () => {
-    it('Should refresh the pems successfully')
+    const [jwk1, jwk2] = jwks
+    let validator
+
+    before(() => {
+      if (!nock.isActive()) nock.activate()
+    })
+
+    beforeEach(async () => {
+      nock.cleanAll()
+
+      const config = generateConfig()
+      validator = new AWSCognitoJWTValidator(config)
+      expect(validator.pems).to.be.null
+
+      const initScope = nock(validator.jwksUrl).get('').reply(httpStatus.OK, { keys: [jwk1] })
+      await validator.init()
+      expect(initScope.isDone()).to.be.true
+      expect(validator.pems).to.deep.equal({ [jwk1.kid]: pems[jwk1.kid] })
+
+      nock.cleanAll()
+    })
+
+    after(() => {
+      nock.cleanAll()
+      nock.restore()
+    })
+
+    it('Should refresh the pems successfully', async () => {
+      const refreshScope = nock(validator.jwksUrl).get('').reply(httpStatus.OK, { keys: [jwk2] })
+      await expect(validator.refreshPems()).to.eventually.be.undefined
+      expect(refreshScope.isDone()).to.be.true
+      expect(validator.pems).to.deep.equal({ [jwk2.kid]: pems[jwk2.kid] })
+    })
+
     it('Should reject with RefreshError if refreshing the pems fails')
     it(`Should not refresh more than once every ${REFRESH_WAIT_MS} milliseconds`)
   })
