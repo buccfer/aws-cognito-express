@@ -340,4 +340,16 @@ describe('Validator', () => {
       mockDate.reset()
     })
   })
+
+  describe('Validate', () => {
+    it('Should reject with InitializationError if initialization fails')
+    it('Should reject with InvalidJWTError if token is invalid')
+    it('Should reject with RefreshError if refreshing the pems fails')
+    it('Should reject with InvalidJWTError if there is no pem to verify the token signature')
+    it('Should reject with InvalidJWTError if token signature is invalid')
+    it('Should reject with InvalidJWTError if token audience is invalid')
+    it('Should reject with InvalidJWTError if token issuer is invalid')
+    it('Should reject with InvalidJWTError if token tokenUse is invalid')
+    it('Should reject with InvalidJWTError if token is expired')
+  })
 })
