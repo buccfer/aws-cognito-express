@@ -6,7 +6,7 @@ const {
 const { generateConfig, jwks, pems } = require('./util')
 const AWSCognitoJWTValidator = require('../src')
 const { DEFAULT_AWS_REGION, TOKEN_USE, REFRESH_WAIT_MS } = require('../src/constants')
-const { ConfigurationError, InitializationError } = require('../src/errors')
+const { ConfigurationError, InitializationError, RefreshError } = require('../src/errors')
 
 describe('Validator', () => {
   describe('Constructor', () => {
@@ -306,7 +306,16 @@ describe('Validator', () => {
       expect(validator.pems).to.deep.equal({ [jwk2.kid]: pems[jwk2.kid] })
     })
 
-    it('Should reject with RefreshError if refreshing the pems fails')
+    it('Should reject with RefreshError if refreshing the pems fails', async () => {
+      const refreshScope = nock(validator.jwksUrl).get('').reply(httpStatus.SERVICE_UNAVAILABLE)
+      await expect(validator.refreshPems()).to.eventually.be.rejectedWith(
+        RefreshError,
+        `Refresh failed: ${httpStatus[httpStatus.SERVICE_UNAVAILABLE]}`
+      )
+      expect(refreshScope.isDone()).to.be.true
+      expect(validator.pems).to.be.null
+    })
+
     it(`Should not refresh more than once every ${REFRESH_WAIT_MS} milliseconds`)
   })
 })
