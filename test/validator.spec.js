@@ -227,7 +227,30 @@ describe('Validator', () => {
       expect(validator.pems).to.deep.equal(pems)
     })
 
-    it('Should return the same result if calling more than once and the promise is rejected')
+    it('Should return the same result if calling more than once and the promise is rejected', async () => {
+      const validator = new AWSCognitoJWTValidator(config)
+      expect(validator.pems).to.be.null
+
+      // First call.
+      const firstScope = nock(validator.jwksUrl).get('').reply(httpStatus.NOT_FOUND)
+      await expect(validator.init()).to.eventually.be.rejectedWith(
+        InitializationError,
+        `Initialization failed: ${httpStatus[httpStatus.NOT_FOUND]}`
+      )
+      expect(firstScope.isDone()).to.be.true
+      expect(validator.pems).to.be.null
+      nock.cleanAll()
+
+      // Second call.
+      const secondScope = nock(validator.jwksUrl).get('').reply(httpStatus.FORBIDDEN)
+      await expect(validator.init()).to.eventually.be.rejectedWith(
+        InitializationError,
+        `Initialization failed: ${httpStatus[httpStatus.NOT_FOUND]}`
+      )
+      expect(secondScope.isDone()).to.be.false
+      expect(validator.pems).to.be.null
+    })
+
     it('Should return the same result if calling more than once and the promise is resolved')
   })
 })
