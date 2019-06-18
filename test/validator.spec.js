@@ -1,7 +1,7 @@
 'use strict'
 
 const {
-  expect, chance, nock, httpStatus
+  expect, chance, nock, httpStatus, mockDate
 } = require('./index')
 const { generateConfig, jwks, pems } = require('./util')
 const AWSCognitoJWTValidator = require('../src')
@@ -316,6 +316,28 @@ describe('Validator', () => {
       expect(validator.pems).to.be.null
     })
 
-    it(`Should not refresh more than once every ${REFRESH_WAIT_MS} milliseconds`)
+    it(`Should not refresh more than once every ${REFRESH_WAIT_MS} milliseconds`, async () => {
+      // First refresh.
+      const firstRefreshScope = nock(validator.jwksUrl).get('').reply(httpStatus.OK, { keys: [jwk2] })
+      await expect(validator.refreshPems()).to.eventually.be.undefined
+      expect(firstRefreshScope.isDone()).to.be.true
+      expect(validator.pems).to.deep.equal({ [jwk2.kid]: pems[jwk2.kid] })
+      nock.cleanAll()
+
+      // Second refresh should be throttled since it is within the REFRESH_WAIT_MS window.
+      const secondRefreshScope = nock(validator.jwksUrl).get('').reply(httpStatus.OK, { keys: [jwk1] })
+      await expect(validator.refreshPems()).to.eventually.be.undefined
+      expect(secondRefreshScope.isDone()).to.be.false
+      expect(validator.pems).to.deep.equal({ [jwk2.kid]: pems[jwk2.kid] })
+      nock.cleanAll()
+
+      // Third refresh should succeed since it is outside the REFRESH_WAIT_MS window.
+      mockDate.set(Date.now() + REFRESH_WAIT_MS + 1e3)
+      const thirdRefreshScope = nock(validator.jwksUrl).get('').reply(httpStatus.OK, { keys: [jwk1] })
+      await expect(validator.refreshPems()).to.eventually.be.undefined
+      expect(thirdRefreshScope.isDone()).to.be.true
+      expect(validator.pems).to.deep.equal({ [jwk1.kid]: pems[jwk1.kid] })
+      mockDate.reset()
+    })
   })
 })
