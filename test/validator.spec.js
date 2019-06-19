@@ -6,7 +6,9 @@ const {
 const { generateConfig, jwks, pems } = require('./util')
 const AWSCognitoJWTValidator = require('../src')
 const { DEFAULT_AWS_REGION, TOKEN_USE, REFRESH_WAIT_MS } = require('../src/constants')
-const { ConfigurationError, InitializationError, RefreshError } = require('../src/errors')
+const {
+  ConfigurationError, InitializationError, RefreshError, InvalidJWTError
+} = require('../src/errors')
 
 describe('Validator', () => {
   describe('Constructor', () => {
@@ -369,7 +371,13 @@ describe('Validator', () => {
       expect(initScope.isDone()).to.be.true
     })
 
-    it('Should reject with InvalidJWTError if token is invalid')
+    it('Should reject with InvalidJWTError if token is invalid', async () => {
+      const token = chance.hash()
+      const initScope = nock(validator.jwksUrl).get('').reply(httpStatus.OK, { keys: jwks })
+      await expect(validator.validate(token)).to.eventually.be.rejectedWith(InvalidJWTError, 'JWT is invalid')
+      expect(initScope.isDone()).to.be.true
+    })
+
     it('Should reject with RefreshError if refreshing the pems fails')
     it('Should reject with InvalidJWTError if there is no pem to verify the token signature')
     it('Should reject with InvalidJWTError if token signature is invalid')
