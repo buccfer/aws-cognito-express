@@ -342,7 +342,33 @@ describe('Validator', () => {
   })
 
   describe('Validate', () => {
-    it('Should reject with InitializationError if initialization fails')
+    let validator
+
+    before(() => {
+      if (!nock.isActive()) nock.activate()
+    })
+
+    beforeEach(() => {
+      const config = generateConfig()
+      validator = new AWSCognitoJWTValidator(config)
+      nock.cleanAll()
+    })
+
+    after(() => {
+      nock.cleanAll()
+      nock.restore()
+    })
+
+    it('Should reject with InitializationError if initialization fails', async () => {
+      const token = chance.hash()
+      const initScope = nock(validator.jwksUrl).get('').reply(httpStatus.NOT_FOUND)
+      await expect(validator.validate(token)).to.eventually.be.rejectedWith(
+        InitializationError,
+        `Initialization failed: ${httpStatus[httpStatus.NOT_FOUND]}`
+      )
+      expect(initScope.isDone()).to.be.true
+    })
+
     it('Should reject with InvalidJWTError if token is invalid')
     it('Should reject with RefreshError if refreshing the pems fails')
     it('Should reject with InvalidJWTError if there is no pem to verify the token signature')
