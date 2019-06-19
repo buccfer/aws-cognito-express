@@ -2,6 +2,7 @@
 
 const fs = require('fs')
 const path = require('path')
+const jwt = require('jsonwebtoken')
 const { pem2jwk } = require('pem-jwk')
 const { chance } = require('./index')
 const { TOKEN_USE } = require('../src/constants')
@@ -69,8 +70,44 @@ function generateConfig(opts = {}) {
   return config
 }
 
+/**
+ * @private
+ *
+ * @description Creates a signed JWT.
+ *
+ * @throws {Error} The provided keyId doesn't match with any RSA Key ID.
+ *
+ * @param {string} keyId - The ID of the RSA key pair to use to sign the token.
+ * @param {Object} payload - The JWT payload.
+ * @param {Object} opts - Additional options to generate the JWT.
+ * @param {string} opts.audience - A value for the audience (aud) field.
+ * @param {string} opts.issuer - A value for the issuer (iss) field.
+ * @param {string} opts.tokenUse - A value for the token use (token_use) field. ('id' | 'access')
+ * @param {number} [opts.expiresIn = 3600] - The number of seconds until the token expires.
+ *
+ * @returns {string} The signed JWT.
+ * */
+function signToken(keyId, payload, opts) {
+  const targetRSAKeyPair = rsaKeyPairs.find(rsaKeyPair => rsaKeyPair.id === keyId)
+
+  if (!targetRSAKeyPair) throw new Error(`No RSA key pair found with ID ${keyId}`)
+
+  const options = {
+    algorithm: 'RS256',
+    keyid: keyId,
+    expiresIn: opts.expiresIn || 3600,
+    audience: opts.audience,
+    issuer: opts.issuer
+  }
+
+  const jwtPayload = Object.assign({}, payload, { token_use: opts.tokenUse })
+
+  return jwt.sign(jwtPayload, targetRSAKeyPair.private, options)
+}
+
 module.exports = {
   generateConfig,
+  signToken,
   jwks,
   pems
 }
