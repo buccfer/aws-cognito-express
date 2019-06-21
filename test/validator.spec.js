@@ -3,12 +3,16 @@
 const {
   expect, chance, nock, httpStatus, mockDate
 } = require('./index')
-const { generateConfig, jwks, pems } = require('./util')
+const {
+  generateConfig, signToken, jwks, pems
+} = require('./util')
 const AWSCognitoJWTValidator = require('../src')
 const { DEFAULT_AWS_REGION, TOKEN_USE, REFRESH_WAIT_MS } = require('../src/constants')
 const {
   ConfigurationError, InitializationError, RefreshError, InvalidJWTError
 } = require('../src/errors')
+
+const [jwk1, jwk2] = jwks
 
 describe('Validator', () => {
   describe('Constructor', () => {
@@ -254,7 +258,6 @@ describe('Validator', () => {
     })
 
     it('Should return the same result if calling more than once and the promise is resolved', async () => {
-      const [jwk1, jwk2] = jwks
       const validator = new AWSCognitoJWTValidator(config)
       expect(validator.pems).to.be.null
 
@@ -274,7 +277,6 @@ describe('Validator', () => {
   })
 
   describe('Refresh Pems', () => {
-    const [jwk1, jwk2] = jwks
     let validator
 
     before(() => {
@@ -345,6 +347,7 @@ describe('Validator', () => {
 
   describe('Validate', () => {
     let validator
+    let tokenPayload
 
     before(() => {
       if (!nock.isActive()) nock.activate()
@@ -353,6 +356,10 @@ describe('Validator', () => {
     beforeEach(() => {
       const config = generateConfig()
       validator = new AWSCognitoJWTValidator(config)
+      tokenPayload = {
+        email: chance.email(),
+        email_verified: chance.bool()
+      }
       nock.cleanAll()
     })
 
@@ -378,7 +385,26 @@ describe('Validator', () => {
       expect(initScope.isDone()).to.be.true
     })
 
-    it('Should reject with RefreshError if refreshing the pems fails')
+    it('Should reject with RefreshError if refreshing the pems fails', async () => {
+      const initScope = nock(validator.jwksUrl).get('').reply(httpStatus.OK, { keys: [jwk2] })
+      await expect(validator.init()).to.eventually.be.undefined
+      expect(validator.pems).to.deep.equal({ [jwk2.kid]: pems[jwk2.kid] })
+      expect(initScope.isDone()).to.be.true
+      nock.cleanAll()
+
+      const token = signToken('key_1', tokenPayload, {
+        audience: chance.hash(),
+        issuer: chance.hash(),
+        tokenUse: TOKEN_USE.ACCESS
+      })
+      const refreshScope = nock(validator.jwksUrl).get('').reply(httpStatus.SERVICE_UNAVAILABLE)
+      await expect(validator.validate(token)).to.eventually.be.rejectedWith(
+        RefreshError,
+        `Refresh failed: ${httpStatus[httpStatus.SERVICE_UNAVAILABLE]}`
+      )
+      expect(refreshScope.isDone()).to.be.true
+    })
+
     it('Should reject with InvalidJWTError if there is no pem to verify the token signature')
     it('Should reject with InvalidJWTError if token signature is invalid')
     it('Should reject with InvalidJWTError if token audience is invalid')
