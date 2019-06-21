@@ -405,7 +405,26 @@ describe('Validator', () => {
       expect(refreshScope.isDone()).to.be.true
     })
 
-    it('Should reject with InvalidJWTError if there is no pem to verify the token signature')
+    it('Should reject with InvalidJWTError if there is no pem to verify the token signature', async () => {
+      const initScope = nock(validator.jwksUrl).get('').reply(httpStatus.OK, { keys: [jwk2] })
+      await expect(validator.init()).to.eventually.be.undefined
+      expect(validator.pems).to.deep.equal({ [jwk2.kid]: pems[jwk2.kid] })
+      expect(initScope.isDone()).to.be.true
+      nock.cleanAll()
+
+      const token = signToken('key_1', tokenPayload, {
+        audience: chance.hash(),
+        issuer: chance.hash(),
+        tokenUse: TOKEN_USE.ACCESS
+      })
+      const refreshScope = nock(validator.jwksUrl).get('').reply(httpStatus.OK, { keys: [jwk2] })
+      await expect(validator.validate(token)).to.eventually.be.rejectedWith(
+        InvalidJWTError,
+        'No pem found to verify JWT signature'
+      )
+      expect(refreshScope.isDone()).to.be.true
+    })
+
     it('Should reject with InvalidJWTError if token signature is invalid')
     it('Should reject with InvalidJWTError if token audience is invalid')
     it('Should reject with InvalidJWTError if token issuer is invalid')
