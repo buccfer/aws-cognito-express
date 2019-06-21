@@ -451,5 +451,6 @@ describe('Validator', () => {
     it('Should reject with InvalidJWTError if token issuer is invalid')
     it('Should reject with InvalidJWTError if token tokenUse is invalid')
     it('Should reject with InvalidJWTError if token is expired')
+    it('Should resolve with the token payload')
   })
 })
