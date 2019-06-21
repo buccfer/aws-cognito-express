@@ -437,7 +437,17 @@ describe('Validator', () => {
       expect(initScope.isDone()).to.be.true
     })
 
-    it('Should reject with InvalidJWTError if token audience is invalid')
+    it('Should reject with InvalidJWTError if token audience is invalid', async () => {
+      const initScope = nock(validator.jwksUrl).get('').reply(httpStatus.OK, { keys: jwks })
+      const token = signToken('key_1', tokenPayload, {
+        audience: chance.hash(),
+        issuer: validator.iss,
+        tokenUse: chance.pickone(validator.tokenUse)
+      })
+      await expect(validator.validate(token)).to.eventually.be.rejectedWith(InvalidJWTError, /jwt audience invalid/)
+      expect(initScope.isDone()).to.be.true
+    })
+
     it('Should reject with InvalidJWTError if token issuer is invalid')
     it('Should reject with InvalidJWTError if token tokenUse is invalid')
     it('Should reject with InvalidJWTError if token is expired')
