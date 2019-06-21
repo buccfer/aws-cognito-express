@@ -84,6 +84,7 @@ function generateConfig(opts = {}) {
  * @param {string} opts.issuer - A value for the issuer (iss) field.
  * @param {string} opts.tokenUse - A value for the token use (token_use) field. ('id' | 'access')
  * @param {number} [opts.expiresIn = 3600] - The number of seconds until the token expires.
+ * @param {string} [opts.kid] - A custom value for the kid header.
  *
  * @returns {string} The signed JWT.
  * */
@@ -94,7 +95,7 @@ function signToken(keyId, payload, opts) {
 
   const options = {
     algorithm: 'RS256',
-    keyid: keyId,
+    keyid: opts.kid || keyId,
     expiresIn: opts.expiresIn || 3600,
     audience: opts.audience,
     issuer: opts.issuer
