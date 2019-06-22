@@ -506,5 +506,28 @@ describe('Validator', () => {
       expect({ email, email_verified }).to.deep.equal(tokenPayload)
       expect(initScope.isDone()).to.be.true
     })
+
+    it('Should resolve with the token payload after refreshing the pems', async () => {
+      const initScope = nock(validator.jwksUrl).get('').reply(httpStatus.OK, { keys: [jwk2] })
+      await expect(validator.init()).to.eventually.be.undefined
+      expect(validator.pems).to.deep.equal({ [jwk2.kid]: pems[jwk2.kid] })
+      expect(initScope.isDone()).to.be.true
+      nock.cleanAll()
+
+      const token = signToken('key_1', tokenPayload, {
+        audience: chance.pickone(validator.audience),
+        issuer: validator.iss,
+        tokenUse: chance.pickone(validator.tokenUse)
+      })
+      const refreshScope = nock(validator.jwksUrl).get('').reply(httpStatus.OK, { keys: [jwk1] })
+      const payload = await validator.validate(token)
+      expect(payload).to.be.an('object').that.has.all.keys(
+        'aud', 'email', 'email_verified', 'exp', 'iat', 'iss', 'token_use'
+      )
+      const { email, email_verified } = payload // eslint-disable-line camelcase
+      expect({ email, email_verified }).to.deep.equal(tokenPayload)
+      expect(validator.pems).to.deep.equal({ [jwk1.kid]: pems[jwk1.kid] })
+      expect(refreshScope.isDone()).to.be.true
+    })
   })
 })
