@@ -476,7 +476,21 @@ describe('Validator', () => {
       expect(initScope.isDone()).to.be.true
     })
 
-    it('Should reject with InvalidJWTError if token is expired')
+    it('Should reject with InvalidJWTError if token is expired', async () => {
+      const initScope = nock(validator.jwksUrl).get('').reply(httpStatus.OK, { keys: jwks })
+      const token = signToken('key_1', tokenPayload, {
+        audience: chance.pickone(validator.audience),
+        issuer: validator.iss,
+        tokenUse: chance.pickone(validator.tokenUse),
+        expiresIn: 10 // 10 seconds.
+      })
+      // Set date to now + 11 seconds.
+      mockDate.set(Date.now() + 11e3)
+      await expect(validator.validate(token)).to.eventually.be.rejectedWith(InvalidJWTError, 'jwt expired')
+      expect(initScope.isDone()).to.be.true
+      mockDate.reset()
+    })
+
     it('Should resolve with the token payload')
   })
 })
