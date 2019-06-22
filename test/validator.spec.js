@@ -459,7 +459,23 @@ describe('Validator', () => {
       expect(initScope.isDone()).to.be.true
     })
 
-    it('Should reject with InvalidJWTError if token tokenUse is invalid')
+    it('Should reject with InvalidJWTError if token tokenUse is invalid', async () => {
+      const config = generateConfig()
+      config.tokenUse = [TOKEN_USE.ACCESS]
+      validator = new AWSCognitoJWTValidator(config)
+      const initScope = nock(validator.jwksUrl).get('').reply(httpStatus.OK, { keys: jwks })
+      const token = signToken('key_1', tokenPayload, {
+        audience: chance.pickone(validator.audience),
+        issuer: validator.iss,
+        tokenUse: TOKEN_USE.ID
+      })
+      await expect(validator.validate(token)).to.eventually.be.rejectedWith(
+        InvalidJWTError,
+        `"${TOKEN_USE.ID}" tokens are not allowed`
+      )
+      expect(initScope.isDone()).to.be.true
+    })
+
     it('Should reject with InvalidJWTError if token is expired')
     it('Should resolve with the token payload')
   })
