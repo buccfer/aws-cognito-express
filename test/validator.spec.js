@@ -491,6 +491,20 @@ describe('Validator', () => {
       mockDate.reset()
     })
 
-    it('Should resolve with the token payload')
+    it('Should resolve with the token payload', async () => {
+      const initScope = nock(validator.jwksUrl).get('').reply(httpStatus.OK, { keys: jwks })
+      const token = signToken('key_1', tokenPayload, {
+        audience: chance.pickone(validator.audience),
+        issuer: validator.iss,
+        tokenUse: chance.pickone(validator.tokenUse)
+      })
+      const payload = await validator.validate(token)
+      expect(payload).to.be.an('object').that.has.all.keys(
+        'aud', 'email', 'email_verified', 'exp', 'iat', 'iss', 'token_use'
+      )
+      const { email, email_verified } = payload // eslint-disable-line camelcase
+      expect({ email, email_verified }).to.deep.equal(tokenPayload)
+      expect(initScope.isDone()).to.be.true
+    })
   })
 })
