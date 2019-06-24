@@ -22,7 +22,7 @@ describe('Errors', () => {
     it('Should have the correct properties', () => {
       expect(error.message).to.equal(errMsg)
       expect(error.name).to.equal('BaseError')
-      expect(error.isAWSCognitoJWTValidator).to.be.true
+      expect(error.isAWSCognitoJWTValidatorError).to.be.true
     })
   })
 
@@ -43,7 +43,7 @@ describe('Errors', () => {
       const errDescription = joiErr.details.map(err => err.message).join(', ')
       expect(error.message).to.equal(`Invalid configuration: ${errDescription}`)
       expect(error.name).to.equal('ConfigurationError')
-      expect(error.isAWSCognitoJWTValidator).to.be.true
+      expect(error.isAWSCognitoJWTValidatorError).to.be.true
     })
   })
 
@@ -63,7 +63,7 @@ describe('Errors', () => {
     it('Should have the correct properties', () => {
       expect(error.message).to.equal(`Initialization failed: ${err.message}`)
       expect(error.name).to.equal('InitializationError')
-      expect(error.isAWSCognitoJWTValidator).to.be.true
+      expect(error.isAWSCognitoJWTValidatorError).to.be.true
     })
   })
 
@@ -83,7 +83,7 @@ describe('Errors', () => {
     it('Should have the correct properties', () => {
       expect(error.message).to.equal(initializationError.message.replace('Initialization failed:', 'Refresh failed:'))
       expect(error.name).to.equal('RefreshError')
-      expect(error.isAWSCognitoJWTValidator).to.be.true
+      expect(error.isAWSCognitoJWTValidatorError).to.be.true
     })
   })
 
@@ -103,7 +103,7 @@ describe('Errors', () => {
     it('Should have the correct properties', () => {
       expect(error.message).to.equal(errorMsg)
       expect(error.name).to.equal('InvalidJWTError')
-      expect(error.isAWSCognitoJWTValidator).to.be.true
+      expect(error.isAWSCognitoJWTValidatorError).to.be.true
     })
   })
 })
