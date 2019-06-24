@@ -6,7 +6,7 @@ const {
 const {
   generateConfig, signToken, jwks, pems
 } = require('./util')
-const AWSCognitoJWTValidator = require('../src')
+const AWSCognitoJWTValidator = require('../src/validator')
 const { DEFAULT_AWS_REGION, TOKEN_USE, REFRESH_WAIT_MS } = require('../src/constants')
 const {
   ConfigurationError, InitializationError, RefreshError, InvalidJWTError
