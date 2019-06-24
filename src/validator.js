@@ -36,7 +36,7 @@ class AWSCognitoJWTValidator {
    *
    * 'use strict';
    *
-   * const AWSCognitoJWTValidator = require('aws-cognito-jwt-validator');
+   * const { AWSCognitoJWTValidator } = require('aws-cognito-express');
    *
    * const validator = new AWSCognitoJWTValidator({
    *   region: 'us-east-2',
@@ -139,7 +139,7 @@ class AWSCognitoJWTValidator {
    *
    * 'use strict';
    *
-   * const AWSCognitoJWTValidator = require('aws-cognito-jwt-validator');
+   * const { AWSCognitoJWTValidator } = require('aws-cognito-express');
    *
    * const validator = new AWSCognitoJWTValidator({ ... });
    * const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...';

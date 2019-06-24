@@ -27,7 +27,7 @@ If you need to manually process tokens for server-side API processing in a Node.
 ## Installation
 
 ```bash
-$ npm install --save aws-cognito-jwt-validator
+$ npm install --save aws-cognito-express
 ```
 
 ## Documentation
