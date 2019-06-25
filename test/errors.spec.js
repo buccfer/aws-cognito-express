@@ -1,9 +1,7 @@
 'use strict'
 
 const { expect, chance } = require('./index')
-const {
-  BaseError, ConfigurationError, InitializationError, RefreshError, InvalidJWTError
-} = require('../src/errors')
+const { BaseError, ConfigurationError, InitializationError, RefreshError, InvalidJWTError } = require('../src/errors')
 
 describe('Errors', () => {
   describe('BaseError', () => {

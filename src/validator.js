@@ -11,9 +11,7 @@ const jwt = require('jsonwebtoken')
 const verify = require('./verify')
 const configSchema = require('./config.schema')
 const { REFRESH_WAIT_MS } = require('./constants')
-const {
-  ConfigurationError, InitializationError, RefreshError, InvalidJWTError
-} = require('./errors')
+const { ConfigurationError, InitializationError, RefreshError, InvalidJWTError } = require('./errors')
 
 class AWSCognitoJWTValidator {
   /**

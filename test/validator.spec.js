@@ -1,16 +1,10 @@
 'use strict'
 
-const {
-  expect, chance, nock, httpStatus, mockDate
-} = require('./index')
-const {
-  generateConfig, signToken, jwks, pems
-} = require('./util')
+const { expect, chance, nock, httpStatus, mockDate } = require('./index')
+const { generateConfig, signToken, jwks, pems } = require('./util')
 const { AWSCognitoJWTValidator } = require('../src')
 const { DEFAULT_AWS_REGION, TOKEN_USE, REFRESH_WAIT_MS } = require('../src/constants')
-const {
-  ConfigurationError, InitializationError, RefreshError, InvalidJWTError
-} = require('../src/errors')
+const { ConfigurationError, InitializationError, RefreshError, InvalidJWTError } = require('../src/errors')
 
 const [jwk1, jwk2] = jwks
 

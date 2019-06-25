@@ -2,9 +2,7 @@
 
 const { expect, chance } = require('./index')
 const { isAWSCognitoJWTValidatorError } = require('../src')
-const {
-  ConfigurationError, InitializationError, RefreshError, InvalidJWTError
-} = require('../src/errors')
+const { ConfigurationError, InitializationError, RefreshError, InvalidJWTError } = require('../src/errors')
 
 describe('Is Validator Error', () => {
   it('Should return false if the parameter is NOT an error from this library', () => {
