@@ -14,3 +14,4 @@ rules:
   'max-len': ['error', { code: 120 }]
   'semi': ['error', 'never']
   'no-trailing-spaces': ['error', { skipBlankLines: true }]
+  'object-curly-newline': ['error', { consistent: true }]

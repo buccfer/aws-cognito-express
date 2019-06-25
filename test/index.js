@@ -6,6 +6,7 @@ const chance = require('chance').Chance()
 const nock = require('nock')
 const httpStatus = require('http-status')
 const mockDate = require('mockdate')
+const sinon = require('sinon')
 
 chai.use(chaiAsPromised)
 
@@ -14,5 +15,6 @@ module.exports = {
   chance,
   nock,
   httpStatus,
-  mockDate
+  mockDate,
+  sinon
 }
