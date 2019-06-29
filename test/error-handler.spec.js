@@ -3,7 +3,7 @@
 const { expect, httpStatus, sinon, chance } = require('./index')
 const { authenticationErrorHandler } = require('../src')
 const { InvalidJWTError } = require('../src/errors')
-const { AUTHENTICATION_SCHEME } = require('../src/constants')
+const { AUTHENTICATION_SCHEME_HEADER, AUTHENTICATION_SCHEME } = require('../src/constants')
 
 describe('Error handler', () => {
   const req = {}
@@ -48,7 +48,7 @@ describe('Error handler', () => {
     errorHandler(err, req, res, next)
     expect(next.called).to.be.false
     expect(statusSpy.withArgs(httpStatus.UNAUTHORIZED).calledOnce).to.be.true
-    expect(headerSpy.withArgs('WWW-Authenticate', AUTHENTICATION_SCHEME).calledOnce).to.be.true
+    expect(headerSpy.withArgs(AUTHENTICATION_SCHEME_HEADER, AUTHENTICATION_SCHEME).calledOnce).to.be.true
     expect(jsonSpy.withArgs(responsePayload).calledOnce).to.be.true
 
     statusSpy.restore()

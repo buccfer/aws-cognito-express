@@ -2,7 +2,7 @@
 
 const httpStatus = require('http-status')
 const isAWSCognitoJWTValidatorError = require('./is-validator-error')
-const { AUTHENTICATION_SCHEME } = require('./constants')
+const { AUTHENTICATION_SCHEME_HEADER, AUTHENTICATION_SCHEME } = require('./constants')
 
 /**
  * @description An Express error handler generator.
@@ -25,7 +25,7 @@ const authenticationErrorHandler = () => (err, req, res, next) => {
   const statusCode = httpStatus.UNAUTHORIZED
 
   return res.status(statusCode)
-    .header('WWW-Authenticate', AUTHENTICATION_SCHEME)
+    .header(AUTHENTICATION_SCHEME_HEADER, AUTHENTICATION_SCHEME)
     .json({
       statusCode,
       error: httpStatus[statusCode],
