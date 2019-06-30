@@ -81,18 +81,29 @@ describe('Authenticate', () => {
       })
       // Set date to now + 11 seconds.
       mockDate.set(Date.now() + 11e3)
-
       req = { header: name => `${AUTHENTICATION_SCHEME} ${token}` } // eslint-disable-line no-unused-vars
       await authenticateMiddleware(req, res, next)
       expect(next.calledOnce).to.be.true
       const err = next.getCall(0).args[0]
       expect(err).to.be.an.instanceOf(InvalidJWTError)
       expect(err.message).to.equal('jwt expired')
-
       expect(initScope.isDone()).to.be.true
       mockDate.reset()
     })
 
-    it('Should validate the token and set req.cognito with the JWT payload')
+    it('Should validate the token and set req.cognito with the JWT payload', async () => {
+      const token = signToken('key_1', tokenPayload, {
+        audience: chance.pickone(config.audience),
+        issuer,
+        tokenUse: chance.pickone(config.tokenUse)
+      })
+      req = { header: name => `${AUTHENTICATION_SCHEME} ${token}` } // eslint-disable-line no-unused-vars
+      await authenticateMiddleware(req, res, next)
+      expect(next.calledOnce).to.be.true
+      const err = next.getCall(0).args[0]
+      expect(err).to.be.undefined
+      expect(req.cognito).to.deep.include(tokenPayload)
+      expect(initScope.isDone()).to.be.true
+    })
   })
 })
