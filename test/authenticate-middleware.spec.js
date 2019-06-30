@@ -1,7 +1,7 @@
 'use strict'
 
-const { expect, sinon, chance } = require('./index')
-const { generateConfig, signToken } = require('./util')
+const { expect, sinon, chance, nock, httpStatus, mockDate } = require('./index')
+const { generateConfig, signToken, jwks } = require('./util')
 const { AUTHORIZATION_HEADER, AUTHENTICATION_SCHEME } = require('../src/constants')
 const { authenticate } = require('../src')
 const { ConfigurationError, InvalidJWTError } = require('../src/errors')
@@ -27,12 +27,26 @@ describe('Authenticate', () => {
     let req
     let next
     let tokenPayload
+    let issuer
+    let initScope
+
+    before(() => {
+      if (!nock.isActive()) nock.activate()
+    })
 
     beforeEach(() => {
       config = generateConfig()
       authenticateMiddleware = authenticate(config)
       next = sinon.spy()
       tokenPayload = { email: chance.email(), email_verified: chance.bool() }
+      issuer = `https://cognito-idp.${config.region}.amazonaws.com/${config.userPoolId}`
+      nock.cleanAll()
+      initScope = nock(`${issuer}/.well-known/jwks.json`).get('').reply(httpStatus.OK, { keys: jwks })
+    })
+
+    after(() => {
+      nock.cleanAll()
+      nock.restore()
     })
 
     it(`Should call next with an InvalidJWTError if ${AUTHORIZATION_HEADER} header is missing`, async () => {
@@ -47,7 +61,7 @@ describe('Authenticate', () => {
     it(`Should call next with an InvalidJWTError if scheme is not ${AUTHENTICATION_SCHEME}`, async () => {
       const token = signToken('key_1', tokenPayload, {
         audience: chance.pickone(config.audience),
-        issuer: `https://cognito-idp.${config.region}.amazonaws.com/${config.userPoolId}`,
+        issuer,
         tokenUse: chance.pickone(config.tokenUse)
       })
       req = { header: name => `Basic ${token}` } // eslint-disable-line no-unused-vars
@@ -58,7 +72,27 @@ describe('Authenticate', () => {
       expect(err.message).to.equal('Invalid authentication scheme.')
     })
 
-    it('Should call next with the error if the token is invalid')
+    it('Should call next with the error if the token is invalid', async () => {
+      const token = signToken('key_1', tokenPayload, {
+        audience: chance.pickone(config.audience),
+        issuer,
+        tokenUse: chance.pickone(config.tokenUse),
+        expiresIn: 10 // 10 seconds.
+      })
+      // Set date to now + 11 seconds.
+      mockDate.set(Date.now() + 11e3)
+
+      req = { header: name => `${AUTHENTICATION_SCHEME} ${token}` } // eslint-disable-line no-unused-vars
+      await authenticateMiddleware(req, res, next)
+      expect(next.calledOnce).to.be.true
+      const err = next.getCall(0).args[0]
+      expect(err).to.be.an.instanceOf(InvalidJWTError)
+      expect(err.message).to.equal('jwt expired')
+
+      expect(initScope.isDone()).to.be.true
+      mockDate.reset()
+    })
+
     it('Should validate the token and set req.cognito with the JWT payload')
   })
 })
