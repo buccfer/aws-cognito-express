@@ -4,3 +4,6 @@ node_modules/**
 # Coverage
 .nyc_output/**
 coverage/**
+
+# jsdoc output
+out/**
