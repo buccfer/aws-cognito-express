@@ -5,9 +5,9 @@ const isJWTValidatorError = require('../lib/is-jwt-validator-error')
 const { AUTHENTICATION_SCHEME_HEADER, AUTHENTICATION_SCHEME } = require('../lib/constants')
 
 /**
- * @description An Express error handler generator.
+ * @description An Express authentication error handler generator.
  *
- * @returns {Function} An Express error handler for authentication errors.
+ * @returns {Function} An Express authentication error handler.
  *
  * @example
  *
@@ -17,6 +17,7 @@ const { AUTHENTICATION_SCHEME_HEADER, AUTHENTICATION_SCHEME } = require('../lib/
  * const { authenticationError } = require('aws-cognito-express');
  *
  * const app = express();
+ *
  * app.use(authenticationError());
  * */
 const authenticationError = () => (err, req, res, next) => {
