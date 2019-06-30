@@ -105,5 +105,41 @@ describe('Authenticate', () => {
       expect(req.cognito).to.deep.include(tokenPayload)
       expect(initScope.isDone()).to.be.true
     })
+
+    it('Should use the same validator for different requests', async () => {
+      // First request makes the validator to initialize.
+      const firstRequestToken = signToken('key_1', tokenPayload, {
+        audience: chance.pickone(config.audience),
+        issuer,
+        tokenUse: chance.pickone(config.tokenUse)
+      })
+      req = { header: name => `${AUTHENTICATION_SCHEME} ${firstRequestToken}` } // eslint-disable-line no-unused-vars
+      await authenticateMiddleware(req, res, next)
+      expect(next.calledOnce).to.be.true
+      let err = next.getCall(0).args[0]
+      expect(err).to.be.undefined
+      expect(req.cognito).to.deep.include(tokenPayload)
+      expect(initScope.isDone()).to.be.true
+
+      // Clean mocks.
+      next.resetHistory()
+      nock.cleanAll()
+      initScope = nock(`${issuer}/.well-known/jwks.json`).get('').reply(httpStatus.OK, { keys: jwks })
+
+      // Second request already has the validator initialized.
+      const secondRequestTokenPayload = { email: chance.email(), email_verified: chance.bool() }
+      const secondRequestToken = signToken('key_2', secondRequestTokenPayload, {
+        audience: chance.pickone(config.audience),
+        issuer,
+        tokenUse: chance.pickone(config.tokenUse)
+      })
+      req = { header: name => `${AUTHENTICATION_SCHEME} ${secondRequestToken}` } // eslint-disable-line no-unused-vars
+      await authenticateMiddleware(req, res, next)
+      expect(next.calledOnce).to.be.true
+      err = next.getCall(0).args[0] // eslint-disable-line prefer-destructuring
+      expect(err).to.be.undefined
+      expect(req.cognito).to.deep.include(secondRequestTokenPayload)
+      expect(initScope.isDone()).to.be.false
+    })
   })
 })
