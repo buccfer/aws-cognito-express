@@ -1,7 +1,9 @@
 'use strict'
 
-const { expect, chance } = require('./index')
-const { BaseError, ConfigurationError, InitializationError, RefreshError, InvalidJWTError } = require('../src/errors')
+const { expect, chance } = require('../index')
+const {
+  BaseError, ConfigurationError, InitializationError, RefreshError, InvalidJWTError
+} = require('../../src/lib/errors')
 
 describe('Errors', () => {
   describe('BaseError', () => {
@@ -20,7 +22,7 @@ describe('Errors', () => {
     it('Should have the correct properties', () => {
       expect(error.message).to.equal(errMsg)
       expect(error.name).to.equal('BaseError')
-      expect(error.isAWSCognitoJWTValidatorError).to.be.true
+      expect(error.isJWTValidatorError).to.be.true
     })
   })
 
@@ -41,7 +43,7 @@ describe('Errors', () => {
       const errDescription = joiErr.details.map(err => err.message).join(', ')
       expect(error.message).to.equal(`Invalid configuration: ${errDescription}`)
       expect(error.name).to.equal('ConfigurationError')
-      expect(error.isAWSCognitoJWTValidatorError).to.be.true
+      expect(error.isJWTValidatorError).to.be.true
     })
   })
 
@@ -61,7 +63,7 @@ describe('Errors', () => {
     it('Should have the correct properties', () => {
       expect(error.message).to.equal(`Initialization failed: ${err.message}`)
       expect(error.name).to.equal('InitializationError')
-      expect(error.isAWSCognitoJWTValidatorError).to.be.true
+      expect(error.isJWTValidatorError).to.be.true
     })
   })
 
@@ -81,7 +83,7 @@ describe('Errors', () => {
     it('Should have the correct properties', () => {
       expect(error.message).to.equal(initializationError.message.replace('Initialization failed:', 'Refresh failed:'))
       expect(error.name).to.equal('RefreshError')
-      expect(error.isAWSCognitoJWTValidatorError).to.be.true
+      expect(error.isJWTValidatorError).to.be.true
     })
   })
 
@@ -101,7 +103,7 @@ describe('Errors', () => {
     it('Should have the correct properties', () => {
       expect(error.message).to.equal(errorMsg)
       expect(error.name).to.equal('InvalidJWTError')
-      expect(error.isAWSCognitoJWTValidatorError).to.be.true
+      expect(error.isJWTValidatorError).to.be.true
     })
   })
 })

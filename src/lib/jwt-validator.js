@@ -8,8 +8,8 @@ const throttle = require('lodash.throttle')
 const jwkToPem = require('jwk-to-pem')
 const jwt = require('jsonwebtoken')
 const debug = require('./debug')
-const verify = require('./verify')
-const configSchema = require('./config.schema')
+const verifyJwt = require('./verify-jwt')
+const configSchema = require('./config-schema')
 const { REFRESH_WAIT_MS } = require('./constants')
 const { ConfigurationError, InitializationError, RefreshError, InvalidJWTError } = require('./errors')
 
@@ -24,7 +24,7 @@ const { ConfigurationError, InitializationError, RefreshError, InvalidJWTError }
  * @property {Object} [pems = null] - The custom pems to be used to verify the token signature.
  * */
 
-class AWSCognitoJWTValidator {
+class JWTValidator {
   /**
    * @constructor
    *
@@ -34,15 +34,15 @@ class AWSCognitoJWTValidator {
    *
    * @param {JWTValidatorConfig} config - The validator configuration.
    *
-   * @returns {AWSCognitoJWTValidator} A validator instance.
+   * @returns {JWTValidator} A validator instance.
    *
    * @example
    *
    * 'use strict';
    *
-   * const { AWSCognitoJWTValidator } = require('aws-cognito-express');
+   * const { JWTValidator } = require('aws-cognito-express');
    *
-   * const validator = new AWSCognitoJWTValidator({
+   * const validator = new JWTValidator({
    *   region: 'us-east-2',
    *   userPoolId: 'us-east-2_6IfDT7ZUq',
    *   tokenUse: ['id', 'access'],
@@ -143,9 +143,9 @@ class AWSCognitoJWTValidator {
    *
    * 'use strict';
    *
-   * const { AWSCognitoJWTValidator } = require('aws-cognito-express');
+   * const { JWTValidator } = require('aws-cognito-express');
    *
-   * const validator = new AWSCognitoJWTValidator({ ... });
+   * const validator = new JWTValidator({ ... });
    * const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...';
    *
    * validator.validate(token)
@@ -178,8 +178,8 @@ class AWSCognitoJWTValidator {
     }
 
     debug('Verifying JWT signature..')
-    return verify(token, pem, { audience: this.audience, issuer: this.iss, tokenUse: this.tokenUse })
+    return verifyJwt(token, pem, { audience: this.audience, issuer: this.iss, tokenUse: this.tokenUse })
   }
 }
 
-module.exports = AWSCognitoJWTValidator
+module.exports = JWTValidator

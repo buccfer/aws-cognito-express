@@ -15,7 +15,7 @@ class BaseError extends Error {
     super()
     this.message = message
     this.name = this.constructor.name
-    this.isAWSCognitoJWTValidatorError = true
+    this.isJWTValidatorError = true
     Error.captureStackTrace(this, this.constructor)
   }
 }

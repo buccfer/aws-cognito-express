@@ -1,10 +1,12 @@
 'use strict'
 
-const { expect, chance, nock, httpStatus, mockDate } = require('./index')
-const { generateConfig, signToken, jwks, pems } = require('./util')
-const { AWSCognitoJWTValidator } = require('../src')
-const { DEFAULT_AWS_REGION, TOKEN_USE, REFRESH_WAIT_MS } = require('../src/constants')
-const { ConfigurationError, InitializationError, RefreshError, InvalidJWTError } = require('../src/errors')
+const { expect, chance, nock, httpStatus, mockDate } = require('../index')
+const { generateConfig, signToken, jwks, pems } = require('../util')
+const { JWTValidator } = require('../../src')
+const { DEFAULT_AWS_REGION, TOKEN_USE, REFRESH_WAIT_MS } = require('../../src/lib/constants')
+const {
+  ConfigurationError, InitializationError, RefreshError, InvalidJWTError
+} = require('../../src/lib/errors')
 
 const [jwk1, jwk2] = jwks
 
@@ -17,42 +19,42 @@ describe('Validator', () => {
     })
 
     it('Should throw ConfigurationError if no config is passed', () => {
-      expect(() => new AWSCognitoJWTValidator()).to.throw(ConfigurationError, /"value" is required/)
+      expect(() => new JWTValidator()).to.throw(ConfigurationError, /"value" is required/)
     })
 
     it('Should throw ConfigurationError if config is not an object', () => {
-      expect(() => new AWSCognitoJWTValidator(chance.word())).to.throw(ConfigurationError, /"value" must be an object/)
+      expect(() => new JWTValidator(chance.word())).to.throw(ConfigurationError, /"value" must be an object/)
     })
 
     it('Should throw ConfigurationError if region is not a string', () => {
       config.region = chance.natural()
-      expect(() => new AWSCognitoJWTValidator(config)).to.throw(ConfigurationError, /"region" must be a string/)
+      expect(() => new JWTValidator(config)).to.throw(ConfigurationError, /"region" must be a string/)
     })
 
     it(`Should have a default region with value "${DEFAULT_AWS_REGION}"`, () => {
       Reflect.deleteProperty(config, 'region')
-      const validator = new AWSCognitoJWTValidator(config)
+      const validator = new JWTValidator(config)
       expect(validator).to.have.property('region', DEFAULT_AWS_REGION)
     })
 
     it('Should throw ConfigurationError if no userPoolId is passed', () => {
       Reflect.deleteProperty(config, 'userPoolId')
-      expect(() => new AWSCognitoJWTValidator(config)).to.throw(ConfigurationError, /"userPoolId" is required/)
+      expect(() => new JWTValidator(config)).to.throw(ConfigurationError, /"userPoolId" is required/)
     })
 
     it('Should throw ConfigurationError if userPoolId is not a string', () => {
       config.userPoolId = chance.natural()
-      expect(() => new AWSCognitoJWTValidator(config)).to.throw(ConfigurationError, /"userPoolId" must be a string/)
+      expect(() => new JWTValidator(config)).to.throw(ConfigurationError, /"userPoolId" must be a string/)
     })
 
     it('Should throw ConfigurationError if tokenUse is not an array', () => {
       config.tokenUse = chance.natural()
-      expect(() => new AWSCognitoJWTValidator(config)).to.throw(ConfigurationError, /"tokenUse" must be an array/)
+      expect(() => new JWTValidator(config)).to.throw(ConfigurationError, /"tokenUse" must be an array/)
     })
 
     it('Should throw ConfigurationError if tokenUse is an empty array', () => {
       config.tokenUse = []
-      expect(() => new AWSCognitoJWTValidator(config)).to.throw(
+      expect(() => new JWTValidator(config)).to.throw(
         ConfigurationError,
         /"tokenUse" must contain at least 1 item/
       )
@@ -60,28 +62,28 @@ describe('Validator', () => {
 
     it('Should throw ConfigurationError if tokenUse has repeated items', () => {
       config.tokenUse = [TOKEN_USE.ACCESS, TOKEN_USE.ID, TOKEN_USE.ACCESS]
-      expect(() => new AWSCognitoJWTValidator(config)).to.throw(ConfigurationError, /contains a duplicate value/)
+      expect(() => new JWTValidator(config)).to.throw(ConfigurationError, /contains a duplicate value/)
     })
 
     it('Should throw ConfigurationError if tokenUse has invalid items', () => {
       config.tokenUse = [TOKEN_USE.ACCESS, chance.word()]
-      expect(() => new AWSCognitoJWTValidator(config)).to.throw(ConfigurationError, /must be one of \[id, access]$/)
+      expect(() => new JWTValidator(config)).to.throw(ConfigurationError, /must be one of \[id, access]$/)
     })
 
     it(`Should have a default tokenUse with value ${[TOKEN_USE.ACCESS]}`, () => {
       Reflect.deleteProperty(config, 'tokenUse')
-      const validator = new AWSCognitoJWTValidator(config)
+      const validator = new JWTValidator(config)
       expect(validator).to.have.property('tokenUse').that.is.deep.equal([TOKEN_USE.ACCESS])
     })
 
     it('Should throw ConfigurationError if audience is not an array', () => {
       config.audience = chance.natural()
-      expect(() => new AWSCognitoJWTValidator(config)).to.throw(ConfigurationError, /"audience" must be an array/)
+      expect(() => new JWTValidator(config)).to.throw(ConfigurationError, /"audience" must be an array/)
     })
 
     it('Should throw ConfigurationError if audience is an empty array', () => {
       config.audience = []
-      expect(() => new AWSCognitoJWTValidator(config)).to.throw(
+      expect(() => new JWTValidator(config)).to.throw(
         ConfigurationError,
         /"audience" must contain at least 1 item/
       )
@@ -90,27 +92,27 @@ describe('Validator', () => {
     it('Should throw ConfigurationError if audience has repeated items', () => {
       const appId = chance.hash()
       config.audience = [appId, chance.hash(), appId]
-      expect(() => new AWSCognitoJWTValidator(config)).to.throw(ConfigurationError, /contains a duplicate value/)
+      expect(() => new JWTValidator(config)).to.throw(ConfigurationError, /contains a duplicate value/)
     })
 
     it('Should throw ConfigurationError if audience has invalid items', () => {
       config.audience = [chance.hash(), chance.natural()]
-      expect(() => new AWSCognitoJWTValidator(config)).to.throw(ConfigurationError, /must be a string/)
+      expect(() => new JWTValidator(config)).to.throw(ConfigurationError, /must be a string/)
     })
 
     it('Should throw ConfigurationError if no audience is passed', () => {
       Reflect.deleteProperty(config, 'audience')
-      expect(() => new AWSCognitoJWTValidator(config)).to.throw(ConfigurationError, /"audience" is required/)
+      expect(() => new JWTValidator(config)).to.throw(ConfigurationError, /"audience" is required/)
     })
 
     it('Should throw ConfigurationError if pems is not an object', () => {
       config.pems = chance.natural()
-      expect(() => new AWSCognitoJWTValidator(config)).to.throw(ConfigurationError, /"pems" must be an object/)
+      expect(() => new JWTValidator(config)).to.throw(ConfigurationError, /"pems" must be an object/)
     })
 
     it('Should throw ConfigurationError if pems is an empty object', () => {
       config.pems = {}
-      expect(() => new AWSCognitoJWTValidator(config)).to.throw(
+      expect(() => new JWTValidator(config)).to.throw(
         ConfigurationError,
         /"pems" must have at least 1 children/
       )
@@ -118,14 +120,14 @@ describe('Validator', () => {
 
     it('Should have a default pems with value null', () => {
       expect(config).not.to.have.property('pems')
-      const validator = new AWSCognitoJWTValidator(config)
+      const validator = new JWTValidator(config)
       expect(validator).to.have.property('pems').that.is.null
     })
 
     it('Should throw ConfigurationError if providing an unknown config', () => {
       const propName = chance.word()
       config[propName] = chance.sentence()
-      expect(() => new AWSCognitoJWTValidator(config)).to.throw(
+      expect(() => new JWTValidator(config)).to.throw(
         ConfigurationError,
         new RegExp(`"${propName}" is not allowed`)
       )
@@ -133,8 +135,8 @@ describe('Validator', () => {
 
     it('Should instantiate the validator', () => {
       config = generateConfig({ withPems: true })
-      const validator = new AWSCognitoJWTValidator(config)
-      expect(validator).to.be.an.instanceof(AWSCognitoJWTValidator)
+      const validator = new JWTValidator(config)
+      expect(validator).to.be.an.instanceof(JWTValidator)
       expect(validator).to.have.all.keys('region', 'userPoolId', 'tokenUse', 'audience', 'pems', 'init', 'refreshPems')
       expect(validator.region).to.equal(config.region)
       expect(validator.userPoolId).to.equal(config.userPoolId)
@@ -154,12 +156,12 @@ describe('Validator', () => {
     })
 
     it('Should return the correct issuer for the configured User Pool', () => {
-      const validator = new AWSCognitoJWTValidator(config)
+      const validator = new JWTValidator(config)
       expect(validator.iss).to.equal(`https://cognito-idp.${config.region}.amazonaws.com/${config.userPoolId}`)
     })
 
     it('Should return the correct JWKs url for the configured User Pool', () => {
-      const validator = new AWSCognitoJWTValidator(config)
+      const validator = new JWTValidator(config)
       expect(validator.jwksUrl).to.equal(
         `https://cognito-idp.${config.region}.amazonaws.com/${config.userPoolId}/.well-known/jwks.json`
       )
@@ -185,7 +187,7 @@ describe('Validator', () => {
 
     it('Should resolve if pems are already set', async () => {
       config = generateConfig({ withPems: true })
-      const validator = new AWSCognitoJWTValidator(config)
+      const validator = new JWTValidator(config)
       expect(validator.pems).to.deep.equal(config.pems)
       const scope = nock(validator.jwksUrl).get('').reply(httpStatus.OK, { keys: jwks })
       await expect(validator.init()).to.eventually.be.undefined
@@ -193,7 +195,7 @@ describe('Validator', () => {
     })
 
     it('Should reject with InitializationError if request to the JWKs endpoint returns a non 2xx code', async () => {
-      const validator = new AWSCognitoJWTValidator(config)
+      const validator = new JWTValidator(config)
       expect(validator.pems).to.be.null
       const scope = nock(validator.jwksUrl).get('').reply(httpStatus.NOT_FOUND)
       await expect(validator.init()).to.eventually.be.rejectedWith(
@@ -205,7 +207,7 @@ describe('Validator', () => {
     })
 
     it('Should reject with InitializationError if some JWK is invalid', async () => {
-      const validator = new AWSCognitoJWTValidator(config)
+      const validator = new JWTValidator(config)
       expect(validator.pems).to.be.null
       const scope = nock(validator.jwksUrl).get('').reply(httpStatus.OK, {
         keys: jwks.concat([{ value: chance.natural() }])
@@ -219,7 +221,7 @@ describe('Validator', () => {
     })
 
     it('Should set the instance pems correctly', async () => {
-      const validator = new AWSCognitoJWTValidator(config)
+      const validator = new JWTValidator(config)
       expect(validator.pems).to.be.null
       const scope = nock(validator.jwksUrl).get('').reply(httpStatus.OK, { keys: jwks })
       await expect(validator.init()).to.eventually.be.undefined
@@ -228,7 +230,7 @@ describe('Validator', () => {
     })
 
     it('Should return the same result if calling more than once and the promise is rejected', async () => {
-      const validator = new AWSCognitoJWTValidator(config)
+      const validator = new JWTValidator(config)
       expect(validator.pems).to.be.null
 
       // First call.
@@ -252,7 +254,7 @@ describe('Validator', () => {
     })
 
     it('Should return the same result if calling more than once and the promise is resolved', async () => {
-      const validator = new AWSCognitoJWTValidator(config)
+      const validator = new JWTValidator(config)
       expect(validator.pems).to.be.null
 
       // First call.
@@ -281,7 +283,7 @@ describe('Validator', () => {
       nock.cleanAll()
 
       const config = generateConfig()
-      validator = new AWSCognitoJWTValidator(config)
+      validator = new JWTValidator(config)
       expect(validator.pems).to.be.null
 
       const initScope = nock(validator.jwksUrl).get('').reply(httpStatus.OK, { keys: [jwk1] })
@@ -349,7 +351,7 @@ describe('Validator', () => {
 
     beforeEach(() => {
       const config = generateConfig()
-      validator = new AWSCognitoJWTValidator(config)
+      validator = new JWTValidator(config)
       tokenPayload = {
         email: chance.email(),
         email_verified: chance.bool()
@@ -456,7 +458,7 @@ describe('Validator', () => {
     it('Should reject with InvalidJWTError if token tokenUse is invalid', async () => {
       const config = generateConfig()
       config.tokenUse = [TOKEN_USE.ACCESS]
-      validator = new AWSCognitoJWTValidator(config)
+      validator = new JWTValidator(config)
       const initScope = nock(validator.jwksUrl).get('').reply(httpStatus.OK, { keys: jwks })
       const token = signToken('key_1', tokenPayload, {
         audience: chance.pickone(validator.audience),

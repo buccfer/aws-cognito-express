@@ -1,9 +1,9 @@
 'use strict'
 
-const { expect, httpStatus, sinon, chance } = require('./index')
-const { authenticationErrorHandler } = require('../src')
-const { InvalidJWTError } = require('../src/errors')
-const { AUTHENTICATION_SCHEME_HEADER, AUTHENTICATION_SCHEME } = require('../src/constants')
+const { expect, httpStatus, sinon, chance } = require('../index')
+const { authenticationError } = require('../../src')
+const { InvalidJWTError } = require('../../src/lib/errors')
+const { AUTHENTICATION_SCHEME_HEADER, AUTHENTICATION_SCHEME } = require('../../src/lib/constants')
 
 describe('Error handler', () => {
   const req = {}
@@ -12,7 +12,7 @@ describe('Error handler', () => {
   let next
 
   beforeEach(() => {
-    errorHandler = authenticationErrorHandler()
+    errorHandler = authenticationError()
     res = {
       /* eslint-disable no-unused-vars */
       status(statusCode) { return this },

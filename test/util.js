@@ -5,7 +5,7 @@ const path = require('path')
 const jwt = require('jsonwebtoken')
 const { pem2jwk } = require('pem-jwk')
 const { chance } = require('./index')
-const { TOKEN_USE } = require('../src/constants')
+const { TOKEN_USE } = require('../src/lib/constants')
 
 /**
  * @private

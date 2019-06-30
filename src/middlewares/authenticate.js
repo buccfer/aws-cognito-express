@@ -1,9 +1,9 @@
 'use strict'
 
-const debug = require('./debug')
-const AWSCognitoJWTValidator = require('./validator')
-const { AUTHORIZATION_HEADER, AUTHENTICATION_SCHEME } = require('./constants')
-const { InvalidJWTError } = require('./errors')
+const debug = require('../lib/debug')
+const JWTValidator = require('../lib/jwt-validator')
+const { AUTHORIZATION_HEADER, AUTHENTICATION_SCHEME } = require('../lib/constants')
+const { InvalidJWTError } = require('../lib/errors')
 
 /**
  * @description An Express authentication middleware generator.
@@ -31,7 +31,7 @@ const { InvalidJWTError } = require('./errors')
  * }));
  * */
 const authenticate = (config) => {
-  const jwtValidator = new AWSCognitoJWTValidator(config)
+  const jwtValidator = new JWTValidator(config)
 
   return async (req, res, next) => {
     const authorizationHeader = req.header(AUTHORIZATION_HEADER)

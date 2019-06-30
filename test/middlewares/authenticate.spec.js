@@ -1,10 +1,10 @@
 'use strict'
 
-const { expect, sinon, chance, nock, httpStatus, mockDate } = require('./index')
-const { generateConfig, signToken, jwks } = require('./util')
-const { AUTHORIZATION_HEADER, AUTHENTICATION_SCHEME } = require('../src/constants')
-const { authenticate } = require('../src')
-const { ConfigurationError, InvalidJWTError } = require('../src/errors')
+const { expect, sinon, chance, nock, httpStatus, mockDate } = require('../index')
+const { generateConfig, signToken, jwks } = require('../util')
+const { AUTHORIZATION_HEADER, AUTHENTICATION_SCHEME } = require('../../src/lib/constants')
+const { authenticate } = require('../../src')
+const { ConfigurationError, InvalidJWTError } = require('../../src/lib/errors')
 
 describe('Authenticate', () => {
   it('Should throw ConfigurationError if config is invalid', () => {

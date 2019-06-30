@@ -1,8 +1,8 @@
 'use strict'
 
 const httpStatus = require('http-status')
-const isAWSCognitoJWTValidatorError = require('./is-validator-error')
-const { AUTHENTICATION_SCHEME_HEADER, AUTHENTICATION_SCHEME } = require('./constants')
+const isJWTValidatorError = require('../lib/is-jwt-validator-error')
+const { AUTHENTICATION_SCHEME_HEADER, AUTHENTICATION_SCHEME } = require('../lib/constants')
 
 /**
  * @description An Express error handler generator.
@@ -14,13 +14,13 @@ const { AUTHENTICATION_SCHEME_HEADER, AUTHENTICATION_SCHEME } = require('./const
  * 'use strict';
  *
  * const express = require('express');
- * const { authenticationErrorHandler } = require('aws-cognito-express');
+ * const { authenticationError } = require('aws-cognito-express');
  *
  * const app = express();
- * app.use(authenticationErrorHandler());
+ * app.use(authenticationError());
  * */
-const authenticationErrorHandler = () => (err, req, res, next) => {
-  if (!isAWSCognitoJWTValidatorError(err)) return next(err)
+const authenticationError = () => (err, req, res, next) => {
+  if (!isJWTValidatorError(err)) return next(err)
 
   const statusCode = httpStatus.UNAUTHORIZED
 
@@ -33,4 +33,4 @@ const authenticationErrorHandler = () => (err, req, res, next) => {
     })
 }
 
-module.exports = authenticationErrorHandler
+module.exports = authenticationError

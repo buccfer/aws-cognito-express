@@ -18,7 +18,7 @@ const { InvalidJWTError } = require('./errors')
  * @returns {Promise<Object>} A promise that resolves to the decoded JWT payload if the verification
  * succeeds. Otherwise, it is rejected with the appropriate error.
  * */
-const verify = (token, pem, { audience, issuer, tokenUse }) => new Promise((resolve, reject) => {
+const verifyJwt = (token, pem, { audience, issuer, tokenUse }) => new Promise((resolve, reject) => {
   const opts = {
     algorithms: ['RS256'],
     complete: false,
@@ -38,4 +38,4 @@ const verify = (token, pem, { audience, issuer, tokenUse }) => new Promise((reso
   })
 })
 
-module.exports = verify
+module.exports = verifyJwt
