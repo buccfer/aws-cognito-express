@@ -6,7 +6,8 @@
   "scripts": {
     "lint": "eslint --format compact .",
     "test": "NODE_ENV=test nyc mocha 'test/**/*.spec.js'",
-    "coverage": "npm test && nyc report --reporter=text-lcov | coveralls"
+    "coverage": "npm test && nyc report --reporter=text-lcov | coveralls",
+    "docs": "jsdoc -c .jsdoc.json"
   },
   "repository": {
     "type": "git",
@@ -41,6 +42,7 @@
     "superagent": "^5.1.0"
   },
   "devDependencies": {
+    "better-docs": "^1.1.6",
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
     "chance": "^1.0.18",
@@ -48,6 +50,7 @@
     "eslint": "^5.16.0",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-plugin-import": "^2.18.0",
+    "jsdoc": "^3.6.2",
     "mocha": "^6.1.4",
     "mockdate": "^2.0.3",
     "nock": "^10.0.6",

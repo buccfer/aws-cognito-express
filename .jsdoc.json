@@ -1,0 +1,9 @@
+{
+  "source": {
+    "include": "src"
+  },
+  "opts": {
+    "recurse": true,
+    "template": "node_modules/better-docs"
+  }
+}
