@@ -66,3 +66,6 @@ typings/
 
 # Locks
 package-lock.json
+
+# jsdoc output
+out/
