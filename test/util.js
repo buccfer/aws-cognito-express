@@ -50,12 +50,12 @@ const pems = rsaKeyPairs.reduce(
 /**
  * @private
  *
- * @description Generates random configuration for a validator.
+ * @description Generates random configuration for a JWT Validator.
  *
  * @param {Object} opts - Options for config generator.
  * @param {boolean} opts.withPems - Whether config should include custom pems or not.
  *
- * @returns {Object} A configuration object to be used when instantiating a validator.
+ * @returns {Object} A configuration object to be used when instantiating a JWT Validator.
  * */
 function generateConfig(opts = {}) {
   const config = {
