@@ -13,7 +13,13 @@ describe('Authenticate middleware', () => {
     expect(() => authenticate(config)).to.throw(ConfigurationError, /"userPoolId" is required/)
   })
 
-  it('Should return a middleware')
+  it('Should return a middleware', () => {
+    const config = generateConfig()
+    const authenticateMiddleware = authenticate(config)
+    expect(authenticateMiddleware).to.be.a('function')
+    expect(authenticateMiddleware.length).to.equal(3)
+  })
+
   it(`Should call next with an InvalidJWTError if ${AUTHORIZATION_HEADER} header is missing`)
   it(`Should call next with an InvalidJWTError if authentication scheme is not ${AUTHENTICATION_SCHEME}`)
   it('Should call next with the error if the token is invalid')
