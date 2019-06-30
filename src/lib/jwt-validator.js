@@ -28,13 +28,13 @@ class JWTValidator {
   /**
    * @constructor
    *
-   * @description Instantiates a JWT validator.
+   * @description Instantiates a JWT Validator.
    *
    * @throws {ConfigurationError} The provided configuration is invalid.
    *
-   * @param {JWTValidatorConfig} config - The validator configuration.
+   * @param {JWTValidatorConfig} config - The JWT Validator configuration.
    *
-   * @returns {JWTValidator} A validator instance.
+   * @returns {JWTValidator} A JWT Validator instance.
    *
    * @example
    *
@@ -42,7 +42,7 @@ class JWTValidator {
    *
    * const { JWTValidator } = require('aws-cognito-express');
    *
-   * const validator = new JWTValidator({
+   * const jwtValidator = new JWTValidator({
    *   region: 'us-east-2',
    *   userPoolId: 'us-east-2_6IfDT7ZUq',
    *   tokenUse: ['id', 'access'],
@@ -83,7 +83,7 @@ class JWTValidator {
   /**
    * @private
    *
-   * @description Initializes a validator by getting the User Pool JWKs and converting them to pems.
+   * @description Initializes the validator by getting the User Pool JWKs and converting them to pems.
    *
    * @returns {Promise<undefined>} A promise that will be resolved if the validator could be
    * initialized successfully. Otherwise, it will be rejected with the appropriate error.
@@ -115,7 +115,7 @@ class JWTValidator {
   /**
    * @private
    *
-   * @description Refreshes a validator pems in case JWKs were rotated.
+   * @description Refreshes the validator pems in case JWKs were rotated.
    *
    * @returns {Promise<undefined>} A promise that will be resolved if the validator pems could be
    * refreshed successfully. Otherwise, it will be rejected with the appropriate error.
@@ -145,10 +145,10 @@ class JWTValidator {
    *
    * const { JWTValidator } = require('aws-cognito-express');
    *
-   * const validator = new JWTValidator({ ... });
+   * const jwtValidator = new JWTValidator({ ... });
    * const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...';
    *
-   * validator.validate(token)
+   * jwtValidator.validate(token)
    *  .then(jwtPayload => console.log(jwtPayload))
    *  .catch(err => console.error(err));
    * */
