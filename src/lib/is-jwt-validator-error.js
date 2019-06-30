@@ -14,16 +14,16 @@ const { BaseError } = require('./errors')
  *
  * 'use strict';
  *
- * const { AWSCognitoJWTValidator, isJWTValidatorError } = require('aws-cognito-express');
+ * const { JWTValidator, isJWTValidatorError } = require('aws-cognito-express');
  *
- * const validator = new AWSCognitoJWTValidator({ ... });
+ * const jwtValidator = new JWTValidator({ ... });
  * const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...';
  *
  * const err = new Error('Unexpected error');
  * isJWTValidatorError(err);
  * // => false
  *
- * validator.validate(token)
+ * jwtValidator.validate(token)
  *  .catch((err) => {
  *    isJWTValidatorError(err);
  *    // => true
