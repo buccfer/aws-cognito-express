@@ -16,6 +16,10 @@ class BaseError extends Error {
   }
 }
 
+/**
+ * Error which is thrown when the provided JWT Validator configuration is invalid.
+ * @category Errors
+ * */
 class ConfigurationError extends BaseError {
   /**
    * @private
@@ -29,6 +33,12 @@ class ConfigurationError extends BaseError {
   }
 }
 
+/**
+ * Error which is thrown when there's an error initializing the JWT Validator.
+ * The initialization process consists in getting the JWKs for the configured User Pool
+ * and convert them to pems.
+ * @category Errors
+ * */
 class InitializationError extends BaseError {
   /**
    * @private
@@ -41,6 +51,11 @@ class InitializationError extends BaseError {
   }
 }
 
+/**
+ * Error which is thrown when there's an error refreshing the JWT Validator pems.
+ * Refreshing the pems only takes place if JWKs are rotated.
+ * @category Errors
+ * */
 class RefreshError extends BaseError {
   /**
    * @private
@@ -53,6 +68,10 @@ class RefreshError extends BaseError {
   }
 }
 
+/**
+ * Error which is thrown when the provided JWT is invalid.
+ * @category Errors
+ * */
 class InvalidJWTError extends BaseError {}
 
 module.exports = {
