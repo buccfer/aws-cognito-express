@@ -2,6 +2,7 @@
   "source": {
     "include": "src"
   },
+  "sourceType": "script",
   "opts": {
     "recurse": true,
     "template": "node_modules/better-docs",
@@ -18,5 +19,8 @@
         }
       ]
     }
+  },
+  "tags": {
+    "allowUnknownTags": ["category"]
   }
 }
