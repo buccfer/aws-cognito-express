@@ -3,12 +3,8 @@
 class BaseError extends Error {
   /**
    * @private
-   * @constructor
-   *
    * @description Instantiates a BaseError.
-   *
    * @param {string} message - The error message.
-   *
    * @returns {BaseError} An instance of a BaseError.
    * */
   constructor(message) {
@@ -23,12 +19,8 @@ class BaseError extends Error {
 class ConfigurationError extends BaseError {
   /**
    * @private
-   * @constructor
-   *
    * @description Instantiates a ConfigurationError.
-   *
    * @param {Error} err - An instance of a Joi ValidationError.
-   *
    * @returns {ConfigurationError} An instance of a ConfigurationError.
    * */
   constructor(err) {
@@ -40,12 +32,8 @@ class ConfigurationError extends BaseError {
 class InitializationError extends BaseError {
   /**
    * @private
-   * @constructor
-   *
    * @description Instantiates an InitializationError.
-   *
    * @param {Error} err - An instance of an Error.
-   *
    * @returns {InitializationError} An instance of an InitializationError.
    * */
   constructor(err) {
@@ -56,12 +44,8 @@ class InitializationError extends BaseError {
 class RefreshError extends BaseError {
   /**
    * @private
-   * @constructor
-   *
    * @description Instantiates a RefreshError.
-   *
    * @param {InitializationError} err - An instance of an InitializationError.
-   *
    * @returns {RefreshError} An instance of a RefreshError.
    * */
   constructor(err) {
