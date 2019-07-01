@@ -10,7 +10,6 @@ const BaseError = require('./base-error')
  * */
 class InitializationError extends BaseError {
   /**
-   * @private
    * @description Instantiates an InitializationError.
    * @param {Error} err - An instance of an Error.
    * @returns {InitializationError} An instance of an InitializationError.

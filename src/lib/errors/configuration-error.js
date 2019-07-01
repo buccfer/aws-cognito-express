@@ -8,7 +8,6 @@ const BaseError = require('./base-error')
  * */
 class ConfigurationError extends BaseError {
   /**
-   * @private
    * @description Instantiates a ConfigurationError.
    * @param {Error} err - An instance of a Joi ValidationError.
    * @returns {ConfigurationError} An instance of a ConfigurationError.

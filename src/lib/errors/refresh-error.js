@@ -9,7 +9,6 @@ const BaseError = require('./base-error')
  * */
 class RefreshError extends BaseError {
   /**
-   * @private
    * @description Instantiates a RefreshError.
    * @param {InitializationError} err - An instance of an InitializationError.
    * @returns {RefreshError} An instance of a RefreshError.
