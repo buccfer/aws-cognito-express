@@ -5,6 +5,7 @@ const BaseError = require('./base-error')
 /**
  * Error which is thrown when the provided JWT Validator configuration is invalid.
  * @category Errors
+ * @hideconstructor
  * */
 class ConfigurationError extends BaseError {
   /**

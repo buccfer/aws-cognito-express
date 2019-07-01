@@ -6,6 +6,7 @@ const BaseError = require('./base-error')
  * Error which is thrown when there's an error refreshing the JWT Validator pems.
  * Refreshing the pems only takes place if JWKs are rotated.
  * @category Errors
+ * @hideconstructor
  * */
 class RefreshError extends BaseError {
   /**

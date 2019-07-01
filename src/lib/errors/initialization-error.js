@@ -7,6 +7,7 @@ const BaseError = require('./base-error')
  * The initialization process consists in getting the JWKs for the configured User Pool
  * and convert them to pems.
  * @category Errors
+ * @hideconstructor
  * */
 class InitializationError extends BaseError {
   /**
