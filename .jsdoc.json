@@ -22,5 +22,8 @@
   },
   "tags": {
     "allowUnknownTags": ["category"]
-  }
+  },
+  "plugins": [
+    "node_modules/better-docs/category"
+  ]
 }
