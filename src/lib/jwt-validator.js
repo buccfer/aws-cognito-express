@@ -26,14 +26,9 @@ const { ConfigurationError, InitializationError, RefreshError, InvalidJWTError }
 
 class JWTValidator {
   /**
-   * @constructor
-   *
    * @description Instantiates a JWT Validator.
-   *
    * @throws {ConfigurationError} The provided configuration is invalid.
-   *
    * @param {JWTValidatorConfig} config - The JWT Validator configuration.
-   *
    * @returns {JWTValidator} A JWT Validator instance.
    *
    * @example
@@ -60,9 +55,7 @@ class JWTValidator {
 
   /**
    * @private
-   *
    * @description Get the issuer for the configured User Pool.
-   *
    * @returns {string} The expected value of the JWT iss claim.
    * */
   get iss() {
@@ -71,9 +64,7 @@ class JWTValidator {
 
   /**
    * @private
-   *
    * @description Get the JWKs url for the configured User Pool.
-   *
    * @returns {string} The URL where the User Pool JWKs are located.
    * */
   get jwksUrl() {
@@ -82,9 +73,7 @@ class JWTValidator {
 
   /**
    * @private
-   *
    * @description Initializes the validator by getting the User Pool JWKs and converting them to pems.
-   *
    * @returns {Promise<undefined>} A promise that will be resolved if the validator could be
    * initialized successfully. Otherwise, it will be rejected with the appropriate error.
    * */
@@ -114,9 +103,7 @@ class JWTValidator {
 
   /**
    * @private
-   *
    * @description Refreshes the validator pems in case JWKs were rotated.
-   *
    * @returns {Promise<undefined>} A promise that will be resolved if the validator pems could be
    * refreshed successfully. Otherwise, it will be rejected with the appropriate error.
    * */
@@ -133,9 +120,7 @@ class JWTValidator {
 
   /**
    * @description Validates a JSON web token.
-   *
    * @param {string} token - The JSON web token to validate.
-   *
    * @returns {Promise<Object>} A promise that resolves to the JWT payload if the token is valid.
    * Otherwise, it will be rejected with the appropriate error.
    *
