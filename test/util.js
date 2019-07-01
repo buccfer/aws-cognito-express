@@ -9,11 +9,8 @@ const { TOKEN_USE } = require('../src/lib/constants')
 
 /**
  * @private
- *
  * @description Reads the given RSA key.
- *
  * @param {string} keyFileName - The key file name. Ex: 'key_1.pub'.
- *
  * @returns {string} - The content of the key file.
  * */
 function readRSAKey(keyFileName) {
@@ -49,12 +46,9 @@ const pems = rsaKeyPairs.reduce(
 
 /**
  * @private
- *
  * @description Generates random configuration for a JWT Validator.
- *
  * @param {Object} opts - Options for config generator.
  * @param {boolean} opts.withPems - Whether config should include custom pems or not.
- *
  * @returns {Object} A configuration object to be used when instantiating a JWT Validator.
  * */
 function generateConfig(opts = {}) {
@@ -72,11 +66,8 @@ function generateConfig(opts = {}) {
 
 /**
  * @private
- *
  * @description Creates a signed JWT.
- *
  * @throws {Error} The provided keyId doesn't match with any RSA Key ID.
- *
  * @param {string} keyId - The ID of the RSA key pair to use to sign the token.
  * @param {Object} payload - The JWT payload.
  * @param {Object} opts - Additional options to generate the JWT.
@@ -85,7 +76,6 @@ function generateConfig(opts = {}) {
  * @param {string} opts.tokenUse - A value for the token use (token_use) field. ('id' | 'access')
  * @param {number} [opts.expiresIn = 3600] - The number of seconds until the token expires.
  * @param {string} [opts.kid] - A custom value for the kid header.
- *
  * @returns {string} The signed JWT.
  * */
 function signToken(keyId, payload, opts) {
