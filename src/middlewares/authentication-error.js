@@ -6,6 +6,7 @@ const isJWTValidatorError = require('../lib/is-jwt-validator-error')
 const { AUTHENTICATION_SCHEME_HEADER, AUTHENTICATION_SCHEME } = require('../lib/constants')
 
 /**
+ * @category Express Middlewares
  * @description An Express authentication error handler generator.
  * @returns {Function} An Express authentication error handler.
  *

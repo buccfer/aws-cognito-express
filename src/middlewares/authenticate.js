@@ -6,6 +6,7 @@ const { AUTHORIZATION_HEADER, AUTHENTICATION_SCHEME } = require('../lib/constant
 const { InvalidJWTError } = require('../lib/errors')
 
 /**
+ * @category Express Middlewares
  * @description An Express authentication middleware generator.
  * @throws {ConfigurationError} The provided configuration is invalid.
  * @param {JWTValidatorConfig} config - The JWT Validator configuration.
