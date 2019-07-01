@@ -7,11 +7,8 @@ const { InvalidJWTError } = require('../lib/errors')
 
 /**
  * @description An Express authentication middleware generator.
- *
  * @throws {ConfigurationError} The provided configuration is invalid.
- *
  * @param {JWTValidatorConfig} config - The JWT Validator configuration.
- *
  * @returns {Function} An Express authentication middleware.
  *
  * @example
