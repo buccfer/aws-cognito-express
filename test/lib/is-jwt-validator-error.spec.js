@@ -1,7 +1,7 @@
 'use strict'
 
 const { expect, chance } = require('../index')
-const { isJWTValidatorError } = require('../../src')
+const { isJWTValidatorError } = require('../../index')
 const {
   ConfigurationError, InitializationError, RefreshError, InvalidJWTError
 } = require('../../src/lib/errors')

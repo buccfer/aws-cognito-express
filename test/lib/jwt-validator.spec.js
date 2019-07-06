@@ -2,7 +2,7 @@
 
 const { expect, chance, nock, httpStatus, mockDate } = require('../index')
 const { generateConfig, signToken, jwks, pems } = require('../util')
-const { JWTValidator } = require('../../src')
+const { JWTValidator } = require('../../index')
 const { DEFAULT_AWS_REGION, TOKEN_USE, REFRESH_WAIT_MS } = require('../../src/lib/constants')
 const {
   ConfigurationError, InitializationError, RefreshError, InvalidJWTError

@@ -1,7 +1,7 @@
 'use strict'
 
 const { expect, httpStatus, sinon, chance } = require('../index')
-const { authenticationError } = require('../../src')
+const { authenticationError } = require('../../index')
 const { InvalidJWTError } = require('../../src/lib/errors')
 const { AUTHENTICATION_SCHEME_HEADER, AUTHENTICATION_SCHEME } = require('../../src/lib/constants')
 
