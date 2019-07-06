@@ -6,7 +6,8 @@
   "opts": {
     "recurse": true,
     "template": "node_modules/better-docs",
-    "readme": "README.md"
+    "readme": "README.md",
+    "tutorials": "./tutorials"
   },
   "templates": {
     "better-docs": {
