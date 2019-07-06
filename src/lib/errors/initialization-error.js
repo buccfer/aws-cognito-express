@@ -13,7 +13,6 @@ class InitializationError extends BaseError {
   /**
    * @description Instantiates an InitializationError.
    * @param {Error} err - An instance of an Error.
-   * @returns {InitializationError} An instance of an InitializationError.
    * */
   constructor(err) {
     super(`Initialization failed: ${err.message}`)

@@ -11,7 +11,6 @@ class ConfigurationError extends BaseError {
   /**
    * @description Instantiates a ConfigurationError.
    * @param {Error} err - An instance of a Joi ValidationError.
-   * @returns {ConfigurationError} An instance of a ConfigurationError.
    * */
   constructor(err) {
     const errDescription = err.details.map(error => error.message).join(', ')
