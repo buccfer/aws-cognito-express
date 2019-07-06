@@ -1,6 +1,6 @@
 {
   "source": {
-    "include": "src"
+    "include": ["index.js", "src"]
   },
   "sourceType": "script",
   "opts": {

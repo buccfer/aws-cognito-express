@@ -7,7 +7,7 @@
     "lint": "eslint --format compact .",
     "test": "NODE_ENV=test nyc mocha 'test/**/*.spec.js'",
     "coverage": "npm test && nyc report --reporter=text-lcov | coveralls",
-    "docs": "jsdoc -c .jsdoc.json"
+    "docs": "jsdoc -c jsdoc.json"
   },
   "repository": {
     "type": "git",
