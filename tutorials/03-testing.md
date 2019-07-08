@@ -1,16 +1,16 @@
 If you are wondering how could you write your application tests without the need of creating a Cognito User Pool just for that, then we've got your back.
-Our JWT Validator has an additional property `pems` that you can provide in the constructor `config` parameter.
+The JWT Validator has an additional property `pems` that you can provide in the constructor `config` parameter.
  
-When a validator is instantiated with the `pems` property, no initialization process takes place. This means there won't be any http request to Cognito
+When a validator is instantiated with the `pems` property, no initialization process takes place. This means that there won't be any http request to Cognito
 to fetch the JWKS.
 
 In the following sections we illustrate how to set the `pems` property and how to create valid JWTs for testing.
 
-### 1. Setting custom pems for the JWT Validator.
+### 1. Setting custom pems.
 
-#### 1.1. Creating your RSA key pairs.
+#### 1.1. Creating an RSA key pair.
 
-In order to create your own JWTs for testing you will need a RSA key pair to sign those tokens. To generate an RSA key pair and
+In order to create your own JWTs for testing you will need a RSA key pair to sign those tokens. To generate a RSA key pair and
 store it in the `rsa_keys` folder you can use OpenSSL as follows:
 
 ```bash
@@ -30,12 +30,12 @@ The `pems` property must be set to a non-empty object with the following structu
 
 ```javascript
 const pems = {
-  key_1: '-----BEGIN PUBLIC KEY-----\n(...)\n-----END PUBLIC KEY-----\n',
-  key_2: '-----BEGIN PUBLIC KEY-----\n(...)\n-----END PUBLIC KEY-----\n'
+  key_1: '-----BEGIN PUBLIC KEY-----\n ... \n-----END PUBLIC KEY-----\n',
+  key_2: '-----BEGIN PUBLIC KEY-----\n ... \n-----END PUBLIC KEY-----\n'
 };
 ```
 
-where each key represents the value of the JWT `kid` header and each value is a string containing the PEM encoded RSA public key.
+where each key is the value of the JWT `kid` header and each value is a string containing the PEM encoded RSA public key.
 As an example:
 
 ```javascript
@@ -93,3 +93,58 @@ module.exports = app;
 ```
 
 ### 2. Creating valid JWTs for testing.
+
+When testing your code, you will want to generate valid JWTs to authenticate your users. You can use the `jsonwebtoken`
+library to accomplish that.
+
+First you have to install it:
+
+```bash
+$ npm install --save-dev jsonwebtoken
+```
+
+Now you can generate your own JWTs to authenticate users in your tests.
+
+```javascript
+'use strict';
+
+const fs = require('fs');
+const path = require('path');
+const jwt = require('jsonwebtoken');
+
+// The token use must be one of the token uses provided in the config. ('id'|'access')
+const token_use = 'access';
+
+// The JWT payload. It must include the `token_use` field.
+const payload = {
+  token_use,
+  email: 'john.doe@example.com',
+  email_verified: true,
+  // ...
+};
+
+// The RSA private key to be used to sign the JWT.
+const privateKey = fs.readFileSync(path.join(__dirname, 'rsa_keys', 'key.pem'), 'ascii');
+
+// The value of the JWT `kid` header. It must have a value such that `pems[keyid]` is the
+// public key of the given `privateKey`.
+const keyid = 'my_custom_key_id';
+
+// The value of the JWT `aud` field. It must be one of the audiences provided in the config.
+const audience = '55plsi2cl0o267lfusmgaf67pf';
+
+// The value of the JWT `iss` field. It must have the format https://cognito-idp.{region}.amazonaws.com/{userPoolId}
+const issuer = 'https://cognito-idp.us-east-2.amazonaws.com/us-east-2_6IfDT7ZUq';
+
+// Generate the token.
+const token = jwt.sign(payload, privateKey, {
+  algorithm: 'RS256',
+  expiresIn: 3600,
+  keyid,
+  audience,
+  issuer
+});
+
+console.log('Token: ', token);
+// => Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+```
