@@ -1,8 +1,8 @@
 {
-  "quick-start": {
+  "01-quick-start": {
     "title": "Quick Start"
   },
-  "custom-validation": {
+  "02-custom-validation": {
     "title": "Custom Validation and Error Handling"
   }
 }
