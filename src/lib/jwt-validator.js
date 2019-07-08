@@ -24,9 +24,6 @@ const { ConfigurationError, InitializationError, RefreshError, InvalidJWTError }
  * @property {Object} [pems = null] - The custom pems to be used to verify the token signature.
  * */
 
-/**
- * @category Utils
- * */
 class JWTValidator {
   /**
    * @description Instantiates a JWT Validator.
