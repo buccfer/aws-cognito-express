@@ -15,7 +15,7 @@ store it in the `rsa_keys` folder you can use OpenSSL as follows:
 
 ```bash
 # Create destination folder.
-mkdir -p rsa_keys
+$ mkdir -p rsa_keys
 
 # Generate private key.
 $ openssl genrsa -out rsa_keys/key.pem 2048
