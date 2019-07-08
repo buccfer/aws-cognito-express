@@ -24,6 +24,72 @@ $ openssl genrsa -out rsa_keys/key.pem 2048
 $ openssl rsa -in rsa_keys/key.pem -pubout -out rsa_keys/key.pub
 ```
 
-#### 1.2. Setting the 'pems' property.
+#### 1.2. Setting the pems property.
+
+The `pems` property must be set to a non-empty object with the following structure:
+
+```javascript
+const pems = {
+  key_1: '-----BEGIN PUBLIC KEY-----\n(...)\n-----END PUBLIC KEY-----\n',
+  key_2: '-----BEGIN PUBLIC KEY-----\n(...)\n-----END PUBLIC KEY-----\n'
+};
+```
+
+where each key represents the value of the JWT `kid` header and each value is a string containing the PEM encoded RSA public key.
+As an example:
+
+```javascript
+'use strict';
+
+const fs = require('fs');
+const path = require('path');
+const { JWTValidator } = require('aws-cognito-express');
+
+const jwtValidatorConfig = {
+  region: 'us-east-2',
+  userPoolId: 'us-east-2_6IfDT7ZUq',
+  tokenUse: ['id', 'access'],
+  audience: ['55plsi2cl0o267lfusmgaf67pf']
+};
+
+if (process.env.NODE_ENV === 'test') {
+  jwtValidatorConfig.pems = {
+    my_custom_key_id: fs.readFileSync(path.join(__dirname, 'rsa_keys', 'key.pub'), 'ascii')
+  };
+}
+
+const jwtValidator = new JWTValidator(jwtValidatorConfig);
+```
+
+**NOTE**: If you are using the Express.js authentication middleware provided by this library, then you should provide the `pems`
+property in the `config` parameter of the `authenticate` function:
+
+```javascript
+'use strict';
+
+const fs = require('fs');
+const path = require('path');
+const express = require('express');
+const { authenticate } = require('aws-cognito-express');
+
+const app = express();
+
+const authenticateConfig = {
+  region: 'us-east-2',
+  userPoolId: 'us-east-2_6IfDT7ZUq',
+  tokenUse: ['id', 'access'],
+  audience: ['55plsi2cl0o267lfusmgaf67pf']
+};
+
+if (process.env.NODE_ENV === 'test') {
+  authenticateConfig.pems = {
+    my_custom_key_id: fs.readFileSync(path.join(__dirname, 'rsa_keys', 'key.pub'), 'ascii')
+  };
+}
+
+app.use(authenticate(authenticateConfig));
+
+module.exports = app;
+```
 
 ### 2. Creating valid JWTs for testing.
