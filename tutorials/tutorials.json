@@ -4,5 +4,8 @@
   },
   "02-custom-validation": {
     "title": "Custom Validation and Error Handling"
+  },
+  "03-testing": {
+    "title": "Testing"
   }
 }
