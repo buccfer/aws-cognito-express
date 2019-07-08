@@ -1,11 +1,11 @@
 If you are not using Express.js or even if you want to write your custom authentication and error handling logic, we've got your back.
 This module exports some helpers for you to use.
 
-##### 1. Validating tokens.
+### 1. Validating tokens.
 
 To write your custom authentication logic, you can make use of the `JWTValidator` class.
 
-**IMPORTANT**: You must instantiate a validator only **once** and then use it to validate the tokens in each request.
+**IMPORTANT**: You must instantiate a validator **only once** and then use it to validate the tokens in each request.
 To be initialized, validators make an http request to the Cognito's JWKS endpoint. So if you instantiate a new validator
 for each request, you will have unnecessary overhead due to the initialization process.
 
@@ -28,7 +28,7 @@ jwtValidator.validate(token)
   .catch(err => console.error(err));
 ```
 
-##### 2. Handling validation errors.
+### 2. Handling validation errors.
 
 This module exports a convenient function `isJWTValidatorError` that you can use in your custom error handlers to verify
 if the error was thrown by the JWT validator.
