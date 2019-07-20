@@ -10,11 +10,11 @@
 
 ![Logo](images/logo.png)
 
-This library authenticates requests on a Node.js application by verifying the JWTs issued by AWS Cognito.
+This module authenticates requests on a Node.js application by verifying the `Access` and `ID` tokens issued by AWS Cognito.
 It implements the [AWS Guideline for JWT validation](https://docs.aws.amazon.com/cognito/latest/developerguide/amazon-cognito-user-pools-using-tokens-verifying-a-jwt.html).
 
 ## Table of contents
-- [Use case](#use-case)
+- [Use cases](#use-cases)
 - [Features](#features)
 - [Prerequisites](#prerequisites)
 - [Installation](#installation)
@@ -22,7 +22,13 @@ It implements the [AWS Guideline for JWT validation](https://docs.aws.amazon.com
 - [Releases](https://github.com/buccfer/aws-cognito-jwt-validator/wiki/Changelog)
 - [Responsible disclosure](#responsible-disclosure)
 
-## Use case
+## Use cases
+This module offers an out of the box solution to authenticate requests on an Express.js application by verifying the AWS Cognito JWTs sent in the `Authorization` header using the [Bearer scheme](https://tools.ietf.org/html/rfc6750). 
+
+Besides, it was designed so that it has the maximum flexibility. So, if you are not using Express.js, you can still use the `JWTValidator` class and create your custom authentication flow.
+
+In the following picture, we illustrate which part of the authentication flow is covered by this module.
+
 ![Authentication Flow](https://www.lucidchart.com/publicSegments/view/567ce1d8-394e-42a5-90a1-f35671a150a5/image.png)
 
 ## Features
