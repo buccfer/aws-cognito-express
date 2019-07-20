@@ -23,6 +23,7 @@ It implements the [AWS Guideline for JWT validation](https://docs.aws.amazon.com
 - [Responsible disclosure](#responsible-disclosure)
 
 ## Use case
+![Authentication Flow](https://www.lucidchart.com/publicSegments/view/567ce1d8-394e-42a5-90a1-f35671a150a5/image.png)
 
 ## Features
 
