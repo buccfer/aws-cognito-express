@@ -1,7 +1,7 @@
 {
   "name": "aws-cognito-express",
   "version": "0.0.0",
-  "description": "AWS Cognito JWT validation for Node.js",
+  "description": "Verification of Access and ID tokens issued by AWS Cognito for Node.js",
   "main": "index.js",
   "scripts": {
     "lint": "eslint --format compact .",
@@ -15,10 +15,11 @@
   },
   "keywords": [
     "aws",
+    "amazon",
     "cognito",
-    "jwt",
-    "validation",
-    "node"
+    "express",
+    "authentication",
+    "jwt"
   ],
   "author": "Fernando Buccella",
   "license": "MIT",
