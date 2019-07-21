@@ -8,7 +8,7 @@
 [![Dev Dependencies](https://img.shields.io/david/dev/buccfer/aws-cognito-jwt-validator.svg)](https://david-dm.org/buccfer/aws-cognito-jwt-validator?type=dev)
 [![License](https://badgen.net/badge/license/MIT/blue)](LICENSE)
 
-![Logo](images/logo.png)
+![Logo](https://s3.us-east-2.amazonaws.com/assets.buccfer.io/aws-cognito-express/logo_333x333.png)
 
 This module authenticates requests on a Node.js application by verifying the `Access` and `ID` tokens issued by AWS Cognito.
 It implements the [AWS Guideline for JWT validation](https://docs.aws.amazon.com/cognito/latest/developerguide/amazon-cognito-user-pools-using-tokens-verifying-a-jwt.html).

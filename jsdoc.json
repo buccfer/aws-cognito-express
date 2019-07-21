@@ -12,7 +12,6 @@
   "templates": {
     "better-docs": {
       "name": "aws-cognito-express",
-      "logo": "https://lh3.googleusercontent.com/a-/AAuE7mB4K2UHaFnaVtfkkBJgMNQGkDvWJsRRENHBkQm_=s96",
       "navigation": [
         {
           "label": "Github",
