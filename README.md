@@ -48,7 +48,7 @@ You will need:
 
 1. An AWS account. If you don't have one you can sign up [here](https://aws.amazon.com).
 2. A Cognito User Pool configured with at least one client application.
-3. This module uses `async/await` so `Node.js >= 7.6` is required.
+3. Node.js 8 or above.
 
 ## Installation
 ```bash
