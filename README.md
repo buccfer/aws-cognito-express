@@ -41,13 +41,16 @@ The following are the features included in this module:
   - Verify that the issuer (iss) claim is valid for the configured user pool.
   - Verify that the token_use claim matches one of the valid token uses provided in the configuration.
 - Support for JWKs rotation as per described in the [JWT signing key rotation](https://forums.aws.amazon.com/thread.jspa?threadID=241570) thread.
+- Ability to set custom pems for local testing without the need of creating a User Pool.
 
 ## Prerequisites
-- Node.js >= 8
-- NPM >= 5
+You will need:
+
+1. An AWS account. If you don't have one you can sign up [here](https://aws.amazon.com).
+2. A Cognito User Pool configured with at least one client application.
+3. This module uses `async/await` so `Node.js >= 7.6` is required.
 
 ## Installation
-
 ```bash
 $ npm install --save aws-cognito-express
 ```
