@@ -32,6 +32,15 @@ In the following picture, we illustrate which part of the authentication flow is
 ![Authentication Flow](https://www.lucidchart.com/publicSegments/view/567ce1d8-394e-42a5-90a1-f35671a150a5/image.png)
 
 ## Features
+The following are the features included in this module:
+
+- JWT signature verification.
+- JWT claims verification.
+  - Verify that the token is not expired.
+  - Verify that the audience (aud) claim matches one of the valid audiences provided in the configuration.
+  - Verify that the issuer (iss) claim is valid for the configured user pool.
+  - Verify that the token_use claim matches one of the valid token uses provided in the configuration.
+- Support for JWKs rotation as per described in the [JWT signing key rotation](https://forums.aws.amazon.com/thread.jspa?threadID=241570) thread.
 
 ## Prerequisites
 - Node.js >= 8
