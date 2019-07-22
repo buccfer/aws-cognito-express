@@ -1,11 +1,11 @@
 # AWS Cognito Express
 
-[![Build Status](https://travis-ci.org/buccfer/aws-cognito-jwt-validator.svg?branch=dev)](https://travis-ci.org/buccfer/aws-cognito-jwt-validator)
-[![Maintainability](https://api.codeclimate.com/v1/badges/7172455c3a7c41d0c619/maintainability)](https://codeclimate.com/github/buccfer/aws-cognito-jwt-validator/maintainability)
-[![Coverage Status](https://coveralls.io/repos/github/buccfer/aws-cognito-jwt-validator/badge.svg?branch=dev)](https://coveralls.io/github/buccfer/aws-cognito-jwt-validator?branch=dev)
-[![Known Vulnerabilities](https://snyk.io/test/github/buccfer/aws-cognito-jwt-validator/badge.svg?targetFile=package.json)](https://snyk.io/test/github/buccfer/aws-cognito-jwt-validator?targetFile=package.json)
-[![Dependencies](https://img.shields.io/david/buccfer/aws-cognito-jwt-validator.svg)](https://david-dm.org/buccfer/aws-cognito-jwt-validator)
-[![Dev Dependencies](https://img.shields.io/david/dev/buccfer/aws-cognito-jwt-validator.svg)](https://david-dm.org/buccfer/aws-cognito-jwt-validator?type=dev)
+[![Build Status](https://travis-ci.org/buccfer/aws-cognito-express.svg?branch=master)](https://travis-ci.org/buccfer/aws-cognito-express)
+[![Maintainability](https://api.codeclimate.com/v1/badges/8d53f5de9594eab264e2/maintainability)](https://codeclimate.com/github/buccfer/aws-cognito-express/maintainability)
+[![Coverage Status](https://coveralls.io/repos/github/buccfer/aws-cognito-express/badge.svg?branch=master)](https://coveralls.io/github/buccfer/aws-cognito-express?branch=master)
+[![Known Vulnerabilities](https://snyk.io/test/github/buccfer/aws-cognito-express/badge.svg?targetFile=package.json)](https://snyk.io/test/github/buccfer/aws-cognito-express?targetFile=package.json)
+[![Dependencies](https://img.shields.io/david/buccfer/aws-cognito-express.svg)](https://david-dm.org/buccfer/aws-cognito-express)
+[![Dev Dependencies](https://img.shields.io/david/dev/buccfer/aws-cognito-express.svg)](https://david-dm.org/buccfer/aws-cognito-express?type=dev)
 [![License](https://badgen.net/badge/license/MIT/blue)](LICENSE)
 
 ![Logo](https://s3.us-east-2.amazonaws.com/assets.buccfer.io/aws-cognito-express/logo_333x333.png)
@@ -18,8 +18,8 @@ It implements the [AWS Guideline for JWT validation](https://docs.aws.amazon.com
 - [Features](#features)
 - [Prerequisites](#prerequisites)
 - [Installation](#installation)
-- [Documentation](#documentation)
-- [Releases](https://github.com/buccfer/aws-cognito-jwt-validator/wiki/Changelog)
+- [Documentation](https://buccfer.github.io/aws-cognito-express)
+- [Releases](https://github.com/buccfer/aws-cognito-express/wiki/Changelog)
 - [Responsible disclosure](#responsible-disclosure)
 
 ## Use cases
@@ -54,9 +54,6 @@ You will need:
 ```bash
 $ npm install --save aws-cognito-express
 ```
-
-## Documentation
-TODO.
 
 ## Responsible disclosure
 If you have any security issue to report, contact project maintainers privately. You can find contact information in [CONTACT.md](CONTACT.md).
