@@ -1,0 +1,29 @@
+{
+  "source": {
+    "include": ["index.js", "src"]
+  },
+  "sourceType": "script",
+  "opts": {
+    "recurse": true,
+    "template": "node_modules/better-docs",
+    "readme": "README.md",
+    "tutorials": "./tutorials"
+  },
+  "templates": {
+    "better-docs": {
+      "name": "aws-cognito-express",
+      "navigation": [
+        {
+          "label": "Github",
+          "href": "https://github.com/buccfer/aws-cognito-jwt-validator"
+        }
+      ]
+    }
+  },
+  "tags": {
+    "allowUnknownTags": ["category"]
+  },
+  "plugins": [
+    "node_modules/better-docs/category"
+  ]
+}

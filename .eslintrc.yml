@@ -1,0 +1,17 @@
+extends: airbnb-base
+
+env:
+  node: true
+  mocha: true
+
+parserOptions:
+  ecmaVersion: 2017
+  sourceType: script
+
+rules:
+  'comma-dangle': ['error', 'never']
+  'strict': ['error', 'global']
+  'max-len': ['error', { code: 120 }]
+  'semi': ['error', 'never']
+  'no-trailing-spaces': ['error', { skipBlankLines: true }]
+  'object-curly-newline': ['error', { consistent: true }]

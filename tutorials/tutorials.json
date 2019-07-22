@@ -1,0 +1,11 @@
+{
+  "01-quick-start": {
+    "title": "Quick Start"
+  },
+  "02-custom-validation": {
+    "title": "Custom Validation & Error Handling"
+  },
+  "03-testing": {
+    "title": "Testing"
+  }
+}
