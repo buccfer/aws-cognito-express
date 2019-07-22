@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.org/buccfer/aws-cognito-express.svg?branch=master)](https://travis-ci.org/buccfer/aws-cognito-express)
 [![Maintainability](https://api.codeclimate.com/v1/badges/8d53f5de9594eab264e2/maintainability)](https://codeclimate.com/github/buccfer/aws-cognito-express/maintainability)
 [![Coverage Status](https://coveralls.io/repos/github/buccfer/aws-cognito-express/badge.svg?branch=master)](https://coveralls.io/github/buccfer/aws-cognito-express?branch=master)
-[![Known Vulnerabilities](https://snyk.io/test/github/buccfer/aws-cognito-jwt-validator/badge.svg?targetFile=package.json)](https://snyk.io/test/github/buccfer/aws-cognito-jwt-validator?targetFile=package.json)
+[![Known Vulnerabilities](https://snyk.io/test/github/buccfer/aws-cognito-express/badge.svg?targetFile=package.json)](https://snyk.io/test/github/buccfer/aws-cognito-express?targetFile=package.json)
 [![Dependencies](https://img.shields.io/david/buccfer/aws-cognito-jwt-validator.svg)](https://david-dm.org/buccfer/aws-cognito-jwt-validator)
 [![Dev Dependencies](https://img.shields.io/david/dev/buccfer/aws-cognito-jwt-validator.svg)](https://david-dm.org/buccfer/aws-cognito-jwt-validator?type=dev)
 [![License](https://badgen.net/badge/license/MIT/blue)](LICENSE)
