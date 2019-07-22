@@ -18,8 +18,8 @@ It implements the [AWS Guideline for JWT validation](https://docs.aws.amazon.com
 - [Features](#features)
 - [Prerequisites](#prerequisites)
 - [Installation](#installation)
-- [Documentation](#documentation)
-- [Releases](https://github.com/buccfer/aws-cognito-jwt-validator/wiki/Changelog)
+- [Documentation](https://buccfer.github.io/aws-cognito-express)
+- [Releases](https://github.com/buccfer/aws-cognito-express/wiki/Changelog)
 - [Responsible disclosure](#responsible-disclosure)
 
 ## Use cases
@@ -54,9 +54,6 @@ You will need:
 ```bash
 $ npm install --save aws-cognito-express
 ```
-
-## Documentation
-TODO.
 
 ## Responsible disclosure
 If you have any security issue to report, contact project maintainers privately. You can find contact information in [CONTACT.md](CONTACT.md).
