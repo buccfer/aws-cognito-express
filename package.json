@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/buccfer/aws-cognito-jwt-validator.git"
+    "url": "git+https://github.com/buccfer/aws-cognito-express.git"
   },
   "keywords": [
     "aws",
@@ -24,9 +24,9 @@
   "author": "Fernando Buccella",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/buccfer/aws-cognito-jwt-validator/issues"
+    "url": "https://github.com/buccfer/aws-cognito-express/issues"
   },
-  "homepage": "https://github.com/buccfer/aws-cognito-jwt-validator#readme",
+  "homepage": "https://github.com/buccfer/aws-cognito-express#readme",
   "engines": {
     "node": ">=8.x",
     "npm": ">=5.x"
