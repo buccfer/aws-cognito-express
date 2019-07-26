@@ -12,7 +12,6 @@ $ npm install --save aws-cognito-express
 #### 3. Add the authentication middleware and error handler to your Express.js application:
 ```javascript
 // app.js
-
 'use strict';
 
 const express = require('express');

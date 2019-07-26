@@ -2,10 +2,13 @@
   "01-quick-start": {
     "title": "Quick Start"
   },
-  "02-custom-validation": {
-    "title": "Custom Validation & Error Handling"
+  "02-fetch-user-from-database": {
+    "title": "Fetching the user from a database"
   },
-  "03-testing": {
+  "03-custom-validation": {
+    "title": "Custom validation & error handling"
+  },
+  "04-testing": {
     "title": "Testing"
   }
 }
