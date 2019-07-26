@@ -11,6 +11,7 @@
   },
   "templates": {
     "better-docs": {
+      "logo": "https://s3.us-east-2.amazonaws.com/assets.buccfer.io/aws-cognito-express/logo_transparent_background_83x83.png",
       "name": "aws-cognito-express",
       "navigation": [
         {
