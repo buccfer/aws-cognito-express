@@ -10,5 +10,8 @@
   },
   "04-testing": {
     "title": "Testing"
+  },
+  "05-debugging": {
+    "title": "Debugging"
   }
 }
