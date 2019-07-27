@@ -26,6 +26,7 @@ async function fetchUser(req, res, next) {
     const user = await User.findOne({ email });
 
     if (!user) {
+      // NOTE: You should create an error handler for http errors.
       return next(new HttpErrors.Unauthorized(`User with email ${email} does not exist`));
     }
 
@@ -50,5 +51,25 @@ module.exports = compose([
 Finally, you can use your custom middleware as follows:
 
 ```javascript
-TODO
+// app.js
+'use strict';
+
+const express = require('express');
+const { authenticationError } = require('aws-cognito-express');
+const customAuthenticationMiddleware = require('./authentication.middleware');
+
+const app = express();
+
+// Add the custom authentication middleware.
+app.use(customAuthenticationMiddleware);
+
+// Protected route.
+app.get('/articles', (req, res, next) => {
+  console.log('Logged in user: ', req.user);
+});
+
+// Add the authentication error handler.
+app.use(authenticationError());
+
+module.exports = app;
 ```
