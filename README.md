@@ -1,5 +1,7 @@
 # AWS Cognito Express
 
+[![NPM](https://nodei.co/npm/aws-cognito-express.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/aws-cognito-express/)
+
 [![Build Status](https://travis-ci.org/buccfer/aws-cognito-express.svg?branch=master)](https://travis-ci.org/buccfer/aws-cognito-express)
 [![Maintainability](https://api.codeclimate.com/v1/badges/8d53f5de9594eab264e2/maintainability)](https://codeclimate.com/github/buccfer/aws-cognito-express/maintainability)
 [![Coverage Status](https://coveralls.io/repos/github/buccfer/aws-cognito-express/badge.svg?branch=master)](https://coveralls.io/github/buccfer/aws-cognito-express?branch=master)
