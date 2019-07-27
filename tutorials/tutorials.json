@@ -1,9 +1,9 @@
 {
   "01-quick-start": {
-    "title": "Quick Start"
+    "title": "Quick start"
   },
   "02-fetch-user-from-database": {
-    "title": "Fetching the user from a database"
+    "title": "Fetching users from the database"
   },
   "03-custom-validation": {
     "title": "Custom validation & error handling"
