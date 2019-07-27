@@ -6,7 +6,7 @@ In the following example we will use the [compose-middleware](https://www.npmjs.
 our own authentication middleware that will:
 
 1. Validate the JWT.
-2. If the JWT is valid, it will fetch the user from the `User` MongoDB collection.
+2. If the JWT is valid, it will fetch the user from the *User* MongoDB collection.
 
 ```javascript
 // authentication.middleware.js
