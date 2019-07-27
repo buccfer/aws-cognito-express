@@ -1,5 +1,7 @@
 # AWS Cognito Express
 
+[![NPM](https://nodei.co/npm/aws-cognito-express.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/aws-cognito-express/)
+
 [![Build Status](https://travis-ci.org/buccfer/aws-cognito-express.svg?branch=master)](https://travis-ci.org/buccfer/aws-cognito-express)
 [![Maintainability](https://api.codeclimate.com/v1/badges/8d53f5de9594eab264e2/maintainability)](https://codeclimate.com/github/buccfer/aws-cognito-express/maintainability)
 [![Coverage Status](https://coveralls.io/repos/github/buccfer/aws-cognito-express/badge.svg?branch=master)](https://coveralls.io/github/buccfer/aws-cognito-express?branch=master)
@@ -18,7 +20,7 @@ It implements the [AWS Guideline for JWT validation](https://docs.aws.amazon.com
 - [Features](#features)
 - [Prerequisites](#prerequisites)
 - [Installation](#installation)
-- [Documentation](https://buccfer.github.io/aws-cognito-express)
+- [Documentation](https://buccfer.github.io/aws-cognito-express/tutorial-01-quick-start.html)
 - [Releases](https://github.com/buccfer/aws-cognito-express/wiki/Changelog)
 - [Responsible disclosure](#responsible-disclosure)
 

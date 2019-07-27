@@ -1,17 +1,18 @@
-If you are wondering how could you write your application tests without the need of creating a Cognito User Pool just for that, then we've got your back.
-The JWT Validator has an additional property `pems` that you can provide in the constructor `config` parameter.
+If you want to write your application tests without the need of creating a Cognito User Pool, instances of the 
+[JWTValidator](JWTValidator.html) class have an additional property **pems** that you can provide in the constructor **config** 
+parameter.
  
-When a validator is instantiated with the `pems` property, no initialization process takes place. This means that there won't be any http request to Cognito
-to fetch the JWKS.
+When a JWT validator is instantiated with the *pems* property, no initialization process takes place. This means that there 
+won't be any http request to Cognito to fetch the JWKS.
 
-In the following sections we illustrate how to set the `pems` property and how to create valid JWTs for testing.
+In the following sections we illustrate how to set the *pems* property and how to create valid JWTs for testing.
 
-### 1. Setting custom pems.
+## 1. Setting custom pems
 
-#### 1.1. Creating an RSA key pair.
+#### 1.1. Creating an RSA key pair
 
-In order to create your own JWTs for testing you will need a RSA key pair to sign those tokens. To generate a RSA key pair and
-store it in the `rsa_keys` folder you can use OpenSSL as follows:
+In order to create your own JWTs for testing you will first need a RSA key pair to sign those tokens. To generate a RSA key pair 
+and store it in the *rsa_keys* folder you can use OpenSSL as follows:
 
 ```bash
 # Create destination folder.
@@ -24,9 +25,9 @@ $ openssl genrsa -out rsa_keys/key.pem 2048
 $ openssl rsa -in rsa_keys/key.pem -pubout -out rsa_keys/key.pub
 ```
 
-#### 1.2. Setting the pems property.
+#### 1.2. Setting the pems property
 
-The `pems` property must be set to a non-empty object with the following structure:
+The *pems* property must be set to a non-empty object with the following structure:
 
 ```javascript
 const pems = {
@@ -35,7 +36,7 @@ const pems = {
 };
 ```
 
-where each key is the value of the JWT `kid` header and each value is a string containing the PEM encoded RSA public key.
+where each key is the value of the JWT *kid* header and each value is a string containing the PEM encoded RSA public key.
 As an example:
 
 ```javascript
@@ -61,8 +62,8 @@ if (process.env.NODE_ENV === 'test') {
 const jwtValidator = new JWTValidator(jwtValidatorConfig);
 ```
 
-**NOTE**: If you are using the Express.js authentication middleware provided by this library, then you should provide the `pems`
-property in the `config` parameter of the `authenticate` function:
+If you are using the Express.js authentication middleware provided by this library, then you should provide the *pems*
+property in the *config* parameter of the [authenticate](global.html#authenticate) function as follows:
 
 ```javascript
 'use strict';
@@ -92,18 +93,17 @@ app.use(authenticate(authenticateConfig));
 module.exports = app;
 ```
 
-### 2. Creating valid JWTs for testing.
+## 2. Creating valid JWTs for testing
 
-When testing your code, you will want to generate valid JWTs to authenticate your users. You can use the `jsonwebtoken`
-library to accomplish that.
-
-First you have to install it:
+To generate valid JWTs to authenticate your users in your tests, you can use the [jsonwebtoken](https://www.npmjs.com/package/jsonwebtoken) 
+library. Since the JWTs you are going to create are just for testing purposes, you only need to install the *jsonwebtoken* 
+library as a dev dependency.
 
 ```bash
 $ npm install --save-dev jsonwebtoken
 ```
 
-Now you can generate your own JWTs to authenticate users in your tests.
+In the example below, we illustrate how to create a JWT such that the JWT validator recognizes it as a valid token.
 
 ```javascript
 'use strict';
