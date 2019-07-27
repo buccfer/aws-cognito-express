@@ -21,3 +21,11 @@ jobs:
         target_branch: gh-pages
         keep_history: false
         committer_from_gh: true
+    - stage: Deploy to NPM
+      deploy:
+        provider: npm
+        email: fer.buccella@gmail.com
+        api_key: $NPM_AUTH_TOKEN
+        on:
+          tags: true
+          branch: master
