@@ -18,7 +18,7 @@ It implements the [AWS Guideline for JWT validation](https://docs.aws.amazon.com
 - [Features](#features)
 - [Prerequisites](#prerequisites)
 - [Installation](#installation)
-- [Documentation](https://buccfer.github.io/aws-cognito-express)
+- [Documentation](https://buccfer.github.io/aws-cognito-express/tutorial-01-quick-start.html)
 - [Releases](https://github.com/buccfer/aws-cognito-express/wiki/Changelog)
 - [Responsible disclosure](#responsible-disclosure)
 
