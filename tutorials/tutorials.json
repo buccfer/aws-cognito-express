@@ -5,8 +5,8 @@
   "02-fetch-user-from-database": {
     "title": "Fetching users from a database"
   },
-  "03-custom-validation": {
-    "title": "Custom validation & error handling"
+  "03-custom-authentication": {
+    "title": "Custom authentication flow"
   },
   "04-testing": {
     "title": "Testing"
