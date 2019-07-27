@@ -3,7 +3,7 @@
     "title": "Quick start"
   },
   "02-fetch-user-from-database": {
-    "title": "Fetching users from the database"
+    "title": "Fetching users from a database"
   },
   "03-custom-validation": {
     "title": "Custom validation & error handling"
