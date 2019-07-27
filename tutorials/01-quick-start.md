@@ -1,15 +1,15 @@
-#### 1. Make sure you have Node.js >= 8
+##### 1. Make sure you have Node.js >= 8
 ```bash
 $ node -v
 => v10.16.0
 ```
 
-#### 2. Install aws-cognito-express using npm
+##### 2. Install aws-cognito-express using npm
 ```bash
 $ npm install --save aws-cognito-express
 ```
 
-#### 3. Add the authentication middleware and error handler to your Express.js application
+##### 3. Add the authentication middleware and error handler to your Express.js application
 ```javascript
 // app.js
 'use strict';
