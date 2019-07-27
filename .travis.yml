@@ -27,5 +27,3 @@ jobs:
         provider: npm
         email: fer.buccella@gmail.com
         api_key: $NPM_AUTH_TOKEN
-        on:
-          tags: true
