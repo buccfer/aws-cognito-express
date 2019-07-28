@@ -13,6 +13,7 @@
     "better-docs": {
       "logo": "https://s3.us-east-2.amazonaws.com/assets.buccfer.io/aws-cognito-express/logo_transparent_background_83x83.png",
       "name": "aws-cognito-express",
+      "trackingCode": "<!-- Global site tag (gtag.js) - Google Analytics -->\n<script async src=\"https://www.googletagmanager.com/gtag/js?id=UA-144732690-1\"></script>\n<script>\n  window.dataLayer = window.dataLayer || [];\n  function gtag(){dataLayer.push(arguments);}\n  gtag('js', new Date());\n\n  gtag('config', 'UA-144732690-1');\n</script>\n",
       "navigation": [
         {
           "label": "Github",
