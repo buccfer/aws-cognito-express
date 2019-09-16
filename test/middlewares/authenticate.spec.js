@@ -50,7 +50,7 @@ describe('Authenticate', () => {
     })
 
     it(`Should call next with an InvalidJWTError if ${AUTHORIZATION_HEADER} header is missing`, async () => {
-      req = { header: name => undefined } // eslint-disable-line no-unused-vars
+      req = { header: (name) => undefined } // eslint-disable-line no-unused-vars
       await authenticateMiddleware(req, res, next)
       expect(next.calledOnce).to.be.true
       const err = next.getCall(0).args[0]
@@ -64,7 +64,7 @@ describe('Authenticate', () => {
         issuer,
         tokenUse: chance.pickone(config.tokenUse)
       })
-      req = { header: name => `Basic ${token}` } // eslint-disable-line no-unused-vars
+      req = { header: (name) => `Basic ${token}` } // eslint-disable-line no-unused-vars
       await authenticateMiddleware(req, res, next)
       expect(next.calledOnce).to.be.true
       const err = next.getCall(0).args[0]
@@ -81,7 +81,7 @@ describe('Authenticate', () => {
       })
       // Set date to now + 11 seconds.
       mockDate.set(Date.now() + 11e3)
-      req = { header: name => `${AUTHENTICATION_SCHEME} ${token}` } // eslint-disable-line no-unused-vars
+      req = { header: (name) => `${AUTHENTICATION_SCHEME} ${token}` } // eslint-disable-line no-unused-vars
       await authenticateMiddleware(req, res, next)
       expect(next.calledOnce).to.be.true
       const err = next.getCall(0).args[0]
@@ -97,7 +97,7 @@ describe('Authenticate', () => {
         issuer,
         tokenUse: chance.pickone(config.tokenUse)
       })
-      req = { header: name => `${AUTHENTICATION_SCHEME} ${token}` } // eslint-disable-line no-unused-vars
+      req = { header: (name) => `${AUTHENTICATION_SCHEME} ${token}` } // eslint-disable-line no-unused-vars
       await authenticateMiddleware(req, res, next)
       expect(next.calledOnce).to.be.true
       const err = next.getCall(0).args[0]
@@ -113,7 +113,7 @@ describe('Authenticate', () => {
         issuer,
         tokenUse: chance.pickone(config.tokenUse)
       })
-      req = { header: name => `${AUTHENTICATION_SCHEME} ${firstRequestToken}` } // eslint-disable-line no-unused-vars
+      req = { header: (name) => `${AUTHENTICATION_SCHEME} ${firstRequestToken}` } // eslint-disable-line no-unused-vars
       await authenticateMiddleware(req, res, next)
       expect(next.calledOnce).to.be.true
       let err = next.getCall(0).args[0]
@@ -133,7 +133,7 @@ describe('Authenticate', () => {
         issuer,
         tokenUse: chance.pickone(config.tokenUse)
       })
-      req = { header: name => `${AUTHENTICATION_SCHEME} ${secondRequestToken}` } // eslint-disable-line no-unused-vars
+      req = { header: (name) => `${AUTHENTICATION_SCHEME} ${secondRequestToken}` } // eslint-disable-line no-unused-vars
       await authenticateMiddleware(req, res, next)
       expect(next.calledOnce).to.be.true
       err = next.getCall(0).args[0] // eslint-disable-line prefer-destructuring

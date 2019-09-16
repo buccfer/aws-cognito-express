@@ -31,10 +31,12 @@ const rsaKeyPairs = [
   }
 ]
 
-const jwks = rsaKeyPairs.map(rsaKeyPair => Object.assign(
-  { kid: rsaKeyPair.id, alg: 'RS256', use: 'sig' },
-  pem2jwk(rsaKeyPair.public)
-))
+const jwks = rsaKeyPairs.map((rsaKeyPair) => ({
+  kid: rsaKeyPair.id,
+  alg: 'RS256',
+  use: 'sig',
+  ...pem2jwk(rsaKeyPair.public)
+}))
 
 const pems = rsaKeyPairs.reduce(
   (acc, rsaKeyPair) => {
@@ -79,7 +81,7 @@ function generateConfig(opts = {}) {
  * @returns {string} The signed JWT.
  * */
 function signToken(keyId, payload, opts) {
-  const targetRSAKeyPair = rsaKeyPairs.find(rsaKeyPair => rsaKeyPair.id === keyId)
+  const targetRSAKeyPair = rsaKeyPairs.find((rsaKeyPair) => rsaKeyPair.id === keyId)
 
   if (!targetRSAKeyPair) throw new Error(`No RSA key pair found with ID ${keyId}`)
 
@@ -91,7 +93,7 @@ function signToken(keyId, payload, opts) {
     issuer: opts.issuer
   }
 
-  const jwtPayload = Object.assign({}, payload, { token_use: opts.tokenUse })
+  const jwtPayload = { ...payload, token_use: opts.tokenUse }
 
   return jwt.sign(jwtPayload, targetRSAKeyPair.private, options)
 }
