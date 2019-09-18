@@ -40,7 +40,7 @@ describe('Errors', () => {
     })
 
     it('Should have the correct properties', () => {
-      const errDescription = joiErr.details.map(err => err.message).join(', ')
+      const errDescription = joiErr.details.map((err) => err.message).join(', ')
       expect(error.message).to.equal(`Invalid configuration: ${errDescription}`)
       expect(error.name).to.equal('ConfigurationError')
       expect(error.isJWTValidatorError).to.be.true

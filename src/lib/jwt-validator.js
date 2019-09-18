@@ -1,6 +1,5 @@
 'use strict'
 
-const Joi = require('@hapi/joi')
 const request = require('superagent')
 const get = require('lodash.get')
 const once = require('lodash.once')
@@ -46,7 +45,7 @@ class JWTValidator {
    * */
   constructor(config) {
     debug('Instantiating validator with config: %O', config)
-    const { error, value } = Joi.validate(config, configSchema)
+    const { error, value } = configSchema.validate(config)
     if (error) throw new ConfigurationError(error)
     Object.assign(this, value)
     this.init = once(this.initialize)

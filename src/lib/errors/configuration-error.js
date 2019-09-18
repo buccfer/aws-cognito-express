@@ -13,7 +13,7 @@ class ConfigurationError extends BaseError {
    * @param {Error} err - An instance of a Joi ValidationError.
    * */
   constructor(err) {
-    const errDescription = err.details.map(error => error.message).join(', ')
+    const errDescription = err.details.map((error) => error.message).join(', ')
     super(`Invalid configuration: ${errDescription}`)
   }
 }
