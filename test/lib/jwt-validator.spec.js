@@ -23,7 +23,7 @@ describe('Validator', () => {
     })
 
     it('Should throw ConfigurationError if config is not an object', () => {
-      expect(() => new JWTValidator(chance.word())).to.throw(ConfigurationError, /"value" must be an object/)
+      expect(() => new JWTValidator(chance.word())).to.throw(ConfigurationError, /"value" must be of type object/)
     })
 
     it('Should throw ConfigurationError if region is not a string', () => {
@@ -107,14 +107,14 @@ describe('Validator', () => {
 
     it('Should throw ConfigurationError if pems is not an object', () => {
       config.pems = chance.natural()
-      expect(() => new JWTValidator(config)).to.throw(ConfigurationError, /"pems" must be an object/)
+      expect(() => new JWTValidator(config)).to.throw(ConfigurationError, /"pems" must be of type object/)
     })
 
     it('Should throw ConfigurationError if pems is an empty object', () => {
       config.pems = {}
       expect(() => new JWTValidator(config)).to.throw(
         ConfigurationError,
-        /"pems" must have at least 1 children/
+        /"pems" must have at least 1 key/
       )
     })
 
