@@ -46,7 +46,7 @@
     "superagent": "^5.1.0"
   },
   "devDependencies": {
-    "better-docs": "^1.1.6",
+    "better-docs": "1.1.6",
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
     "chance": "^1.0.18",
