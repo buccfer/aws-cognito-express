@@ -1,6 +1,6 @@
 {
   "name": "aws-cognito-express",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "description": "Verification of Access and ID tokens issued by AWS Cognito for Node.js",
   "main": "index.js",
   "files": [
@@ -46,7 +46,7 @@
     "superagent": "^5.1.0"
   },
   "devDependencies": {
-    "better-docs": "^1.1.6",
+    "better-docs": "1.1.6",
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
     "chance": "^1.0.18",
