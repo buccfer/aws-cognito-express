@@ -41,7 +41,7 @@ describe('Authenticate', () => {
       tokenPayload = { email: chance.email(), email_verified: chance.bool() }
       issuer = `https://cognito-idp.${config.region}.amazonaws.com/${config.userPoolId}`
       nock.cleanAll()
-      initScope = nock(`${issuer}/.well-known/jwks.json`).get('').reply(httpStatus.OK, { keys: jwks })
+      initScope = nock(issuer).get('/.well-known/jwks.json').reply(httpStatus.OK, { keys: jwks })
     })
 
     after(() => {
@@ -124,7 +124,7 @@ describe('Authenticate', () => {
       // Clean mocks.
       next.resetHistory()
       nock.cleanAll()
-      initScope = nock(`${issuer}/.well-known/jwks.json`).get('').reply(httpStatus.OK, { keys: jwks })
+      initScope = nock(issuer).get('/.well-known/jwks.json').reply(httpStatus.OK, { keys: jwks })
 
       // Second request already has the validator initialized.
       const secondRequestTokenPayload = { email: chance.email(), email_verified: chance.bool() }

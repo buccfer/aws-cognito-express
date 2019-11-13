@@ -1,5 +1,6 @@
 'use strict'
 
+const { URL } = require('url')
 const { expect, chance, nock, httpStatus, mockDate } = require('../index')
 const { generateConfig, signToken, jwks, pems } = require('../util')
 const { JWTValidator } = require('../../index')
@@ -189,7 +190,8 @@ describe('Validator', () => {
       config = generateConfig({ withPems: true })
       const validator = new JWTValidator(config)
       expect(validator.pems).to.deep.equal(config.pems)
-      const scope = nock(validator.jwksUrl).get('').reply(httpStatus.OK, { keys: jwks })
+      const jwksUrl = new URL(validator.jwksUrl)
+      const scope = nock(jwksUrl.origin).get(jwksUrl.pathname).reply(httpStatus.OK, { keys: jwks })
       await expect(validator.init()).to.eventually.be.undefined
       expect(scope.isDone()).to.be.false
     })
@@ -197,7 +199,8 @@ describe('Validator', () => {
     it('Should reject with InitializationError if request to the JWKs endpoint returns a non 2xx code', async () => {
       const validator = new JWTValidator(config)
       expect(validator.pems).to.be.null
-      const scope = nock(validator.jwksUrl).get('').reply(httpStatus.NOT_FOUND)
+      const jwksUrl = new URL(validator.jwksUrl)
+      const scope = nock(jwksUrl.origin).get(jwksUrl.pathname).reply(httpStatus.NOT_FOUND)
       await expect(validator.init()).to.eventually.be.rejectedWith(
         InitializationError,
         `Initialization failed: ${httpStatus[httpStatus.NOT_FOUND]}`
@@ -209,7 +212,8 @@ describe('Validator', () => {
     it('Should reject with InitializationError if some JWK is invalid', async () => {
       const validator = new JWTValidator(config)
       expect(validator.pems).to.be.null
-      const scope = nock(validator.jwksUrl).get('').reply(httpStatus.OK, {
+      const jwksUrl = new URL(validator.jwksUrl)
+      const scope = nock(jwksUrl.origin).get(jwksUrl.pathname).reply(httpStatus.OK, {
         keys: jwks.concat([{ value: chance.natural() }])
       })
       await expect(validator.init()).to.eventually.be.rejectedWith(
@@ -223,7 +227,8 @@ describe('Validator', () => {
     it('Should set the instance pems correctly', async () => {
       const validator = new JWTValidator(config)
       expect(validator.pems).to.be.null
-      const scope = nock(validator.jwksUrl).get('').reply(httpStatus.OK, { keys: jwks })
+      const jwksUrl = new URL(validator.jwksUrl)
+      const scope = nock(jwksUrl.origin).get(jwksUrl.pathname).reply(httpStatus.OK, { keys: jwks })
       await expect(validator.init()).to.eventually.be.undefined
       expect(scope.isDone()).to.be.true
       expect(validator.pems).to.deep.equal(pems)
@@ -234,7 +239,8 @@ describe('Validator', () => {
       expect(validator.pems).to.be.null
 
       // First call.
-      const firstScope = nock(validator.jwksUrl).get('').reply(httpStatus.NOT_FOUND)
+      const jwksUrl = new URL(validator.jwksUrl)
+      const firstScope = nock(jwksUrl.origin).get(jwksUrl.pathname).reply(httpStatus.NOT_FOUND)
       await expect(validator.init()).to.eventually.be.rejectedWith(
         InitializationError,
         `Initialization failed: ${httpStatus[httpStatus.NOT_FOUND]}`
@@ -244,7 +250,7 @@ describe('Validator', () => {
       nock.cleanAll()
 
       // Second call.
-      const secondScope = nock(validator.jwksUrl).get('').reply(httpStatus.FORBIDDEN)
+      const secondScope = nock(jwksUrl.origin).get(jwksUrl.pathname).reply(httpStatus.FORBIDDEN)
       await expect(validator.init()).to.eventually.be.rejectedWith(
         InitializationError,
         `Initialization failed: ${httpStatus[httpStatus.NOT_FOUND]}`
@@ -258,14 +264,15 @@ describe('Validator', () => {
       expect(validator.pems).to.be.null
 
       // First call.
-      const firstScope = nock(validator.jwksUrl).get('').reply(httpStatus.OK, { keys: [jwk1] })
+      const jwksUrl = new URL(validator.jwksUrl)
+      const firstScope = nock(jwksUrl.origin).get(jwksUrl.pathname).reply(httpStatus.OK, { keys: [jwk1] })
       await expect(validator.init()).to.eventually.be.undefined
       expect(firstScope.isDone()).to.be.true
       expect(validator.pems).to.deep.equal({ [jwk1.kid]: pems[jwk1.kid] })
       nock.cleanAll()
 
       // Second call.
-      const secondScope = nock(validator.jwksUrl).get('').reply(httpStatus.OK, { keys: [jwk2] })
+      const secondScope = nock(jwksUrl.origin).get(jwksUrl.pathname).reply(httpStatus.OK, { keys: [jwk2] })
       await expect(validator.init()).to.eventually.be.undefined
       expect(secondScope.isDone()).to.be.false
       expect(validator.pems).to.deep.equal({ [jwk1.kid]: pems[jwk1.kid] })
@@ -274,6 +281,7 @@ describe('Validator', () => {
 
   describe('Refresh Pems', () => {
     let validator
+    let jwksUrl
 
     before(() => {
       if (!nock.isActive()) nock.activate()
@@ -286,7 +294,8 @@ describe('Validator', () => {
       validator = new JWTValidator(config)
       expect(validator.pems).to.be.null
 
-      const initScope = nock(validator.jwksUrl).get('').reply(httpStatus.OK, { keys: [jwk1] })
+      jwksUrl = new URL(validator.jwksUrl)
+      const initScope = nock(jwksUrl.origin).get(jwksUrl.pathname).reply(httpStatus.OK, { keys: [jwk1] })
       await validator.init()
       expect(initScope.isDone()).to.be.true
       expect(validator.pems).to.deep.equal({ [jwk1.kid]: pems[jwk1.kid] })
@@ -300,14 +309,14 @@ describe('Validator', () => {
     })
 
     it('Should refresh the pems successfully', async () => {
-      const refreshScope = nock(validator.jwksUrl).get('').reply(httpStatus.OK, { keys: [jwk2] })
+      const refreshScope = nock(jwksUrl.origin).get(jwksUrl.pathname).reply(httpStatus.OK, { keys: [jwk2] })
       await expect(validator.refreshPems()).to.eventually.be.undefined
       expect(refreshScope.isDone()).to.be.true
       expect(validator.pems).to.deep.equal({ [jwk2.kid]: pems[jwk2.kid] })
     })
 
     it('Should reject with RefreshError if refreshing the pems fails', async () => {
-      const refreshScope = nock(validator.jwksUrl).get('').reply(httpStatus.SERVICE_UNAVAILABLE)
+      const refreshScope = nock(jwksUrl.origin).get(jwksUrl.pathname).reply(httpStatus.SERVICE_UNAVAILABLE)
       await expect(validator.refreshPems()).to.eventually.be.rejectedWith(
         RefreshError,
         `Refresh failed: ${httpStatus[httpStatus.SERVICE_UNAVAILABLE]}`
@@ -318,14 +327,14 @@ describe('Validator', () => {
 
     it(`Should not refresh more than once every ${REFRESH_WAIT_MS} milliseconds`, async () => {
       // First refresh.
-      const firstRefreshScope = nock(validator.jwksUrl).get('').reply(httpStatus.OK, { keys: [jwk2] })
+      const firstRefreshScope = nock(jwksUrl.origin).get(jwksUrl.pathname).reply(httpStatus.OK, { keys: [jwk2] })
       await expect(validator.refreshPems()).to.eventually.be.undefined
       expect(firstRefreshScope.isDone()).to.be.true
       expect(validator.pems).to.deep.equal({ [jwk2.kid]: pems[jwk2.kid] })
       nock.cleanAll()
 
       // Second refresh should be throttled since it is within the REFRESH_WAIT_MS window.
-      const secondRefreshScope = nock(validator.jwksUrl).get('').reply(httpStatus.OK, { keys: [jwk1] })
+      const secondRefreshScope = nock(jwksUrl.origin).get(jwksUrl.pathname).reply(httpStatus.OK, { keys: [jwk1] })
       await expect(validator.refreshPems()).to.eventually.be.undefined
       expect(secondRefreshScope.isDone()).to.be.false
       expect(validator.pems).to.deep.equal({ [jwk2.kid]: pems[jwk2.kid] })
@@ -333,7 +342,7 @@ describe('Validator', () => {
 
       // Third refresh should succeed since it is outside the REFRESH_WAIT_MS window.
       mockDate.set(Date.now() + REFRESH_WAIT_MS + 1e3)
-      const thirdRefreshScope = nock(validator.jwksUrl).get('').reply(httpStatus.OK, { keys: [jwk1] })
+      const thirdRefreshScope = nock(jwksUrl.origin).get(jwksUrl.pathname).reply(httpStatus.OK, { keys: [jwk1] })
       await expect(validator.refreshPems()).to.eventually.be.undefined
       expect(thirdRefreshScope.isDone()).to.be.true
       expect(validator.pems).to.deep.equal({ [jwk1.kid]: pems[jwk1.kid] })
@@ -343,6 +352,7 @@ describe('Validator', () => {
 
   describe('Validate', () => {
     let validator
+    let jwksUrl
     let tokenPayload
 
     before(() => {
@@ -352,6 +362,7 @@ describe('Validator', () => {
     beforeEach(() => {
       const config = generateConfig()
       validator = new JWTValidator(config)
+      jwksUrl = new URL(validator.jwksUrl)
       tokenPayload = {
         email: chance.email(),
         email_verified: chance.bool()
@@ -366,7 +377,7 @@ describe('Validator', () => {
 
     it('Should reject with InitializationError if initialization fails', async () => {
       const token = chance.hash()
-      const initScope = nock(validator.jwksUrl).get('').reply(httpStatus.NOT_FOUND)
+      const initScope = nock(jwksUrl.origin).get(jwksUrl.pathname).reply(httpStatus.NOT_FOUND)
       await expect(validator.validate(token)).to.eventually.be.rejectedWith(
         InitializationError,
         `Initialization failed: ${httpStatus[httpStatus.NOT_FOUND]}`
@@ -376,13 +387,13 @@ describe('Validator', () => {
 
     it('Should reject with InvalidJWTError if token is invalid', async () => {
       const token = chance.hash()
-      const initScope = nock(validator.jwksUrl).get('').reply(httpStatus.OK, { keys: jwks })
+      const initScope = nock(jwksUrl.origin).get(jwksUrl.pathname).reply(httpStatus.OK, { keys: jwks })
       await expect(validator.validate(token)).to.eventually.be.rejectedWith(InvalidJWTError, 'JWT is invalid')
       expect(initScope.isDone()).to.be.true
     })
 
     it('Should reject with RefreshError if refreshing the pems fails', async () => {
-      const initScope = nock(validator.jwksUrl).get('').reply(httpStatus.OK, { keys: [jwk2] })
+      const initScope = nock(jwksUrl.origin).get(jwksUrl.pathname).reply(httpStatus.OK, { keys: [jwk2] })
       await expect(validator.init()).to.eventually.be.undefined
       expect(validator.pems).to.deep.equal({ [jwk2.kid]: pems[jwk2.kid] })
       expect(initScope.isDone()).to.be.true
@@ -393,7 +404,7 @@ describe('Validator', () => {
         issuer: chance.hash(),
         tokenUse: TOKEN_USE.ACCESS
       })
-      const refreshScope = nock(validator.jwksUrl).get('').reply(httpStatus.SERVICE_UNAVAILABLE)
+      const refreshScope = nock(jwksUrl.origin).get(jwksUrl.pathname).reply(httpStatus.SERVICE_UNAVAILABLE)
       await expect(validator.validate(token)).to.eventually.be.rejectedWith(
         RefreshError,
         `Refresh failed: ${httpStatus[httpStatus.SERVICE_UNAVAILABLE]}`
@@ -402,7 +413,7 @@ describe('Validator', () => {
     })
 
     it('Should reject with InvalidJWTError if there is no pem to verify the token signature', async () => {
-      const initScope = nock(validator.jwksUrl).get('').reply(httpStatus.OK, { keys: [jwk2] })
+      const initScope = nock(jwksUrl.origin).get(jwksUrl.pathname).reply(httpStatus.OK, { keys: [jwk2] })
       await expect(validator.init()).to.eventually.be.undefined
       expect(validator.pems).to.deep.equal({ [jwk2.kid]: pems[jwk2.kid] })
       expect(initScope.isDone()).to.be.true
@@ -413,7 +424,7 @@ describe('Validator', () => {
         issuer: chance.hash(),
         tokenUse: TOKEN_USE.ACCESS
       })
-      const refreshScope = nock(validator.jwksUrl).get('').reply(httpStatus.OK, { keys: [jwk2] })
+      const refreshScope = nock(jwksUrl.origin).get(jwksUrl.pathname).reply(httpStatus.OK, { keys: [jwk2] })
       await expect(validator.validate(token)).to.eventually.be.rejectedWith(
         InvalidJWTError,
         'No pem found to verify JWT signature'
@@ -422,7 +433,7 @@ describe('Validator', () => {
     })
 
     it('Should reject with InvalidJWTError if token signature is invalid', async () => {
-      const initScope = nock(validator.jwksUrl).get('').reply(httpStatus.OK, { keys: jwks })
+      const initScope = nock(jwksUrl.origin).get(jwksUrl.pathname).reply(httpStatus.OK, { keys: jwks })
       const token = signToken('key_1', tokenPayload, {
         audience: chance.pickone(validator.audience),
         issuer: validator.iss,
@@ -434,7 +445,7 @@ describe('Validator', () => {
     })
 
     it('Should reject with InvalidJWTError if token audience is invalid', async () => {
-      const initScope = nock(validator.jwksUrl).get('').reply(httpStatus.OK, { keys: jwks })
+      const initScope = nock(jwksUrl.origin).get(jwksUrl.pathname).reply(httpStatus.OK, { keys: jwks })
       const token = signToken('key_1', tokenPayload, {
         audience: chance.hash(),
         issuer: validator.iss,
@@ -445,7 +456,7 @@ describe('Validator', () => {
     })
 
     it('Should reject with InvalidJWTError if token issuer is invalid', async () => {
-      const initScope = nock(validator.jwksUrl).get('').reply(httpStatus.OK, { keys: jwks })
+      const initScope = nock(jwksUrl.origin).get(jwksUrl.pathname).reply(httpStatus.OK, { keys: jwks })
       const token = signToken('key_1', tokenPayload, {
         audience: chance.pickone(validator.audience),
         issuer: chance.url(),
@@ -459,7 +470,8 @@ describe('Validator', () => {
       const config = generateConfig()
       config.tokenUse = [TOKEN_USE.ACCESS]
       validator = new JWTValidator(config)
-      const initScope = nock(validator.jwksUrl).get('').reply(httpStatus.OK, { keys: jwks })
+      jwksUrl = new URL(validator.jwksUrl)
+      const initScope = nock(jwksUrl.origin).get(jwksUrl.pathname).reply(httpStatus.OK, { keys: jwks })
       const token = signToken('key_1', tokenPayload, {
         audience: chance.pickone(validator.audience),
         issuer: validator.iss,
@@ -473,7 +485,7 @@ describe('Validator', () => {
     })
 
     it('Should reject with InvalidJWTError if token is expired', async () => {
-      const initScope = nock(validator.jwksUrl).get('').reply(httpStatus.OK, { keys: jwks })
+      const initScope = nock(jwksUrl.origin).get(jwksUrl.pathname).reply(httpStatus.OK, { keys: jwks })
       const token = signToken('key_1', tokenPayload, {
         audience: chance.pickone(validator.audience),
         issuer: validator.iss,
@@ -488,7 +500,7 @@ describe('Validator', () => {
     })
 
     it('Should resolve with the token payload', async () => {
-      const initScope = nock(validator.jwksUrl).get('').reply(httpStatus.OK, { keys: jwks })
+      const initScope = nock(jwksUrl.origin).get(jwksUrl.pathname).reply(httpStatus.OK, { keys: jwks })
       const token = signToken('key_1', tokenPayload, {
         audience: chance.pickone(validator.audience),
         issuer: validator.iss,
@@ -504,7 +516,7 @@ describe('Validator', () => {
     })
 
     it('Should resolve with the token payload after refreshing the pems', async () => {
-      const initScope = nock(validator.jwksUrl).get('').reply(httpStatus.OK, { keys: [jwk2] })
+      const initScope = nock(jwksUrl.origin).get(jwksUrl.pathname).reply(httpStatus.OK, { keys: [jwk2] })
       await expect(validator.init()).to.eventually.be.undefined
       expect(validator.pems).to.deep.equal({ [jwk2.kid]: pems[jwk2.kid] })
       expect(initScope.isDone()).to.be.true
@@ -515,7 +527,7 @@ describe('Validator', () => {
         issuer: validator.iss,
         tokenUse: chance.pickone(validator.tokenUse)
       })
-      const refreshScope = nock(validator.jwksUrl).get('').reply(httpStatus.OK, { keys: [jwk1] })
+      const refreshScope = nock(jwksUrl.origin).get(jwksUrl.pathname).reply(httpStatus.OK, { keys: [jwk1] })
       const payload = await validator.validate(token)
       expect(payload).to.be.an('object').that.has.all.keys(
         'aud', 'email', 'email_verified', 'exp', 'iat', 'iss', 'token_use'
