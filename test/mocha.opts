@@ -1,4 +1,0 @@
---timeout 5s
---reporter list
---exit
---bail
