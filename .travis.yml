@@ -22,9 +22,12 @@ jobs:
         target_branch: gh-pages
         keep_history: false
         committer_from_gh: true
-    - stage: Deploy to NPM
+    - stage: Release to NPM
       if: branch = master
       deploy:
         provider: npm
-        email: fer.buccella@gmail.com
+        email: $NPM_AUTH_EMAIL
         api_key: $NPM_AUTH_TOKEN
+        access: public
+        edge: true
+        cleanup: false
