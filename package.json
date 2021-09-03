@@ -31,7 +31,7 @@
   },
   "homepage": "https://github.com/buccfer/aws-cognito-express#readme",
   "engines": {
-    "node": ">=8.x"
+    "node": ">=12"
   },
   "dependencies": {
     "@hapi/joi": "^17.1.0",
