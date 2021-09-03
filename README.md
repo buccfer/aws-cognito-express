@@ -50,7 +50,7 @@ You will need:
 
 1. An AWS account. If you don't have one you can sign up [here](https://aws.amazon.com).
 2. A Cognito User Pool configured with at least one client application.
-3. Node.js 8 or above.
+3. Node.js 12 or above.
 
 ## Installation
 ```bash
