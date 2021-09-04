@@ -10,7 +10,8 @@
     "lint": "eslint --format compact .",
     "test": "NODE_ENV=test nyc mocha 'test/**/*.spec.js'",
     "coverage": "npm test && nyc report --reporter=text-lcov | coveralls",
-    "docs": "jsdoc -c jsdoc.json"
+    "docs": "jsdoc -c jsdoc.json",
+    "prepare": "husky install"
   },
   "repository": {
     "type": "git",
@@ -53,7 +54,7 @@
     "eslint": "^7.10.0",
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-plugin-import": "^2.18.2",
-    "husky": "^4.2.1",
+    "husky": "^7.0.0",
     "jsdoc": "^3.6.2",
     "mocha": "^9.1.1",
     "mockdate": "^3.0.2",
