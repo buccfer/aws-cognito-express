@@ -1,6 +1,6 @@
 'use strict'
 
-const Joi = require('@hapi/joi')
+const Joi = require('joi')
 const { DEFAULT_AWS_REGION, TOKEN_USE } = require('./constants')
 
 /* eslint-disable newline-per-chained-call, max-len */

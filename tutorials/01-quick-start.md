@@ -1,7 +1,7 @@
-##### 1. Make sure you have Node.js >= 8
+##### 1. Make sure you have Node.js >= 12
 ```bash
 $ node -v
-=> v10.16.0
+=> v14.17.6
 ```
 
 ##### 2. Install aws-cognito-express using npm
