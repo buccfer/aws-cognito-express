@@ -1,3 +1,9 @@
+## 3.2.0 / 2022-02-21
+
+### :lady_beetle: Bug Fixes
+
+- Fixed [#18](https://github.com/buccfer/aws-cognito-express/issues/18) - The `aud` OR `client_id` claim must match one of the audience entries provided in the config.
+
 ## 3.1.0 / 2021-09-04
 
 ### :tada: Enhancements
