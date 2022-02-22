@@ -513,7 +513,7 @@ describe('Validator', () => {
     it('Should resolve with the token payload', async () => {
       const initScope = nock(jwksUrl.origin).get(jwksUrl.pathname).reply(httpStatus.OK, { keys: jwks })
       const token = signToken('key_1', tokenPayload, {
-        audience: chance.pickone(validator.audience),
+        audience: [chance.pickone(validator.audience), chance.hash()],
         issuer: validator.iss,
         tokenUse: chance.pickone(validator.tokenUse)
       })
