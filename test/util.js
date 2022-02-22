@@ -3,6 +3,7 @@
 const fs = require('fs')
 const path = require('path')
 const jwt = require('jsonwebtoken')
+// eslint-disable-next-line import/no-extraneous-dependencies
 const { pem2jwk } = require('pem-jwk')
 const { chance } = require('./index')
 const { TOKEN_USE } = require('../src/lib/constants')
@@ -73,11 +74,11 @@ function generateConfig(opts = {}) {
  * @param {string} keyId - The ID of the RSA key pair to use to sign the token.
  * @param {Object} payload - The JWT payload.
  * @param {Object} opts - Additional options to generate the JWT.
- * @param {string} opts.audience - A value for the audience (aud) field.
  * @param {string} opts.issuer - A value for the issuer (iss) field.
  * @param {string} opts.tokenUse - A value for the token use (token_use) field. ('id' | 'access')
  * @param {number} [opts.expiresIn = 3600] - The number of seconds until the token expires.
  * @param {string} [opts.kid] - A custom value for the kid header.
+ * @param {string} [opts.audience] - A value for the audience (aud) field.
  * @returns {string} The signed JWT.
  * */
 function signToken(keyId, payload, opts) {
@@ -89,8 +90,11 @@ function signToken(keyId, payload, opts) {
     algorithm: 'RS256',
     keyid: opts.kid || keyId,
     expiresIn: opts.expiresIn || 3600,
-    audience: opts.audience,
     issuer: opts.issuer
+  }
+
+  if (opts.audience) {
+    options.audience = opts.audience
   }
 
   const jwtPayload = { ...payload, token_use: opts.tokenUse }
