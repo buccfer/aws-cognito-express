@@ -5,6 +5,18 @@ const { InvalidJWTError } = require('./errors')
 
 /**
  * @private
+ * @description Validates the JWT audience.
+ * @param {string[]} tokenAudience - The JWT audience.
+ * @param {string[]} validAudience - The valid audience.
+ * @returns {boolean} Whether the token audience is valid or not.
+ * */
+const validateAudience = (tokenAudience, validAudience) => {
+  const validAudienceSet = new Set(validAudience)
+  return tokenAudience.some((audience) => validAudienceSet.has(audience))
+}
+
+/**
+ * @private
  * @description Verifies the JWT signature. If valid, it returns the decoded payload.
  * @param {string} token - The JSON web token.
  * @param {string} pem - The PEM encoded public RSA key.
