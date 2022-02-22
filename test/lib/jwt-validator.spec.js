@@ -444,10 +444,21 @@ describe('Validator', () => {
       expect(initScope.isDone()).to.be.true
     })
 
-    it('Should reject with InvalidJWTError if token audience is invalid', async () => {
+    it('Should reject with InvalidJWTError if token audience is invalid (aud)', async () => {
       const initScope = nock(jwksUrl.origin).get(jwksUrl.pathname).reply(httpStatus.OK, { keys: jwks })
       const token = signToken('key_1', tokenPayload, {
         audience: chance.hash(),
+        issuer: validator.iss,
+        tokenUse: chance.pickone(validator.tokenUse)
+      })
+      await expect(validator.validate(token)).to.eventually.be.rejectedWith(InvalidJWTError, /jwt audience invalid/)
+      expect(initScope.isDone()).to.be.true
+    })
+
+    it('Should reject with InvalidJWTError if token audience is invalid (client_id)', async () => {
+      const initScope = nock(jwksUrl.origin).get(jwksUrl.pathname).reply(httpStatus.OK, { keys: jwks })
+      tokenPayload.client_id = chance.hash()
+      const token = signToken('key_1', tokenPayload, {
         issuer: validator.iss,
         tokenUse: chance.pickone(validator.tokenUse)
       })
@@ -502,7 +513,7 @@ describe('Validator', () => {
     it('Should resolve with the token payload', async () => {
       const initScope = nock(jwksUrl.origin).get(jwksUrl.pathname).reply(httpStatus.OK, { keys: jwks })
       const token = signToken('key_1', tokenPayload, {
-        audience: chance.pickone(validator.audience),
+        audience: [chance.pickone(validator.audience), chance.hash()],
         issuer: validator.iss,
         tokenUse: chance.pickone(validator.tokenUse)
       })
@@ -536,6 +547,22 @@ describe('Validator', () => {
       expect({ email, email_verified }).to.deep.equal(tokenPayload)
       expect(validator.pems).to.deep.equal({ [jwk1.kid]: pems[jwk1.kid] })
       expect(refreshScope.isDone()).to.be.true
+    })
+
+    it('Should resolve with the token payload when the token has no "aud" but has a valid "client_id"', async () => {
+      const initScope = nock(jwksUrl.origin).get(jwksUrl.pathname).reply(httpStatus.OK, { keys: jwks })
+      tokenPayload.client_id = chance.pickone(validator.audience)
+      const token = signToken('key_1', tokenPayload, {
+        issuer: validator.iss,
+        tokenUse: chance.pickone(validator.tokenUse)
+      })
+      const payload = await validator.validate(token)
+      expect(payload).to.be.an('object').that.has.all.keys(
+        'client_id', 'email', 'email_verified', 'exp', 'iat', 'iss', 'token_use'
+      )
+      const { email, email_verified, client_id } = payload // eslint-disable-line camelcase
+      expect({ email, email_verified, client_id }).to.deep.equal(tokenPayload)
+      expect(initScope.isDone()).to.be.true
     })
   })
 })
