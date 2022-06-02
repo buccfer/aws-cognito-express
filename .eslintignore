@@ -7,3 +7,6 @@ coverage/**
 
 # jsdoc output
 out/**
+
+# Typescript definition files
+*.d.ts
