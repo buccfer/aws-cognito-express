@@ -15,3 +15,4 @@ rules:
   'semi': ['error', 'never']
   'no-trailing-spaces': ['error', { skipBlankLines: true }]
   'object-curly-newline': ['error', { consistent: true }]
+  'function-paren-newline': ['error', 'consistent']

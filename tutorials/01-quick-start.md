@@ -1,4 +1,4 @@
-##### 1. Make sure you have Node.js >= 12
+##### 1. Make sure you have Node.js >= 14
 ```bash
 $ node -v
 => v14.17.6

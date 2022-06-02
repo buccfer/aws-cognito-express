@@ -1,6 +1,6 @@
 {
   "name": "aws-cognito-express",
-  "version": "3.2.0",
+  "version": "4.0.0",
   "description": "Verification of Access and ID tokens issued by AWS Cognito for Node.js",
   "main": "index.js",
   "files": [
@@ -32,7 +32,7 @@
   },
   "homepage": "https://github.com/buccfer/aws-cognito-express#readme",
   "engines": {
-    "node": ">=12"
+    "node": ">=14"
   },
   "dependencies": {
     "debug": "^4.1.1",
@@ -43,7 +43,7 @@
     "lodash.get": "^4.4.2",
     "lodash.once": "^4.1.1",
     "lodash.throttle": "^4.1.1",
-    "superagent": "^6.1.0"
+    "superagent": "^7.1.6"
   },
   "devDependencies": {
     "better-docs": "1.1.6",
@@ -51,16 +51,16 @@
     "chai-as-promised": "^7.1.1",
     "chance": "^1.0.18",
     "coveralls": "^3.0.4",
-    "eslint": "^7.10.0",
-    "eslint-config-airbnb-base": "^14.0.0",
-    "eslint-plugin-import": "^2.18.2",
-    "husky": "^7.0.0",
+    "eslint": "^8.16.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.26.0",
+    "husky": "^8.0.1",
     "jsdoc": "^3.6.2",
-    "mocha": "^9.1.1",
+    "mocha": "^10.0.0",
     "mockdate": "^3.0.2",
     "nock": "^13.0.4",
     "nyc": "^15.0.0",
     "pem-jwk": "^2.0.0",
-    "sinon": "^11.1.2"
+    "sinon": "^14.0.0"
   }
 }

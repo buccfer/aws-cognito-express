@@ -1,3 +1,10 @@
+## 4.0.0 / 2022-06-02
+
+### :boom: Breaking Changes
+
+- Drop Node.js v12.x support
+- Update dependencies
+
 ## 3.2.0 / 2022-02-21
 
 ### :lady_beetle: Bug Fixes
