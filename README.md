@@ -6,8 +6,6 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/8d53f5de9594eab264e2/maintainability)](https://codeclimate.com/github/buccfer/aws-cognito-express/maintainability)
 [![Coverage Status](https://coveralls.io/repos/github/buccfer/aws-cognito-express/badge.svg?branch=master)](https://coveralls.io/github/buccfer/aws-cognito-express?branch=master)
 [![Known Vulnerabilities](https://snyk.io/test/github/buccfer/aws-cognito-express/badge.svg?targetFile=package.json)](https://snyk.io/test/github/buccfer/aws-cognito-express?targetFile=package.json)
-[![Dependencies](https://img.shields.io/david/buccfer/aws-cognito-express.svg)](https://david-dm.org/buccfer/aws-cognito-express)
-[![Dev Dependencies](https://img.shields.io/david/dev/buccfer/aws-cognito-express.svg)](https://david-dm.org/buccfer/aws-cognito-express?type=dev)
 [![License](https://badgen.net/badge/license/MIT/blue)](LICENSE)
 
 ![Logo](https://s3.us-east-2.amazonaws.com/assets.buccfer.io/aws-cognito-express/logo_333x333.png)
