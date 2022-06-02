@@ -522,7 +522,7 @@ describe('Validator', () => {
         'aud', 'email', 'email_verified', 'exp', 'iat', 'iss', 'token_use'
       )
       const { email, email_verified } = payload // eslint-disable-line camelcase
-      expect({ email, email_verified }).to.deep.equal(tokenPayload)
+      expect({ email, email_verified }).to.deep.equal(tokenPayload) // eslint-disable-line camelcase
       expect(initScope.isDone()).to.be.true
     })
 
@@ -544,7 +544,7 @@ describe('Validator', () => {
         'aud', 'email', 'email_verified', 'exp', 'iat', 'iss', 'token_use'
       )
       const { email, email_verified } = payload // eslint-disable-line camelcase
-      expect({ email, email_verified }).to.deep.equal(tokenPayload)
+      expect({ email, email_verified }).to.deep.equal(tokenPayload) // eslint-disable-line camelcase
       expect(validator.pems).to.deep.equal({ [jwk1.kid]: pems[jwk1.kid] })
       expect(refreshScope.isDone()).to.be.true
     })
@@ -561,7 +561,7 @@ describe('Validator', () => {
         'client_id', 'email', 'email_verified', 'exp', 'iat', 'iss', 'token_use'
       )
       const { email, email_verified, client_id } = payload // eslint-disable-line camelcase
-      expect({ email, email_verified, client_id }).to.deep.equal(tokenPayload)
+      expect({ email, email_verified, client_id }).to.deep.equal(tokenPayload) // eslint-disable-line camelcase
       expect(initScope.isDone()).to.be.true
     })
   })
