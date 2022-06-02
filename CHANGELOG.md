@@ -1,3 +1,9 @@
+## 4.0.1 / 2022-06-02
+
+### :lady_beetle: Bug Fixes
+
+- Changed the http library from [SuperAgent](https://www.npmjs.com/package/superagent) to [Axios](https://www.npmjs.com/package/axios) because of size and [security issues](https://security.snyk.io/vuln/SNYK-JS-FORMIDABLE-2838956)
+
 ## 4.0.0 / 2022-06-02
 
 ### :boom: Breaking Changes

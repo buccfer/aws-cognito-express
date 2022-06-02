@@ -1,6 +1,6 @@
 'use strict'
 
-const request = require('superagent')
+const axios = require('axios')
 const get = require('lodash.get')
 const once = require('lodash.once')
 const throttle = require('lodash.throttle')
@@ -84,7 +84,7 @@ class JWTValidator {
 
     try {
       debug(`Getting JWKs from ${this.jwksUrl}`)
-      const { body: { keys: jwks } } = await request.get(this.jwksUrl)
+      const { data: { keys: jwks } } = await axios.get(this.jwksUrl)
       debug('Generating pems from JWKs: %O', jwks)
       this.pems = jwks.reduce(
         (acc, jwk) => {

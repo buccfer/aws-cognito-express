@@ -203,7 +203,7 @@ describe('Validator', () => {
       const scope = nock(jwksUrl.origin).get(jwksUrl.pathname).reply(httpStatus.NOT_FOUND)
       await expect(validator.init()).to.eventually.be.rejectedWith(
         InitializationError,
-        `Initialization failed: ${httpStatus[httpStatus.NOT_FOUND]}`
+        `Initialization failed: Request failed with status code ${httpStatus.NOT_FOUND}`
       )
       expect(scope.isDone()).to.be.true
       expect(validator.pems).to.be.null
@@ -243,7 +243,7 @@ describe('Validator', () => {
       const firstScope = nock(jwksUrl.origin).get(jwksUrl.pathname).reply(httpStatus.NOT_FOUND)
       await expect(validator.init()).to.eventually.be.rejectedWith(
         InitializationError,
-        `Initialization failed: ${httpStatus[httpStatus.NOT_FOUND]}`
+        `Initialization failed: Request failed with status code ${httpStatus.NOT_FOUND}`
       )
       expect(firstScope.isDone()).to.be.true
       expect(validator.pems).to.be.null
@@ -253,7 +253,7 @@ describe('Validator', () => {
       const secondScope = nock(jwksUrl.origin).get(jwksUrl.pathname).reply(httpStatus.FORBIDDEN)
       await expect(validator.init()).to.eventually.be.rejectedWith(
         InitializationError,
-        `Initialization failed: ${httpStatus[httpStatus.NOT_FOUND]}`
+        `Initialization failed: Request failed with status code ${httpStatus.NOT_FOUND}`
       )
       expect(secondScope.isDone()).to.be.false
       expect(validator.pems).to.be.null
@@ -319,7 +319,7 @@ describe('Validator', () => {
       const refreshScope = nock(jwksUrl.origin).get(jwksUrl.pathname).reply(httpStatus.SERVICE_UNAVAILABLE)
       await expect(validator.refreshPems()).to.eventually.be.rejectedWith(
         RefreshError,
-        `Refresh failed: ${httpStatus[httpStatus.SERVICE_UNAVAILABLE]}`
+        `Refresh failed: Request failed with status code ${httpStatus.SERVICE_UNAVAILABLE}`
       )
       expect(refreshScope.isDone()).to.be.true
       expect(validator.pems).to.be.null
@@ -380,7 +380,7 @@ describe('Validator', () => {
       const initScope = nock(jwksUrl.origin).get(jwksUrl.pathname).reply(httpStatus.NOT_FOUND)
       await expect(validator.validate(token)).to.eventually.be.rejectedWith(
         InitializationError,
-        `Initialization failed: ${httpStatus[httpStatus.NOT_FOUND]}`
+        `Initialization failed: Request failed with status code ${httpStatus.NOT_FOUND}`
       )
       expect(initScope.isDone()).to.be.true
     })
@@ -407,7 +407,7 @@ describe('Validator', () => {
       const refreshScope = nock(jwksUrl.origin).get(jwksUrl.pathname).reply(httpStatus.SERVICE_UNAVAILABLE)
       await expect(validator.validate(token)).to.eventually.be.rejectedWith(
         RefreshError,
-        `Refresh failed: ${httpStatus[httpStatus.SERVICE_UNAVAILABLE]}`
+        `Refresh failed: Request failed with status code ${httpStatus.SERVICE_UNAVAILABLE}`
       )
       expect(refreshScope.isDone()).to.be.true
     })
