@@ -1,6 +1,6 @@
 {
   "name": "aws-cognito-express",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "Verification of Access and ID tokens issued by AWS Cognito for Node.js",
   "main": "index.js",
   "files": [
