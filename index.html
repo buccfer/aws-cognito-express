@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-144732690-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-144732690-1');
+</script>
+
+    <meta charset="utf-8">
+    <title>JSDoc: Home</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link href="https://fonts.googleapis.com/css?family=Muli:100,400,700|Oswald:300|Inconsolata,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+</head>
+
+<body>
+    <div id="stickyNavbarOverlay"></div>
+    <div class="top-navbar">
+        <div class="container">
+            <nav class="navbar" role="navigation" aria-label="main navigation">
+                <div class="navbar-brand">
+                     
+                        <img src="https://s3.us-east-2.amazonaws.com/assets.buccfer.io/aws-cognito-express/logo_transparent_background_83x83.png" alt="logo">
+                    
+                     
+                        <h1 class="navbar-item">aws-cognito-express</h1>
+                    
+                    <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                 
+                <div class="navbar-menu">
+                    <div class="navbar-end">
+                    
+                        <div class="navbar-item">
+                            <a href="https://github.com/buccfer/aws-cognito-express" target="_blank">Github</a>
+                        </div>
+                    
+                    </div>
+                </div>
+                
+            </nav>
+        </div>
+    </div>
+    <div class="container">
+        <div class="columns">
+            <div class="column is-3" id="sidebarNav">
+                <div class="sidebar">
+                    <nav>
+                        <h2><a href="index.html">Home</a></h2><div class="category"><h3>Tutorials</h3><ul><li><a href="tutorial-01-quick-start.html">Quick start</a></li><li><a href="tutorial-02-fetch-user-from-database.html">Fetching users from a database</a></li><li><a href="tutorial-03-custom-authentication.html">Custom authentication flow</a></li><li><a href="tutorial-04-testing.html">Testing</a></li><li><a href="tutorial-05-debugging.html">Debugging</a></li></ul><h3>Classes</h3><ul><li><a href="JWTValidator.html">JWTValidator</a></li></ul><h3>Global</h3><ul><li><a href="global.html#authenticate">authenticate</a></li><li><a href="global.html#authenticationError">authenticationError</a></li><li><a href="global.html#isJWTValidatorError">isJWTValidatorError</a></li></ul></div><div class="category"><h2>Errors</h2><h3>Classes</h3><ul><li><a href="ConfigurationError.html">ConfigurationError</a></li><li><a href="InitializationError.html">InitializationError</a></li><li><a href="InvalidJWTError.html">InvalidJWTError</a></li><li><a href="RefreshError.html">RefreshError</a></li></ul></div>
+                    </nav>
+                </div>
+            </div>
+            <div class="column is-9-desktop">
+                <div class="content" id="main-content-wrapper">
+                    <header class="page-title">
+                        <p>Title</p>
+                        <h1>Home</h1>
+                    </header>
+                    
+                    
+
+
+
+    
+
+
+    <h3> </h3>
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+    <section>
+        <article><h1>AWS Cognito Express</h1>
+<p><a href="https://nodei.co/npm/aws-cognito-express/"><img src="https://nodei.co/npm/aws-cognito-express.png?downloads=true&amp;downloadRank=true&amp;stars=true" alt="NPM"></a></p>
+<p><a href="https://app.travis-ci.com/github/buccfer/aws-cognito-express"><img src="https://app.travis-ci.com/buccfer/aws-cognito-express.svg?branch=master" alt="Build Status"></a>
+<a href="https://codeclimate.com/github/buccfer/aws-cognito-express/maintainability"><img src="https://api.codeclimate.com/v1/badges/8d53f5de9594eab264e2/maintainability" alt="Maintainability"></a>
+<a href="https://coveralls.io/github/buccfer/aws-cognito-express?branch=master"><img src="https://coveralls.io/repos/github/buccfer/aws-cognito-express/badge.svg?branch=master" alt="Coverage Status"></a>
+<a href="https://snyk.io/test/github/buccfer/aws-cognito-express?targetFile=package.json"><img src="https://snyk.io/test/github/buccfer/aws-cognito-express/badge.svg?targetFile=package.json" alt="Known Vulnerabilities"></a>
+<a href="LICENSE"><img src="https://badgen.net/badge/license/MIT/blue" alt="License"></a></p>
+<p><img src="https://s3.us-east-2.amazonaws.com/assets.buccfer.io/aws-cognito-express/logo_333x333.png" alt="Logo"></p>
+<p>This module authenticates requests on a Node.js application by verifying the <code>Access</code> and <code>ID</code> tokens issued by AWS Cognito.
+It implements the <a href="https://docs.aws.amazon.com/cognito/latest/developerguide/amazon-cognito-user-pools-using-tokens-verifying-a-jwt.html">AWS Guideline for JWT validation</a>.</p>
+<h2>Table of contents</h2>
+<ul>
+<li><a href="#use-cases">Use cases</a></li>
+<li><a href="#features">Features</a></li>
+<li><a href="#prerequisites">Prerequisites</a></li>
+<li><a href="#installation">Installation</a></li>
+<li><a href="https://buccfer.github.io/aws-cognito-express/tutorial-01-quick-start.html">Documentation</a></li>
+<li><a href="https://github.com/buccfer/aws-cognito-express/wiki/Changelog">Releases</a></li>
+<li><a href="#responsible-disclosure">Responsible disclosure</a></li>
+</ul>
+<h2>Use cases</h2>
+<p>This module offers an out of the box solution to authenticate requests on an Express.js application by verifying the AWS Cognito JWTs sent in the <code>Authorization</code> header using the <a href="https://tools.ietf.org/html/rfc6750">Bearer scheme</a>.</p>
+<p>Besides, it was designed so that it has the maximum flexibility. So, if you are not using Express.js, you can still use the <code>JWTValidator</code> class and create your custom authentication flow.</p>
+<p>In the following picture, we illustrate which part of the authentication flow is covered by this module.</p>
+<p><img src="https://www.lucidchart.com/publicSegments/view/567ce1d8-394e-42a5-90a1-f35671a150a5/image.png" alt="Authentication Flow"></p>
+<h2>Features</h2>
+<p>The following are the features included in this module:</p>
+<ul>
+<li>JWT signature verification.</li>
+<li>JWT claims verification.
+<ul>
+<li>Verify that the token is not expired.</li>
+<li>Verify that the audience (aud) claim matches one of the valid audiences provided in the configuration.</li>
+<li>Verify that the issuer (iss) claim is valid for the configured user pool.</li>
+<li>Verify that the token_use claim matches one of the valid token uses provided in the configuration.</li>
+</ul>
+</li>
+<li>Support for JWKs rotation as per described in the <a href="https://forums.aws.amazon.com/thread.jspa?threadID=241570">JWT signing key rotation</a> thread.</li>
+<li>Ability to set custom pems for local testing without the need of creating a User Pool.</li>
+</ul>
+<h2>Prerequisites</h2>
+<p>You will need:</p>
+<ol>
+<li>An AWS account. If you don't have one you can sign up <a href="https://aws.amazon.com">here</a>.</li>
+<li>A Cognito User Pool configured with at least one client application.</li>
+<li>Node.js 14 or above.</li>
+</ol>
+<h2>Installation</h2>
+<pre class="prettyprint source lang-bash"><code>$ npm install --save aws-cognito-express
+</code></pre>
+<h2>Responsible disclosure</h2>
+<p>If you have any security issue to report, contact project maintainers privately. You can find contact information in <a href="CONTACT.md">CONTACT.md</a>.</p></article>
+    </section>
+
+
+
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+<footer class="footer">
+    <div class="content has-text-centered">
+        <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.11</a> on Fri Dec 23 2022 12:05:14 GMT+0000 (Coordinated Universal Time)</p>
+        <p class="sidebar-created-by">
+            <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by 
+            <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers</a>
+        </p>
+    </div>
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/app.min.js"></script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

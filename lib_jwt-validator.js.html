@@ -1,0 +1,281 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-144732690-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-144732690-1');
+</script>
+
+    <meta charset="utf-8">
+    <title>JSDoc: lib/jwt-validator.js</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link href="https://fonts.googleapis.com/css?family=Muli:100,400,700|Oswald:300|Inconsolata,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+</head>
+
+<body>
+    <div id="stickyNavbarOverlay"></div>
+    <div class="top-navbar">
+        <div class="container">
+            <nav class="navbar" role="navigation" aria-label="main navigation">
+                <div class="navbar-brand">
+                     
+                        <img src="https://s3.us-east-2.amazonaws.com/assets.buccfer.io/aws-cognito-express/logo_transparent_background_83x83.png" alt="logo">
+                    
+                     
+                        <h1 class="navbar-item">aws-cognito-express</h1>
+                    
+                    <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                 
+                <div class="navbar-menu">
+                    <div class="navbar-end">
+                    
+                        <div class="navbar-item">
+                            <a href="https://github.com/buccfer/aws-cognito-express" target="_blank">Github</a>
+                        </div>
+                    
+                    </div>
+                </div>
+                
+            </nav>
+        </div>
+    </div>
+    <div class="container">
+        <div class="columns">
+            <div class="column is-3" id="sidebarNav">
+                <div class="sidebar">
+                    <nav>
+                        <h2><a href="index.html">Home</a></h2><div class="category"><h3>Tutorials</h3><ul><li><a href="tutorial-01-quick-start.html">Quick start</a></li><li><a href="tutorial-02-fetch-user-from-database.html">Fetching users from a database</a></li><li><a href="tutorial-03-custom-authentication.html">Custom authentication flow</a></li><li><a href="tutorial-04-testing.html">Testing</a></li><li><a href="tutorial-05-debugging.html">Debugging</a></li></ul><h3>Classes</h3><ul><li><a href="JWTValidator.html">JWTValidator</a></li></ul><h3>Global</h3><ul><li><a href="global.html#authenticate">authenticate</a></li><li><a href="global.html#authenticationError">authenticationError</a></li><li><a href="global.html#isJWTValidatorError">isJWTValidatorError</a></li></ul></div><div class="category"><h2>Errors</h2><h3>Classes</h3><ul><li><a href="ConfigurationError.html">ConfigurationError</a></li><li><a href="InitializationError.html">InitializationError</a></li><li><a href="InvalidJWTError.html">InvalidJWTError</a></li><li><a href="RefreshError.html">RefreshError</a></li></ul></div>
+                    </nav>
+                </div>
+            </div>
+            <div class="column is-9-desktop">
+                <div class="content" id="main-content-wrapper">
+                    <header class="page-title">
+                        <p>Source</p>
+                        <h1>lib/jwt-validator.js</h1>
+                    </header>
+                    
+                    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>'use strict'
+
+const axios = require('axios')
+const get = require('lodash.get')
+const once = require('lodash.once')
+const throttle = require('lodash.throttle')
+const jwkToPem = require('jwk-to-pem')
+const jwt = require('jsonwebtoken')
+const debug = require('./debug')
+const verifyJwt = require('./verify-jwt')
+const configSchema = require('./config-schema')
+const { REFRESH_WAIT_MS } = require('./constants')
+const { ConfigurationError, InitializationError, RefreshError, InvalidJWTError } = require('./errors')
+
+/**
+ * The JWT Validator configuration.
+ *
+ * @typedef {Object} JWTValidatorConfig
+ * @property {string} [region = 'us-east-1'] - The AWS Region where the Cognito User Pool was created.
+ * @property {string} userPoolId - The Cognito User Pool ID.
+ * @property {string[]} [tokenUse = ['access']] - The accepted token uses.
+ * @property {string[]} audience - A set of app client IDs that have access to the Cognito User Pool.
+ * @property {Object} [pems = null] - The custom pems to be used to verify the token signature.
+ * */
+
+class JWTValidator {
+  /**
+   * @description Instantiates a JWT Validator.
+   * @throws {ConfigurationError} The provided configuration is invalid.
+   * @param {JWTValidatorConfig} config - The JWT Validator configuration.
+   * @returns {JWTValidator} A JWT Validator instance.
+   *
+   * @example
+   *
+   * 'use strict';
+   *
+   * const { JWTValidator } = require('aws-cognito-express');
+   *
+   * const jwtValidator = new JWTValidator({
+   *   region: 'us-east-2',
+   *   userPoolId: 'us-east-2_6IfDT7ZUq',
+   *   tokenUse: ['id', 'access'],
+   *   audience: ['55plsi2cl0o267lfusmgaf67pf']
+   * });
+   * */
+  constructor(config) {
+    debug('Instantiating validator with config: %O', config)
+    const { error, value } = configSchema.validate(config)
+    if (error) throw new ConfigurationError(error)
+    Object.assign(this, value)
+    this.init = once(this.initialize)
+    this.refreshPems = throttle(this.refresh, REFRESH_WAIT_MS, { leading: true, trailing: false })
+  }
+
+  /**
+   * @private
+   * @description Get the issuer for the configured User Pool.
+   * @returns {string} The expected value of the JWT iss claim.
+   * */
+  get iss() {
+    return `https://cognito-idp.${this.region}.amazonaws.com/${this.userPoolId}`
+  }
+
+  /**
+   * @private
+   * @description Get the JWKs url for the configured User Pool.
+   * @returns {string} The URL where the User Pool JWKs are located.
+   * */
+  get jwksUrl() {
+    return `${this.iss}/.well-known/jwks.json`
+  }
+
+  /**
+   * @private
+   * @description Initializes the validator by getting the User Pool JWKs and converting them to pems.
+   * @returns {Promise&lt;undefined>} A promise that will be resolved if the validator could be
+   * initialized successfully. Otherwise, it will be rejected with the appropriate error.
+   * */
+  async initialize() {
+    if (this.pems) {
+      debug('Validator pems already set. Skipping http request to JWKs endpoint..')
+      return
+    }
+
+    try {
+      debug(`Getting JWKs from ${this.jwksUrl}`)
+      const { data: { keys: jwks } } = await axios.get(this.jwksUrl)
+      debug('Generating pems from JWKs: %O', jwks)
+      this.pems = jwks.reduce(
+        (acc, jwk) => {
+          acc[jwk.kid] = jwkToPem(jwk, { private: false })
+          return acc
+        },
+        {}
+      )
+      debug('Validator pems set to: %O', this.pems)
+    } catch (err) {
+      debug('Error while setting validator pems: %O', err)
+      throw new InitializationError(err)
+    }
+  }
+
+  /**
+   * @private
+   * @description Refreshes the validator pems in case JWKs were rotated.
+   * @returns {Promise&lt;undefined>} A promise that will be resolved if the validator pems could be
+   * refreshed successfully. Otherwise, it will be rejected with the appropriate error.
+   * */
+  async refresh() {
+    debug('Refreshing validator pems..')
+    this.pems = null
+
+    try {
+      await this.initialize()
+    } catch (err) {
+      throw new RefreshError(err)
+    }
+  }
+
+  /**
+   * @description Validates a JSON web token.
+   * @param {string} token - The JSON web token to validate.
+   * @returns {Promise&lt;Object>} A promise that resolves to the JWT payload if the token is valid.
+   * Otherwise, it will be rejected with the appropriate error.
+   *
+   * @example
+   *
+   * 'use strict';
+   *
+   * const { JWTValidator } = require('aws-cognito-express');
+   *
+   * const jwtValidator = new JWTValidator({ ... });
+   * const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...';
+   *
+   * jwtValidator.validate(token)
+   *  .then(jwtPayload => console.log(jwtPayload))
+   *  .catch(err => console.error(err));
+   * */
+  async validate(token) {
+    await this.init()
+
+    debug('Decoding JWT to get the "kid" header')
+    const decodedToken = jwt.decode(token, { complete: true })
+
+    if (!decodedToken) {
+      debug('JWT is invalid')
+      throw new InvalidJWTError('JWT is invalid')
+    }
+
+    const { kid } = decodedToken.header
+    debug(`Getting pem for kid ${kid}`)
+    let pem = get(this.pems, kid)
+
+    if (!pem) {
+      debug(`No pem found for kid ${kid}. Refreshing pems in case JWKs were rotated..`)
+      await this.refreshPems()
+
+      debug(`Getting pem for kid ${kid} after refreshing..`)
+      pem = get(this.pems, kid)
+
+      if (!pem) throw new InvalidJWTError('No pem found to verify JWT signature')
+    }
+
+    debug('Verifying JWT signature..')
+    return verifyJwt(token, pem, { audience: this.audience, issuer: this.iss, tokenUse: this.tokenUse })
+  }
+}
+
+module.exports = JWTValidator
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+<footer class="footer">
+    <div class="content has-text-centered">
+        <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.11</a> on Fri Dec 23 2022 12:05:14 GMT+0000 (Coordinated Universal Time)</p>
+        <p class="sidebar-created-by">
+            <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by 
+            <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers</a>
+        </p>
+    </div>
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/app.min.js"></script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

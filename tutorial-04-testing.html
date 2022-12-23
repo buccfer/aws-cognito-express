@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-144732690-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-144732690-1');
+</script>
+
+    <meta charset="utf-8">
+    <title>JSDoc: Testing</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link href="https://fonts.googleapis.com/css?family=Muli:100,400,700|Oswald:300|Inconsolata,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+</head>
+
+<body>
+    <div id="stickyNavbarOverlay"></div>
+    <div class="top-navbar">
+        <div class="container">
+            <nav class="navbar" role="navigation" aria-label="main navigation">
+                <div class="navbar-brand">
+                     
+                        <img src="https://s3.us-east-2.amazonaws.com/assets.buccfer.io/aws-cognito-express/logo_transparent_background_83x83.png" alt="logo">
+                    
+                     
+                        <h1 class="navbar-item">aws-cognito-express</h1>
+                    
+                    <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                 
+                <div class="navbar-menu">
+                    <div class="navbar-end">
+                    
+                        <div class="navbar-item">
+                            <a href="https://github.com/buccfer/aws-cognito-express" target="_blank">Github</a>
+                        </div>
+                    
+                    </div>
+                </div>
+                
+            </nav>
+        </div>
+    </div>
+    <div class="container">
+        <div class="columns">
+            <div class="column is-3" id="sidebarNav">
+                <div class="sidebar">
+                    <nav>
+                        <h2><a href="index.html">Home</a></h2><div class="category"><h3>Tutorials</h3><ul><li><a href="tutorial-01-quick-start.html">Quick start</a></li><li><a href="tutorial-02-fetch-user-from-database.html">Fetching users from a database</a></li><li><a href="tutorial-03-custom-authentication.html">Custom authentication flow</a></li><li><a href="tutorial-04-testing.html">Testing</a></li><li><a href="tutorial-05-debugging.html">Debugging</a></li></ul><h3>Classes</h3><ul><li><a href="JWTValidator.html">JWTValidator</a></li></ul><h3>Global</h3><ul><li><a href="global.html#authenticate">authenticate</a></li><li><a href="global.html#authenticationError">authenticationError</a></li><li><a href="global.html#isJWTValidatorError">isJWTValidatorError</a></li></ul></div><div class="category"><h2>Errors</h2><h3>Classes</h3><ul><li><a href="ConfigurationError.html">ConfigurationError</a></li><li><a href="InitializationError.html">InitializationError</a></li><li><a href="InvalidJWTError.html">InvalidJWTError</a></li><li><a href="RefreshError.html">RefreshError</a></li></ul></div>
+                    </nav>
+                </div>
+            </div>
+            <div class="column is-9-desktop">
+                <div class="content" id="main-content-wrapper">
+                    <header class="page-title">
+                        <p>Tutorial</p>
+                        <h1>Testing</h1>
+                    </header>
+                    
+                    <section>
+
+<header>
+    
+</header>
+
+<article>
+    <p>If you want to write your application tests without the need of creating a Cognito User Pool, instances of the
+<a href="JWTValidator.html">JWTValidator</a> class have an additional property <strong>pems</strong> that you can provide in the constructor <strong>config</strong>
+parameter.</p>
+<p>When a JWT validator is instantiated with the <em>pems</em> property, no initialization process takes place. This means that there
+won't be any http request to Cognito to fetch the JWKS.</p>
+<p>In the following sections we illustrate how to set the <em>pems</em> property and how to create valid JWTs for testing.</p>
+<h2>1. Setting custom pems</h2>
+<h4>1.1. Creating an RSA key pair</h4>
+<p>In order to create your own JWTs for testing you will first need a RSA key pair to sign those tokens. To generate a RSA key pair
+and store it in the <em>rsa_keys</em> folder you can use OpenSSL as follows:</p>
+<pre class="prettyprint source lang-bash"><code># Create destination folder.
+$ mkdir -p rsa_keys
+
+# Generate private key.
+$ openssl genrsa -out rsa_keys/key.pem 2048
+
+# Extract the public part of the private key.
+$ openssl rsa -in rsa_keys/key.pem -pubout -out rsa_keys/key.pub
+</code></pre>
+<h4>1.2. Setting the pems property</h4>
+<p>The <em>pems</em> property must be set to a non-empty object with the following structure:</p>
+<pre class="prettyprint source lang-javascript"><code>const pems = {
+  key_1: '-----BEGIN PUBLIC KEY-----\n ... \n-----END PUBLIC KEY-----\n',
+  key_2: '-----BEGIN PUBLIC KEY-----\n ... \n-----END PUBLIC KEY-----\n'
+};
+</code></pre>
+<p>where each key is the value of the JWT <em>kid</em> header and each value is a string containing the PEM encoded RSA public key.
+As an example:</p>
+<pre class="prettyprint source lang-javascript"><code>'use strict';
+
+const fs = require('fs');
+const path = require('path');
+const { JWTValidator } = require('aws-cognito-express');
+
+const jwtValidatorConfig = {
+  region: 'us-east-2',
+  userPoolId: 'us-east-2_6IfDT7ZUq',
+  tokenUse: ['id', 'access'],
+  audience: ['55plsi2cl0o267lfusmgaf67pf']
+};
+
+if (process.env.NODE_ENV === 'test') {
+  jwtValidatorConfig.pems = {
+    my_custom_key_id: fs.readFileSync(path.join(__dirname, 'rsa_keys', 'key.pub'), 'ascii')
+  };
+}
+
+const jwtValidator = new JWTValidator(jwtValidatorConfig);
+</code></pre>
+<p>If you are using the Express.js authentication middleware provided by this library, then you should provide the <em>pems</em>
+property in the <em>config</em> parameter of the <a href="global.html#authenticate">authenticate</a> function as follows:</p>
+<pre class="prettyprint source lang-javascript"><code>'use strict';
+
+const fs = require('fs');
+const path = require('path');
+const express = require('express');
+const { authenticate } = require('aws-cognito-express');
+
+const app = express();
+
+const authenticateConfig = {
+  region: 'us-east-2',
+  userPoolId: 'us-east-2_6IfDT7ZUq',
+  tokenUse: ['id', 'access'],
+  audience: ['55plsi2cl0o267lfusmgaf67pf']
+};
+
+if (process.env.NODE_ENV === 'test') {
+  authenticateConfig.pems = {
+    my_custom_key_id: fs.readFileSync(path.join(__dirname, 'rsa_keys', 'key.pub'), 'ascii')
+  };
+}
+
+app.use(authenticate(authenticateConfig));
+
+module.exports = app;
+</code></pre>
+<h2>2. Creating valid JWTs for testing</h2>
+<p>To generate valid JWTs to authenticate your users in your tests, you can use the <a href="https://www.npmjs.com/package/jsonwebtoken">jsonwebtoken</a>
+library. Since the JWTs you are going to create are just for testing purposes, you only need to install the <em>jsonwebtoken</em>
+library as a dev dependency.</p>
+<pre class="prettyprint source lang-bash"><code>$ npm install --save-dev jsonwebtoken
+</code></pre>
+<p>In the example below, we illustrate how to create a JWT such that the JWT validator recognizes it as a valid token.</p>
+<pre class="prettyprint source lang-javascript"><code>'use strict';
+
+const fs = require('fs');
+const path = require('path');
+const jwt = require('jsonwebtoken');
+
+// The token use must be one of the token uses provided in the config. ('id'|'access')
+const token_use = 'access';
+
+// The JWT payload. It must include the `token_use` field.
+const payload = {
+  token_use,
+  email: 'john.doe@example.com',
+  email_verified: true,
+  // ...
+};
+
+// The RSA private key to be used to sign the JWT.
+const privateKey = fs.readFileSync(path.join(__dirname, 'rsa_keys', 'key.pem'), 'ascii');
+
+// The value of the JWT `kid` header. It must have a value such that `pems[keyid]` is the
+// public key of the given `privateKey`.
+const keyid = 'my_custom_key_id';
+
+// The value of the JWT `aud` field. It must be one of the audiences provided in the config.
+const audience = '55plsi2cl0o267lfusmgaf67pf';
+
+// The value of the JWT `iss` field. It must have the format https://cognito-idp.{region}.amazonaws.com/{userPoolId}
+const issuer = 'https://cognito-idp.us-east-2.amazonaws.com/us-east-2_6IfDT7ZUq';
+
+// Generate the token.
+const token = jwt.sign(payload, privateKey, {
+  algorithm: 'RS256',
+  expiresIn: 3600,
+  keyid,
+  audience,
+  issuer
+});
+
+console.log('Token: ', token);
+// => Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+</code></pre>
+</article>
+
+</section>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+<footer class="footer">
+    <div class="content has-text-centered">
+        <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.11</a> on Fri Dec 23 2022 12:05:14 GMT+0000 (Coordinated Universal Time)</p>
+        <p class="sidebar-created-by">
+            <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by 
+            <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers</a>
+        </p>
+    </div>
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/app.min.js"></script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

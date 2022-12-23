@@ -1,0 +1,124 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-144732690-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-144732690-1');
+</script>
+
+    <meta charset="utf-8">
+    <title>JSDoc: lib/errors/invalid-jwt-error.js</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link href="https://fonts.googleapis.com/css?family=Muli:100,400,700|Oswald:300|Inconsolata,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+</head>
+
+<body>
+    <div id="stickyNavbarOverlay"></div>
+    <div class="top-navbar">
+        <div class="container">
+            <nav class="navbar" role="navigation" aria-label="main navigation">
+                <div class="navbar-brand">
+                     
+                        <img src="https://s3.us-east-2.amazonaws.com/assets.buccfer.io/aws-cognito-express/logo_transparent_background_83x83.png" alt="logo">
+                    
+                     
+                        <h1 class="navbar-item">aws-cognito-express</h1>
+                    
+                    <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                 
+                <div class="navbar-menu">
+                    <div class="navbar-end">
+                    
+                        <div class="navbar-item">
+                            <a href="https://github.com/buccfer/aws-cognito-express" target="_blank">Github</a>
+                        </div>
+                    
+                    </div>
+                </div>
+                
+            </nav>
+        </div>
+    </div>
+    <div class="container">
+        <div class="columns">
+            <div class="column is-3" id="sidebarNav">
+                <div class="sidebar">
+                    <nav>
+                        <h2><a href="index.html">Home</a></h2><div class="category"><h3>Tutorials</h3><ul><li><a href="tutorial-01-quick-start.html">Quick start</a></li><li><a href="tutorial-02-fetch-user-from-database.html">Fetching users from a database</a></li><li><a href="tutorial-03-custom-authentication.html">Custom authentication flow</a></li><li><a href="tutorial-04-testing.html">Testing</a></li><li><a href="tutorial-05-debugging.html">Debugging</a></li></ul><h3>Classes</h3><ul><li><a href="JWTValidator.html">JWTValidator</a></li></ul><h3>Global</h3><ul><li><a href="global.html#authenticate">authenticate</a></li><li><a href="global.html#authenticationError">authenticationError</a></li><li><a href="global.html#isJWTValidatorError">isJWTValidatorError</a></li></ul></div><div class="category"><h2>Errors</h2><h3>Classes</h3><ul><li><a href="ConfigurationError.html">ConfigurationError</a></li><li><a href="InitializationError.html">InitializationError</a></li><li><a href="InvalidJWTError.html">InvalidJWTError</a></li><li><a href="RefreshError.html">RefreshError</a></li></ul></div>
+                    </nav>
+                </div>
+            </div>
+            <div class="column is-9-desktop">
+                <div class="content" id="main-content-wrapper">
+                    <header class="page-title">
+                        <p>Source</p>
+                        <h1>lib/errors/invalid-jwt-error.js</h1>
+                    </header>
+                    
+                    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>'use strict'
+
+const BaseError = require('./base-error')
+
+/**
+ * Error which is thrown when the provided JWT is invalid.
+ * @category Errors
+ * @hideconstructor
+ * */
+class InvalidJWTError extends BaseError {}
+
+module.exports = InvalidJWTError
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+<footer class="footer">
+    <div class="content has-text-centered">
+        <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.11</a> on Fri Dec 23 2022 12:05:14 GMT+0000 (Coordinated Universal Time)</p>
+        <p class="sidebar-created-by">
+            <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by 
+            <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers</a>
+        </p>
+    </div>
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/app.min.js"></script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

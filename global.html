@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-144732690-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-144732690-1');
+</script>
+
+    <meta charset="utf-8">
+    <title>JSDoc: Global</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link href="https://fonts.googleapis.com/css?family=Muli:100,400,700|Oswald:300|Inconsolata,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+</head>
+
+<body>
+    <div id="stickyNavbarOverlay"></div>
+    <div class="top-navbar">
+        <div class="container">
+            <nav class="navbar" role="navigation" aria-label="main navigation">
+                <div class="navbar-brand">
+                     
+                        <img src="https://s3.us-east-2.amazonaws.com/assets.buccfer.io/aws-cognito-express/logo_transparent_background_83x83.png" alt="logo">
+                    
+                     
+                        <h1 class="navbar-item">aws-cognito-express</h1>
+                    
+                    <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                 
+                <div class="navbar-menu">
+                    <div class="navbar-end">
+                    
+                        <div class="navbar-item">
+                            <a href="https://github.com/buccfer/aws-cognito-express" target="_blank">Github</a>
+                        </div>
+                    
+                    </div>
+                </div>
+                
+            </nav>
+        </div>
+    </div>
+    <div class="container">
+        <div class="columns">
+            <div class="column is-3" id="sidebarNav">
+                <div class="sidebar">
+                    <nav>
+                        <h2><a href="index.html">Home</a></h2><div class="category"><h3>Tutorials</h3><ul><li><a href="tutorial-01-quick-start.html">Quick start</a></li><li><a href="tutorial-02-fetch-user-from-database.html">Fetching users from a database</a></li><li><a href="tutorial-03-custom-authentication.html">Custom authentication flow</a></li><li><a href="tutorial-04-testing.html">Testing</a></li><li><a href="tutorial-05-debugging.html">Debugging</a></li></ul><h3>Classes</h3><ul><li><a href="JWTValidator.html">JWTValidator</a></li></ul><h3>Global</h3><ul><li><a href="global.html#authenticate">authenticate</a></li><li><a href="global.html#authenticationError">authenticationError</a></li><li><a href="global.html#isJWTValidatorError">isJWTValidatorError</a></li></ul></div><div class="category"><h2>Errors</h2><h3>Classes</h3><ul><li><a href="ConfigurationError.html">ConfigurationError</a></li><li><a href="InitializationError.html">InitializationError</a></li><li><a href="InvalidJWTError.html">InvalidJWTError</a></li><li><a href="RefreshError.html">RefreshError</a></li></ul></div>
+                    </nav>
+                </div>
+            </div>
+            <div class="column is-9-desktop">
+                <div class="content" id="main-content-wrapper">
+                    <header class="page-title">
+                        <p>Title</p>
+                        <h1>Global</h1>
+                    </header>
+                    
+                    
+
+
+
+
+<section>
+
+<header>
+    
+        <h2></h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <div class='vertical-section'>
+            <h3 class="title"><span>Methods</span></h3>
+            <div class="members">
+            
+                <div class="member">
+
+    
+    <h4 class="name" id="authenticate">
+        
+        <span class="code-name">
+            authenticate<span class="signature">(config)</span><span class="type-signature"> &rarr; {function}</span>
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        An Express authentication middleware generator.
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        
+<tr class="deep-level-0">
+  
+      <td class="name"><code>config</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type"><a href="global.html#JWTValidatorConfig">JWTValidatorConfig</a></span>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last">The JWT Validator configuration.</td>
+</tr>
+
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="middlewares_authenticate.js.html" class="button">View Source</a>
+            <span>
+                <a href="middlewares_authenticate.js.html">middlewares/authenticate.js</a>, <a href="middlewares_authenticate.js.html#line30">line 30</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Throws:</label></div>
+        <div class="column is-10">
+            
+                    
+<div class="columns">
+    
+    <div class='param-desc column is-7'>The provided configuration is invalid.</div>
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+<span class="param-type"><a href="ConfigurationError.html">ConfigurationError</a></span>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'>An Express authentication middleware.</div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<span class="param-type">function</span>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>'use strict';
+
+const express = require('express');
+const { authenticate } = require('aws-cognito-express');
+
+const app = express();
+
+app.use(authenticate({
+  region: 'us-east-2',
+  userPoolId: 'us-east-2_6IfDT7ZUq',
+  tokenUse: ['id', 'access'],
+  audience: ['55plsi2cl0o267lfusmgaf67pf']
+}));</code></pre>
+
+
+</div>
+            
+                <div class="member">
+
+    
+    <h4 class="name" id="authenticationError">
+        
+        <span class="code-name">
+            authenticationError<span class="signature">()</span><span class="type-signature"> &rarr; {function}</span>
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        An Express authentication error handler generator.
+    </div>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="middlewares_authentication-error.js.html" class="button">View Source</a>
+            <span>
+                <a href="middlewares_authentication-error.js.html">middlewares/authentication-error.js</a>, <a href="middlewares_authentication-error.js.html#line23">line 23</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'>An Express authentication error handler.</div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<span class="param-type">function</span>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>'use strict';
+
+const express = require('express');
+const { authenticationError } = require('aws-cognito-express');
+
+const app = express();
+
+app.use(authenticationError());</code></pre>
+
+
+</div>
+            
+                <div class="member">
+
+    
+    <h4 class="name" id="isJWTValidatorError">
+        
+        <span class="code-name">
+            isJWTValidatorError<span class="signature">(err)</span><span class="type-signature"> &rarr; {boolean}</span>
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        Checks if the given error was generated by the JWT Validator.
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        
+<tr class="deep-level-0">
+  
+      <td class="name"><code>err</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">Error</span>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last">An instance of an error.</td>
+</tr>
+
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="lib_is-jwt-validator-error.js.html" class="button">View Source</a>
+            <span>
+                <a href="lib_is-jwt-validator-error.js.html">lib/is-jwt-validator-error.js</a>, <a href="lib_is-jwt-validator-error.js.html#line30">line 30</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'>Returns true if the error was generated by the JWT Validator.
+Otherwise returns false.</div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<span class="param-type">boolean</span>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>'use strict';
+
+const { JWTValidator, isJWTValidatorError } = require('aws-cognito-express');
+
+const jwtValidator = new JWTValidator({ ... });
+const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...';
+
+const err = new Error('Unexpected error');
+isJWTValidatorError(err);
+// => false
+
+jwtValidator.validate(token)
+ .catch((err) => {
+   isJWTValidatorError(err);
+   // => true
+ });</code></pre>
+
+
+</div>
+            
+            </div>
+        </div>
+    
+
+    
+        <div class='vertical-section'>
+            <h3 class="title"><span>Type Definitions</span></h3>
+            <div class="members">
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<span class="param-type">Object</span>
+
+
+    </span>
+
+<h4 class="name" id="JWTValidatorConfig">
+    
+    <span class="code-name">
+        JWTValidatorConfig
+    </span>
+</h4>
+
+
+
+
+<div class="description">
+    The JWT Validator configuration.
+</div>
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+        
+<tr class="deep-level-0">
+    
+        <td class="name"><code>region</code></td>
+    
+
+    <td class="type">
+    
+        
+<span class="param-type">string</span>
+
+
+    
+    </td>
+
+    
+        <td class="attributes">
+        
+            &lt;optional><br>
+        
+
+        
+        </td>
+    
+
+    
+        <td class="default">
+        
+            'us-east-1'
+        
+        </td>
+    
+
+    <td class="description last">The AWS Region where the Cognito User Pool was created.</td>
+</tr>
+
+    
+        
+<tr class="deep-level-0">
+    
+        <td class="name"><code>userPoolId</code></td>
+    
+
+    <td class="type">
+    
+        
+<span class="param-type">string</span>
+
+
+    
+    </td>
+
+    
+        <td class="attributes">
+        
+
+        
+        </td>
+    
+
+    
+        <td class="default">
+        
+        </td>
+    
+
+    <td class="description last">The Cognito User Pool ID.</td>
+</tr>
+
+    
+        
+<tr class="deep-level-0">
+    
+        <td class="name"><code>tokenUse</code></td>
+    
+
+    <td class="type">
+    
+        
+<span class="param-type">Array.&lt;string></span>
+
+
+    
+    </td>
+
+    
+        <td class="attributes">
+        
+            &lt;optional><br>
+        
+
+        
+        </td>
+    
+
+    
+        <td class="default">
+        
+            ['access']
+        
+        </td>
+    
+
+    <td class="description last">The accepted token uses.</td>
+</tr>
+
+    
+        
+<tr class="deep-level-0">
+    
+        <td class="name"><code>audience</code></td>
+    
+
+    <td class="type">
+    
+        
+<span class="param-type">Array.&lt;string></span>
+
+
+    
+    </td>
+
+    
+        <td class="attributes">
+        
+
+        
+        </td>
+    
+
+    
+        <td class="default">
+        
+        </td>
+    
+
+    <td class="description last">A set of app client IDs that have access to the Cognito User Pool.</td>
+</tr>
+
+    
+        
+<tr class="deep-level-0">
+    
+        <td class="name"><code>pems</code></td>
+    
+
+    <td class="type">
+    
+        
+<span class="param-type">Object</span>
+
+
+    
+    </td>
+
+    
+        <td class="attributes">
+        
+            &lt;optional><br>
+        
+
+        
+        </td>
+    
+
+    
+        <td class="default">
+        
+            null
+        
+        </td>
+    
+
+    <td class="description last">The custom pems to be used to verify the token signature.</td>
+</tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="lib_jwt-validator.js.html" class="button">View Source</a>
+            <span>
+                <a href="lib_jwt-validator.js.html">lib/jwt-validator.js</a>, <a href="lib_jwt-validator.js.html#line15">line 15</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+            </div>
+        </div>
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+<footer class="footer">
+    <div class="content has-text-centered">
+        <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.11</a> on Fri Dec 23 2022 12:05:14 GMT+0000 (Coordinated Universal Time)</p>
+        <p class="sidebar-created-by">
+            <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by 
+            <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers</a>
+        </p>
+    </div>
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/app.min.js"></script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
