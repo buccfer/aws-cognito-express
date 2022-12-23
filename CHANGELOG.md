@@ -1,3 +1,9 @@
+## 5.0.0 / 2022-12-23
+
+### :boom: Breaking Changes
+
+- Update `jsonwebtoken` dependency to v9 due to security issues. See breaking changes [here](https://github.com/auth0/node-jsonwebtoken/blob/master/CHANGELOG.md#900---2022-12-21).
+
 ## 4.0.1 / 2022-06-02
 
 ### :lady_beetle: Bug Fixes
